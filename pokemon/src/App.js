@@ -4,21 +4,31 @@ import axios from 'axios';
 
 
 class App extends Component {
+  state = {
+    nom:'',
+    imatge:''
+  }
+
   componentDidMount(){
     this.getDito();
   }
-  getDito(){
-    axios.get(`https://pokeapi.co/api/v2/pokemon/ditto`)
+  async getDito(){
+    let random = Math.floor(Math.random() * 151) + 1;
+   await axios.get(`https://pokeapi.co/api/v2/pokemon/${random}`)
     .then(res => {
       const pokemon = res.data;
       console.log(pokemon);
+      console.log(pokemon.sprites.front_default);
+      this.setState({imatge:pokemon.sprites.front_default})
+      this.setState({nom:pokemon.name})
     })
   }
 
   render() {
     return (
      <div>
-       <p>Hola</p>
+       <p>{this.state.nom.toUpperCase()}</p>
+      <img src={this.state.imatge} />
      </div>
     );
   }
