@@ -7,7 +7,6 @@ DISCONNECT_MESSAGE = "!DISCONNECT"
 SERVER = "169.254.244.249"
 ADDR = (SERVER, PORT)
 
-
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(ADDR)
 
