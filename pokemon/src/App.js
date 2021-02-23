@@ -38,11 +38,16 @@ class App extends Component {
   }  
 
   render() {
+    
     return (
-     <div>
-       <p>{this.state.nom.toUpperCase()}</p>
-       <p>{this.state.habilitats[0]?.move.name}</p>
-      <img src={this.state.imatge} />
+     <div id={"interficie"}>
+       <div id={"nom"}>
+          <p>{this.state.nom}</p>
+          <div id={"vida"}></div>
+          <p>100%</p> {/*Canviar per valor d'api*/}
+       </div>
+      <img id={"sprite"} src={this.state.imatge} />
+      <ul id={"moviments"}>{this.state.habilitats[0]?.move.name}</ul>
      </div>
     );
   }
