@@ -32,7 +32,6 @@ export const getMoviment = async (random) =>{
   await axios.get(`https://pokeapi.co/api/v2/move/${random}`)
   .then(res => {
     const response = res.data;
-    console.log(response);
     moviment.tipus = {nom:response.type.name, color : "#"+TYPE_COLORS[response.type.name]};
     moviment.power = response.power;
     moviment.pp = response.pp;

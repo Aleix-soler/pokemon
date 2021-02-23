@@ -10,7 +10,6 @@ export const getPokemon = async (random) =>{
   await axios.get(`https://pokeapi.co/api/v2/pokemon/${random}`)
   .then(res => {
     const response = res.data;
-    console.log(response);
     pokemon.imatge =response.sprites.front_default
     pokemon.nom =response.name
     pokemon.moviments =  getHabilitats(response);
@@ -35,7 +34,6 @@ function getStats(pokemon){
         break;
     }
   });
-  console.log(stats);
   return(stats)
 }
 
@@ -44,7 +42,7 @@ function getHabilitats(pokemon){
     let moviments = [];
     for (let i = 0; i < 4; i++) {
       let nMoviment = Math.floor(Math.random() * aux.length);
-      moviments[i] = { id : nMoviment , moviment : aux[nMoviment]} 
+      moviments[i] = { id : nMoviment , moviment : aux[nMoviment].move.name} 
     }
     return(moviments)
   }  
