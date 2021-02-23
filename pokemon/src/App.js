@@ -1,6 +1,6 @@
 import logo from './logo.svg';
-import './App.css'; 
-///JAJA SOC DISLEXIC PERDONA PER LA EQUIDISTANCIA PERO TAMBE SOC PERSIANA I M'OBREBOQUES A PATADES
+import './App.css';
+
 function App() {
   return (
     <div className="App">
