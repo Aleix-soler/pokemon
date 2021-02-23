@@ -47,7 +47,16 @@ class App extends Component {
           <p>100%</p> {/*Canviar per valor d'api*/}
        </div>
       <img id={"sprite"} src={this.state.imatge} />
-      <ul id={"moviments"}>{this.state.habilitats[0]?.move.name}</ul>
+      <table id={"moviments"}>
+        <tr>
+          <th>{this.state.habilitats[0]?.move.name}</th>
+          <th>{this.state.habilitats[1]?.move.name}</th>
+        </tr>
+        <tr>
+          <th>{this.state.habilitats[2]?.move.name}</th>
+          <th>{this.state.habilitats[3]?.move.name}</th>
+        </tr>
+      </table>
      </div>
     );
   }
