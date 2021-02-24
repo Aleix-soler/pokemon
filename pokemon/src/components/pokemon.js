@@ -10,7 +10,7 @@ export const getPokemon = async (random) =>{
   await axios.get(`https://pokeapi.co/api/v2/pokemon/${random}`)
   .then(res => {
     const response = res.data;
-    pokemon.imatge =response.sprites.front_default
+    pokemon.imatge =response.sprites.back_default
     pokemon.nom =response.name
     pokemon.moviments =  getHabilitats(response);
     pokemon.stats = getStats(response);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import getPokemon from './components/pokemon';
 import getMoviment from './components/moviments';
+import styles from './App.css';
 
 class App extends Component {
   state = {
@@ -13,7 +14,8 @@ class App extends Component {
   }
 
   componentDidMount(){
-      getPokemon(123).then(res => {
+      var random = Math.floor(Math.random() * 151) + 1;
+      getPokemon(random).then(res => {
        this.setState({pokemon : res});
        console.log("HEREE");
        console.log(res);
@@ -33,21 +35,17 @@ class App extends Component {
           <div id={"vida"}></div>
           <p>{this.state.pokemon.stats.vida} PS</p> 
        </div>
-<<<<<<< HEAD
-      <img id={"sprite"} src={this.state.imatge} />
+       <img id={"sprite"} src={this.state.pokemon.imatge} />
       <table id={"moviments"}>
         <tr>
-          <th>{this.state.habilitats[0]?.move.name}</th>
-          <th>{this.state.habilitats[1]?.move.name}</th>
+          <th>{this.state.pokemon.moviments[0]?.moviment}</th>
+          <th>{this.state.pokemon.moviments[1]?.moviment}</th>
         </tr>
         <tr>
-          <th>{this.state.habilitats[2]?.move.name}</th>
-          <th>{this.state.habilitats[3]?.move.name}</th>
+          <th>{this.state.pokemon.moviments[2]?.moviment}</th>
+          <th>{this.state.pokemon.moviments[3]?.moviment}</th>
         </tr>
       </table>
-=======
-      <img id={"sprite"} src={this.state.pokemon.imatge} />
->>>>>>> 5629a7cb76f68b50e0342944bb1625e0dad8c0fb
      </div>
     );
   }
