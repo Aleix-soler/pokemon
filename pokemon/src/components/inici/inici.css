@@ -57,9 +57,9 @@
   
   
   #contenedor{
-    margin: auto;
-    width: 80%;
-    padding: 10px;
+    position: absolute;
+    top: 30%;
+    left: 15%;
   }
   
   .elegir{
