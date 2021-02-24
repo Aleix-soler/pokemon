@@ -1,8 +1,9 @@
-import React, { Component} from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import getPokemon from './components/pokemon';
 import getMoviment from './components/moviments';
 import styles from './App.css';
-
+import socketIOClient from "socket.io-client";  
+const ENDPOINT = "http://172.24.1.38:3000/";
 
 class App extends Component {
   state = {
@@ -23,6 +24,15 @@ class App extends Component {
   }
 
   componentDidMount(){
+    const socket = socketIOClient(ENDPOINT);
+        socket.on("FromAPI", data => {
+          console.log(data);
+        });
+        socket.emit("pokemonsInici");
+        socket.on("pokemonData", (pokemons) => {
+          console.log("infoPokemon");
+          console.log(JSON.parse(pokemons));
+        })
       var random = Math.floor(Math.random() * 151) + 1;
       getPokemon(random).then(res => {
        this.setState({pokemon : res});
