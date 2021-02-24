@@ -13,19 +13,102 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
+#nom {
+  text-transform: capitalize;
+  position: absolute;
+  width: 20%;
+  height: 15%;
+  border-radius: 10px;
+  top: 8%;
+  left: 8%;
+  background: #F8F8D8;
+  border: 6px solid #506860;
 }
 
-.App-link {
-  color: #61dafb;
+#vida{
+  border: 1px solid black;
+  padding: 3px 0; 
+  margin-left: 10%;
+  margin-right: 10%;
+  border-radius: 5px;
+  background-color: green;
+}
+
+#vidaEnemic{
+  border: 1px solid black;
+  padding: 3px 0; 
+  margin-left: 10%;
+  margin-right: 10%;
+  border-radius: 5px;
+  background-color: green;
+  
+}
+
+#hero{
+  position: absolute;
+  width: 35%;
+  height: 25%;
+  border-radius: 50%;
+  bottom: 15%;
+  top: 50%;
+  left: 8%;
+  background: #E0E0E0;
+}
+
+#nomEnemic{
+  text-transform: capitalize;
+  position: absolute;
+  width: 20%;
+  height: 15%;
+  border-radius: 10px;
+  top: 5%;
+  right: 15%;
+  background: #F8F8D8;
+  border: 6px solid #506860;
+}
+
+#spriteBack {
+  position: absolute;
+  left: 100px;
+  bottom: 10%;
+  height: 120%;
+}
+
+#spriteFront {
+  position: absolute;
+  right: 25%;
+  top: 20%;
+  height: 25%;
+}
+
+body{
+  font-family: 'helvetica neue', helvetica, arial, sans-serif;
+  font-size: 16px;
+  padding-top: 30px;
+  align-content: center;
+}
+
+table, th, tr {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+#moviments{
+  position: absolute;
+  top: 70%;
+  background: #FFFAFA;
+  text-transform: capitalize;
+  width: 100%;
+  height: 30%;
+  border: 1px solid black;
+  cursor: pointer;
+  align-content: center;
+}
+
+
+#interficie{
+  text-align: center;
 }
 
 @keyframes App-logo-spin {
