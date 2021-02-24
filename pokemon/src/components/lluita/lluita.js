@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import getPokemon from '../pokemon';
 import getMoviment from '../moviments';
 import styles from './App.css';
+import socketIOClient from "socket.io-client";  
+const ENDPOINT = "http://172.24.1.38:3000/";
 
-class Lluita extends Component {
+class App extends Component {
   state = {
     pokemon:{
       nom : '',
@@ -22,6 +24,15 @@ class Lluita extends Component {
   }
 
   componentDidMount(){
+    const socket = socketIOClient(ENDPOINT);
+        socket.on("FromAPI", data => {
+          console.log(data);
+        });
+        socket.emit("pokemonsInici");
+        socket.on("pokemonData", (pokemons) => {
+          console.log("infoPokemon");
+          console.log(JSON.parse(pokemons));
+        })
       var random = Math.floor(Math.random() * 151) + 1;
       getPokemon(random).then(res => {
        this.setState({pokemon : res});
@@ -67,4 +78,4 @@ class Lluita extends Component {
   }
 }
 
-export default Lluita;
+export default App;
