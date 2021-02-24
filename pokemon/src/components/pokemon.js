@@ -1,16 +1,19 @@
 import axios from 'axios';
 
+
 export const getPokemon = async (random) =>{
     let pokemon = {
             nom : '',
-            imatge : '',
+            imatgeBack : '',
+            imatgeFront : '',
             moviments : [],
             stats: { atack : 0 , defensa : 0 , vida : 0 }
     }
   await axios.get(`https://pokeapi.co/api/v2/pokemon/${random}`)
   .then(res => {
     const response = res.data;
-    pokemon.imatge =response.sprites.back_default
+    pokemon.imatgeBack =response.sprites.back_default
+    pokemon.imatgeFront =response.sprites.front_default
     pokemon.nom =response.name
     pokemon.moviments =  getHabilitats(response);
     pokemon.stats = getStats(response);

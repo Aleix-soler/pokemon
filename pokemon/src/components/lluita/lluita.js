@@ -10,7 +10,15 @@ class Lluita extends Component {
       imatge : '',
       moviments : [{id: 0 , moviment: ""}],
       stats: { atack : 0 , defensa : 0 , vida : 0 }
-    }
+    },
+
+    moviment:{
+      tipus: {nom: '', color:''},
+      descripcio:'',
+      accuracy: 0,
+      power: 0,
+      pp : 0
+}
   }
 
   componentDidMount(){
@@ -32,12 +40,20 @@ class Lluita extends Component {
      <div id={"interficie"}>
        <div id={"nom"}>
           <p>{this.state.pokemon.nom}</p>
-          <div id={"vida"}></div>
-          <p>{this.state.pokemon.stats.vida} PS</p> 
+          <div id={"vida"}></div><p style={{fontSize: 10}}>{this.state.pokemon.stats.vida} PS</p>
        </div>
-       <img id={"sprite"} src={this.state.pokemon.imatge} />
+       <div id={"nomEnemic"}>
+          <p>{this.state.pokemon.nom}</p>
+          <div id={"vidaEnemic"}></div><p style={{fontSize: 10}}>{this.state.pokemon.stats.vida} PS</p>
+       </div>
+       <div id={"hero"}>
+          <img id={"spriteBack"} src={this.state.pokemon.imatgeBack} />
+       </div>
+       <div id={"enemy"}>
+          <img id={"spriteFront"} src={this.state.pokemon.imatgeFront} />
+       </div>
       <table id={"moviments"}>
-        <tr>  
+        <tr>
           <th>{this.state.pokemon.moviments[0]?.moviment}</th>
           <th>{this.state.pokemon.moviments[1]?.moviment}</th>
         </tr>

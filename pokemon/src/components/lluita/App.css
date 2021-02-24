@@ -16,29 +16,70 @@
 
 #nom {
   text-transform: capitalize;
-  border: 1px solid black;
-  box-sizing: border-box;
-  width: 25%;
-  padding: 1px 0;
-  left: 20px;
   position: absolute;
+  width: 20%;
+  height: 15%;
+  border-radius: 10px;
+  top: 8%;
+  left: 8%;
+  background: #F8F8D8;
+  border: 6px solid #506860;
 }
 
 #vida{
   border: 1px solid black;
-  padding: 5px 0;
-  margin-bottom: 5%;
-  margin-left: 5%;
-  margin-right: 5%;
+  padding: 3px 0; 
+  margin-left: 10%;
+  margin-right: 10%;
   border-radius: 5px;
   background-color: green;
 }
 
-#sprite {
+#vidaEnemic{
+  border: 1px solid black;
+  padding: 3px 0; 
+  margin-left: 10%;
+  margin-right: 10%;
+  border-radius: 5px;
+  background-color: green;
+  
+}
+
+#hero{
   position: absolute;
-  left: 50px;
-  top: 150px;
-  height: 30%;
+  width: 35%;
+  height: 25%;
+  border-radius: 50%;
+  bottom: 15%;
+  top: 50%;
+  left: 8%;
+  background: #E0E0E0;
+}
+
+#nomEnemic{
+  text-transform: capitalize;
+  position: absolute;
+  width: 20%;
+  height: 15%;
+  border-radius: 10px;
+  top: 5%;
+  right: 15%;
+  background: #F8F8D8;
+  border: 6px solid #506860;
+}
+
+#spriteBack {
+  position: absolute;
+  left: 100px;
+  bottom: 10%;
+  height: 120%;
+}
+
+#spriteFront {
+  position: absolute;
+  right: 25%;
+  top: 20%;
+  height: 25%;
 }
 
 body{
