@@ -1,60 +1,66 @@
+
 import React, { Component } from "react";
 import style from "./inici.css";
+import socketIOClient from "socket.io-client";  
+const ENDPOINT = "http://172.24.1.44:3000/";
 
 class Inici extends Component {
-  state = {};
+  state = {
+    pokemons : [],
+    loading : true
+  };
 
-  componentDidMount() {}
+  componentDidMount(){
+   this.getPokemons();
+
+  }
+
+  async getPokemons(){
+     const socket = socketIOClient(ENDPOINT);
+    await socket.on("FromAPI", data => {
+      console.log(data);
+    });
+    socket.emit("pokemonsInici");
+    socket.on("pokemonData", (pokemons) => {
+      console.log("infoPokemon");
+      console.log(pokemons);
+      this.state.pokemons = JSON.parse(pokemons)
+      console.log(JSON.parse(pokemons));
+      this.setState({loading : false})
+    })    
+  }
+
+  renderPokemons(){
+    console.log("entra");
+    if(this.state.pokemons != undefined){
+   return(
+     this.state.pokemons.map((element)=>{
+       return(
+
+        <div id="pic1">
+        <img
+          id="img1"
+          src={element.img}
+          onmouseover="this.style.opacity=1;"
+          onmouseout="this.style.opacity=0.5;"
+        />
+        <p>{element.nom}</p>
+        <div class="destacado">
+          ATK: {element.stats.atack}
+          DEF: {element.stats.defensa}
+          PS: {element.stats.vida}
+        </div>
+      </div>
+       )
+     })
+   )
+  }
+  }
 
   render() {
     return (
         <div id="contenedor">
-          <div id="pic1">
-            <img
-              id="img1"
-              src="http://vignette1.wikia.nocookie.net/pokemon/images/9/96/004Charmander_OS_anime.png/revision/latest?cb=20140603214902"
-              onmouseover="this.style.opacity=1;"
-              onmouseout="this.style.opacity=0.5;"
-            />
-            <p>Charmander</p>
-            <div class="destacado">
-              ATK: <progress value="50" max="100"></progress>
-              DEF: <progress value="36" max="100"></progress>
-            </div>
-          </div>
-
-          <div id="pic2">
-            <img
-              id="img1"
-              src="http://vignette1.wikia.nocookie.net/pokemon/images/b/b8/001Bulbasaur_Dream.png/revision/latest?cb=20140903033758"
-              onmouseover="this.style.opacity=1;"
-              onmouseout="this.style.opacity=0.5;"
-            />
-            <p>Bulbasaur</p>
-            <div class="destacado">
-              ATK: <progress value="40" max="100"></progress>
-              <br />
-              <br />
-              DEF: <progress value="86" max="100"></progress>
-            </div>
-          </div>
-
-          <div id="pic2">
-            <img
-              id="img1"
-              src="http://vignette1.wikia.nocookie.net/pokemon/images/b/b8/001Bulbasaur_Dream.png/revision/latest?cb=20140903033758"
-              onmouseover="this.style.opacity=1;"
-              onmouseout="this.style.opacity=0.5;"
-            />
-            <p>Bulbasaur</p>
-            <div class="destacado">
-              ATK: <progress value="40" max="100"></progress>
-              <br />
-              <br />
-              DEF: <progress value="86" max="100"></progress>
-            </div>
-          </div>
-
+          { this.state.loading ? null :  this.renderPokemons()} 
         </div>
     );
   }

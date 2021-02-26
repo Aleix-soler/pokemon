@@ -3,46 +3,28 @@
     font-size: 30px;
   }
   #pic1{
-    width: 300px;
-    height: 270px;
+    width: 250px;
+    height: 250px;
     padding-top: 35px;
-  overflow:hidden;
+    overflow:hidden;
     float:left;
     transition: 0.5s ease;
     color:#000;
   }
   
   #pic1:hover{
-   height: 450px; 
+   height: 300px; 
     pointer: mouse;
     -webkit-box-shadow: 2px 2px 5px #999;
      
   }
   
   #img1{
-     width: 250px;
-     height: 250px;
+     width: 150px;
+     height: 150px;
     padding-left:25px;
   }
-  
-  #pic2{
-    width: 300px;
-    height: 270px;
-   float:left;
-     padding-top: 35px;
-    padding-left: 50px;
-  overflow:hidden;
-    transition: 0.8s ease;
-    color:#000;
-  }
-  
-  #pic2:hover{
-   height: 450px; 
-    pointer: mouse;
-    -webkit-box-shadow: 2px 2px 5px #999;
-     
-  }
-  
+    
   progress {  
       background-color: #f3f3f3;  
       border: 0;  
@@ -51,34 +33,15 @@
   }
   
   .destacado{
-    
    padding-left: 50px;
   }
-  
-  
+   
   #contenedor{
-    margin: auto;
-    width: 80%;
-    padding: 10px;
+    position: absolute;
+    top: 30%;
+    left: 15%;
   }
   
-  .elegir{
-    
-      background-color: #008CBA; 
-      border: none;
-      color: white;
-      padding: 10px 27px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-    margin-left:50px;
-  
-  }
-  
-  .elegir:hover{
-    background-color: #4CAF50;; 
-  }
   
   
   
