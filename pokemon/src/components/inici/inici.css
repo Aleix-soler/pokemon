@@ -76,6 +76,11 @@
   
   }
   
+  #boto{
+      position: absolute;
+      bottom: 15%;
+  }
+
   .elegir:hover{
     background-color: #4CAF50;; 
   }

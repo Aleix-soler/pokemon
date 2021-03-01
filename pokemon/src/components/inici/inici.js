@@ -1,13 +1,16 @@
 import React, { Component } from "react";
 import style from "./inici.css";
+import lluita from "../lluita/lluita"
+import { Link } from "react-router-dom";
 
 class Inici extends Component {
   state = {};
-
+  
   componentDidMount() {}
 
   render() {
     return (
+      
         <div id="contenedor">
           <div id="pic1">
             <img
@@ -29,6 +32,7 @@ class Inici extends Component {
               src="http://vignette1.wikia.nocookie.net/pokemon/images/b/b8/001Bulbasaur_Dream.png/revision/latest?cb=20140903033758"
               onmouseover="this.style.opacity=1;"
               onmouseout="this.style.opacity=0.5;"
+            
             />
             <p>Bulbasaur</p>
             <div class="destacado">
@@ -54,8 +58,11 @@ class Inici extends Component {
               DEF: <progress value="86" max="100"></progress>
             </div>
           </div>
-
+          <div id="boto">
+              <button><Link to="/lluita">Start</Link></button>
+          </div>
         </div>
+         
     );
   }
 }
