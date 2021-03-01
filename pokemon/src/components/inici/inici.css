@@ -31,15 +31,10 @@
       height: 18px;  
       border-radius: 15px;  
   }
-  
-  .destacado{
-   padding-left: 50px;
-  }
-   
+    
   #contenedor{
     position: absolute;
-    top: 30%;
-    left: 15%;
+    top: 25%
   }
   
   
