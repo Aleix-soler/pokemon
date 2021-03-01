@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import style from "./inici.css";
 import socketIOClient from "socket.io-client";  
 import { Link, Route, Router } from "react-router-dom";
-const ENDPOINT = "http://172.24.1.44:3000/";
+const ENDPOINT = "http://172.24.3.30:3000/";
 const socket = socketIOClient(ENDPOINT);
 
 class Inici extends Component {
