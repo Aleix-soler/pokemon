@@ -6,7 +6,6 @@ const serverRival = "http://172.24.1.0:3000";
 
 var getMove = require('./pokemon_data/moviments');
 var pokemonData = require('./pokemon_data/getPokemonData');
-const getPokemonData = require('./pokemon_data/getPokemonData');
 
 const io = require('socket.io')(httpServer, {
     cors: { origin: "*", methods: ["GET", "POST"] }
@@ -35,10 +34,11 @@ io.on("connection", socket => {
         socket.emit("pokemonData", JSON.stringify(pokemons));
         console.log("POKEMONS ENVIATS",pokemons)
     })
-    socket.on("rerollPokemon", async () => {
-        clearArray(pokemons);
-        getPokemonData();
-        socket.emit("pokemonData", JSON.stringify(pokemons));
+    socket.on("rerollPokemon", () => {
+        pokemons = [];
+        getPokemonData().then(() => {
+            socket.emit("pokemonData", JSON.stringify(pokemons));
+        });
     })
     setInterval(() => {
         //socket.emit("FromAPI", test);
@@ -54,14 +54,6 @@ httpServer.listen(3000, () => {
 
 
 //FUNCIONS
-
-function clearArray(array){
-    console.log(array)
-    while(array.length){
-        array.pop();
-    }
-    console.log(array);
-}
 
 function checkRandom(){
     random = Math.floor(Math.random()*151)+1;
