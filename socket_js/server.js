@@ -20,6 +20,7 @@ var test = 2;
 var random;
 var randomHabilitat;
 var pokemons = [];
+var pokemonsReroll = [];
 var habilitats = [];
 var numExcluitPokemon = [];
 
@@ -35,10 +36,14 @@ io.on("connection", socket => {
         console.log("POKEMONS ENVIATS",pokemons)
     })
     socket.on("rerollPokemon", () => {
-        pokemons = [];
-        getPokemonData().then(() => {
-            socket.emit("pokemonData", JSON.stringify(pokemons));
+        getPokemonReroll();
+        socket.emit("pokemonDataReroll", JSON.stringify(pokemonsReroll));
+    })
+    socket.on("atac", (pokeInfo) => {
+        infoAtac(pokeInfo).then(() => {
+            calcularAtac();
         });
+        socket.emit(this.dañoFinal);
     })
     setInterval(() => {
         //socket.emit("FromAPI", test);
@@ -54,6 +59,13 @@ httpServer.listen(3000, () => {
 
 
 //FUNCIONS
+function calcularAtac(){
+
+}
+
+function infoAtac(pokeInfo){
+
+}
 
 function checkRandom(){
     random = Math.floor(Math.random()*151)+1;
@@ -73,6 +85,24 @@ function triarHabilitats(pokemon, i){
 }
 
 async function getPokemondata(){
+    for (let i = 0; i < 6; i++) {
+        checkRandom();
+        await axios.get(`https://pokeapi.co/api/v2/pokemon/${random}`)
+        .then(res => {
+            let pokemon = res.data;
+            triarHabilitats(pokemon, i);
+            numExcluitPokemon.push(random);
+            getMove.getMoviment(randomHabilitat).then((moviment) => {
+                pokemonData.getStats(pokemon).then((stats) => {
+                    pokemons.push({"nom": pokemon.name, "img": pokemon.sprites.front_default, "moviment": moviment, "stats":stats});
+                })
+            })
+        })
+    }
+}
+
+async function getPokemonReroll(){
+    pokemonsReroll = [];
     for (let i = 0; i < 6; i++) {
         checkRandom();
         await axios.get(`https://pokeapi.co/api/v2/pokemon/${random}`)
