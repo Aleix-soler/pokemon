@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import getPokemon from '../pokemon';
 import getMoviment from '../moviments';
-import styles from './App.css';
+import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
 const ENDPOINT = "http://172.24.1.38:3000/";
 
@@ -51,30 +51,30 @@ class App extends Component {
     
     return (
      <div id={"interficie"}>
-       <div id={"nom"}>
-          <p>{this.state.pokemon.nom}</p>
-          <div id={"vida"}></div><p style={{fontSize: 10}}>{this.state.pokemon.stats.vida} PS</p>
-       </div>
-       <div id={"nomEnemic"}>
-          <p>{this.state.pokemon.nom}</p>
-          <div id={"vidaEnemic"}></div><p style={{fontSize: 10}}>{this.state.pokemon.stats.vida} PS</p>
-       </div>
-       <div id={"hero"}>
+        <div id={"pokemons"}>
+          <div id={"nom"}>
+            <p>{this.state.pokemon.nom}</p>
+            <div id={"vida"}></div><p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
+          </div>
+          <div id={"nomEnemic"}>
+            <p>{this.state.pokemon.nom}</p>
+            <div id={"vidaEnemic"}></div><p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
+          </div>
           <img id={"spriteBack"} src={this.state.pokemon.imatgeBack} />
-       </div>
-       <div id={"enemy"}>
           <img id={"spriteFront"} src={this.state.pokemon.imatgeFront} />
-       </div>
-      <table id={"moviments"}>
-        <tr>
-          <th>{this.state.pokemon.moviments[0]?.moviment}</th>
-          <th>{this.state.pokemon.moviments[1]?.moviment}</th>
-        </tr>
-        <tr>
-          <th>{this.state.pokemon.moviments[2]?.moviment}</th>
-          <th>{this.state.pokemon.moviments[3]?.moviment}</th>
-        </tr>
-      </table>
+        </div>
+        <div class="bottom-menu">
+          <div class="battle-text text-box-left">
+        </div>
+      <div class="box">
+        <div class="actions">
+          <button>{this.state.pokemon.moviments[0].moviment}</button>
+          <button>Water Pulse</button>
+          <button>Surf</button>
+          <button>Tacle</button>
+        </div>
+      </div>
+      </div>
      </div>
     );
   }

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
-
-
 import Pokemon from './components/lluita/lluita';
 import Inici from './components/inici/inici';
 
