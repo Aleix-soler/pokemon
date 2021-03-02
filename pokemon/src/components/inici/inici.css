@@ -13,10 +13,7 @@
   }
   
   #pic1:hover{
-   height: 300px; 
-    pointer: mouse;
-    -webkit-box-shadow: 2px 2px 5px #999;
-     
+   height: 350px;      
   }
   
   #img1{
