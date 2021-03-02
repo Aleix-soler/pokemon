@@ -17,14 +17,15 @@
 #nom {
   text-transform: capitalize;
   position: absolute;
-  width: 20%;
-  height: 15%;
+  width: 30%;
+  height: 30%;
   border-radius: 10px;
   top: 8%;
   left: 8%;
   background: #F8F8D8;
   border: 6px solid #506860;
 }
+
 
 #vida{
   border: 1px solid black;
@@ -33,6 +34,47 @@
   margin-right: 10%;
   border-radius: 5px;
   background-color: green;
+}
+
+.box {
+  position: absolute;
+  bottom: 12%;
+  right: 15%;
+  padding: 8px;
+  background: #333;
+  border: 3px solid black;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  color: #fff;
+  height: 10%;
+  width: 72%;
+}
+
+body{
+  background-image: url("../img/Fons.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.box button {
+  text-transform: capitalize;
+  position: relative;
+  background: #666;
+  border: 3px solid #888;
+  border-radius: 4px;
+  color: #fff;
+  font-family: monospace;
+  font-size: 20px;
+  line-height: 14px;
+  margin: 15px;
+  padding: 10px;
+}
+
+.action button{
+  position: absolute;
+  text-align: center;
+  right: 100px;
+  padding: 5%; 
 }
 
 #vidaEnemic{
@@ -47,7 +89,7 @@
 
 #hero{
   position: absolute;
-  width: 35%;
+  width: 30%;
   height: 25%;
   border-radius: 50%;
   bottom: 15%;
@@ -56,14 +98,24 @@
   background: #E0E0E0;
 }
 
+#enemy{
+  position: absolute;
+  width: 25%;
+  height: 20%;
+  border-radius: 50%;
+  top: 30%;
+  right: 25%;
+  background: #E0E0E0;
+}
+
 #nomEnemic{
   text-transform: capitalize;
   position: absolute;
-  width: 20%;
-  height: 15%;
+  width: 30%;
+  height: 30%;
   border-radius: 10px;
-  top: 5%;
-  right: 15%;
+  top: 2%;
+  right: 10%;
   background: #F8F8D8;
   border: 6px solid #506860;
 }
@@ -71,23 +123,30 @@
 #spriteBack {
   position: absolute;
   left: 100px;
-  bottom: 10%;
-  height: 120%;
+  bottom: 15%;
+  top: 55%;
+  height: 50%;
 }
 
 #spriteFront {
   position: absolute;
-  right: 25%;
-  top: 20%;
-  height: 25%;
+  right: 15%;
+  height: 35%;
+  top: 35%;
 }
 
-body{
-  font-family: 'helvetica neue', helvetica, arial, sans-serif;
-  font-size: 16px;
-  padding-top: 30px;
-  align-content: center;
+#pokemons{
+  position: absolute;
+  background-image: url('http://bit.ly/pokemonbg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border: 3px solid black;
+  border-radius: 8px 8px 0 0;
+  height: 520px;
+  right: 15%;
+  width: 1000px;
 }
+
 
 table, th, tr {
   border-collapse: collapse;
@@ -106,10 +165,6 @@ table, th, tr {
   align-content: center;
 }
 
-
-#interficie{
-  text-align: center;
-}
 
 @keyframes App-logo-spin {
   from {

@@ -2,11 +2,23 @@
    text-align:center;
     font-size: 30px;
   }
+
+  #logo img{
+    position: absolute;
+    height: 70%;
+    top: -15%;
+    left: 30%;
+  }
+
   #pic1{
-    width: 250px;
-    height: 250px;
+    width: 180px;
+    text-transform: capitalize;
+    border: 2px solid black;
+    height: 220px;
     padding-top: 35px;
     overflow:hidden;
+    background-color: rebeccapurple;
+    padding-bottom: 10px;
     float:left;
     transition: 0.5s ease;
     color:#000;
@@ -31,7 +43,8 @@
     
   #contenedor{
     position: absolute;
-    top: 25%
+    top: 40%;
+    left: 9%;
   }
   
   
