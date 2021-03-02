@@ -1,3 +1,6 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable no-unused-vars */
 
 import React, { Component } from "react";
 import style from "./inici.css";

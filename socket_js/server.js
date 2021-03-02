@@ -22,6 +22,7 @@ var test = 2;
 var random;
 var randomHabilitat;
 var pokemons = [];
+var pokemonsReroll = [];
 var habilitats = [];
 var numExcluitPokemon = [];
 
@@ -58,6 +59,13 @@ httpServer.listen(3000, () => {
 
 
 //FUNCIONS
+function calcularAtac(){
+
+}
+
+function infoAtac(pokeInfo){
+
+}
 
 function checkRandom(){
     let trobat = false;
