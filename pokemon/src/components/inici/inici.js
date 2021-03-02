@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import style from "./inici.css";
 import socketIOClient from "socket.io-client";  
 import { Link, Route, Router } from "react-router-dom";
-const ENDPOINT = "http://172.24.3.30:3000/";
+const ENDPOINT = "http://172.24.3.74:3000/";
 const socket = socketIOClient(ENDPOINT);
 
 class Inici extends Component {
@@ -55,10 +55,10 @@ class Inici extends Component {
             />
         <p>{element.nom}</p>
         <div class="destacado">
-          <span style={{ display:'flex',flexDirection: 'row',flex: 1, alignContent:'center',justifyContent:'center'}}>
-            <p style={{fontSize:15 , paddingLeft: 10}}>ATK: {element.stats.atack} </p>
-            <p style={{fontSize:15,paddingLeft: 10}}>DEF: {element.stats.defensa} </p> 
-            <p style={{fontSize:15,paddingLeft: 10}}>PS: {element.stats.vida} </p>  
+          <span style={{ display:'flex',alignContent:'center',justifyContent:'center'}}>
+            <p style={{fontSize:15 , padding: '2px', border: '1px solid black', marginLeft: '2px', backgroundColor: 'red', color: 'white'}}>ATK: {element.stats.atack} </p>
+            <p style={{fontSize:15 , padding: '2px', border: '1px solid black', marginLeft: '2px', backgroundColor: 'blue', color: 'white'}}>DEF: {element.stats.defensa} </p> 
+            <p style={{fontSize:15 , padding: '2px', border: '1px solid black', marginLeft: '2px', backgroundColor: 'green', color: 'white'}}>PS: {element.stats.vida} </p>  
           </span>
         </div>
       </div>
@@ -72,9 +72,11 @@ class Inici extends Component {
   render() {
     return (
       <div>
-
+        <div id="logo">
+          <img src="../logo.png"></img>
+        </div>
          <div id="contenedor">
-          <div  style={{ display:'flex',flexDirection: 'row',flex: 1,justifyContent: "space-between", width:'25%'}}> 
+          <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center'}}> 
             {this.state.loading ? null :  this.renderPokemons()} 
           </div>
         </div>
