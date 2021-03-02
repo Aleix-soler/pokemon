@@ -1,9 +1,12 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable no-unused-vars */
 
 import React, { Component } from "react";
 import style from "./inici.css";
 import socketIOClient from "socket.io-client";  
 import { Link, Route, Router } from "react-router-dom";
-const ENDPOINT = "http://172.24.1.44:3000/";
+const ENDPOINT = "http://172.24.3.74:3000/";
 const socket = socketIOClient(ENDPOINT);
 
 class Inici extends Component {
@@ -27,9 +30,9 @@ class Inici extends Component {
     })    
   }
   /*
-  async  reroll(){
+  async reroll(){
     await socket.emit("rerollPokemon")
-    socket.on("pokemonData", (pokemons) => {
+    socket.on("pokemonReroll", (pokemons) => {
       console.log("infoPokemon");
       console.log(pokemons);
       console.log(JSON.parse(pokemons));
@@ -37,8 +40,9 @@ class Inici extends Component {
      
       this.setState({loading : false})
     })  
-}
-*/
+  }
+  */
+  
   renderPokemons(){
     console.log("entra");
     if(this.state.pokemons != undefined){
