@@ -36,14 +36,15 @@ class Inici extends Component {
     socket.emit ('reroll', {posicio: pokeReroll })
       socket.on("pokemons", (msg)=>{
         console.log(msg);
-        this.setState({pokemons : msg})
+        this.setState({pokemons : JSON.parse(msg)})
       })
   }
 
 
   renderPokemons(){
     console.log("entra");
-    if(this.state.pokemons != undefined){
+    console.log(this.state.pokemons);
+    if(this.state.pokemons != undefined && this.state.pokemons != null){
    return(
      this.state.pokemons.map((element,index)=>{
        return(
