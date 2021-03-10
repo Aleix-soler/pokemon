@@ -46,6 +46,7 @@ class App extends Component {
       })
     }
 
+    
 
   render() {
     
@@ -55,10 +56,12 @@ class App extends Component {
           <div id={"nom"}>
             <p>{this.state.pokemon.nom}</p>
             <div id={"vida"}></div><p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
+            <div id={"barra"}></div>
           </div>
           <div id={"nomEnemic"}>
             <p>{this.state.pokemon.nom}</p>
             <div id={"vidaEnemic"}></div><p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
+            <div id={"barraEnemic"}></div>
           </div>
           <img id={"spriteBack"} src={this.state.pokemon.imatgeBack} />
           <img id={"spriteFront"} src={this.state.pokemon.imatgeFront} />
