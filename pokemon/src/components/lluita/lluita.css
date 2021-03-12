@@ -31,16 +31,26 @@
   border: 1px solid black;
   padding: 3px 0; 
   margin-left: 10%;
-  margin-right: 10%;
+  margin-right: 30px;
   border-radius: 5px;
   background-color: green;
+}
+
+#barra {
+  position:relative;
+  top: -37%;
+  margin-left: 10%;
+  margin-right: 10%;
+  border: 1px solid black;
+  padding: 3px 0; 
+  border-radius: 5px;
 }
 
 .box {
   position: absolute;
   bottom: 12%;
   right: 15%;
-  padding: 8px;
+  padding: 0.6%;
   background: #333;
   border: 3px solid black;
   border-top: none;
@@ -50,10 +60,12 @@
   width: 72%;
 }
 
-body{
+body {
   background-image: url("../img/Fons.jpg");
-  background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
+  background-position: center center;
+  background-color: #464646;
 }
 
 .box button {
@@ -66,14 +78,15 @@ body{
   font-family: monospace;
   font-size: 20px;
   line-height: 14px;
-  margin: 15px;
-  padding: 10px;
+  margin-top: 0.5%;
+  margin-right: 5%;
+  padding: 2%;
 }
 
 .action button{
   position: absolute;
   text-align: center;
-  right: 100px;
+  right: 50%;
   padding: 5%; 
 }
 
@@ -85,6 +98,16 @@ body{
   border-radius: 5px;
   background-color: green;
   
+}
+
+#barraEnemic {
+  position: relative;
+  top: -38%;
+  margin-left: 10%;
+  margin-right: 10%;
+  border: 1px solid black;
+  padding: 4px 0; 
+  border-radius: 5px;
 }
 
 #hero{
@@ -165,12 +188,3 @@ table, th, tr {
   align-content: center;
 }
 
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}

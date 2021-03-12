@@ -5,7 +5,7 @@
 import React, { Component } from "react";
 import style from "./inici.css";
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.2.92:3000/";
+const ENDPOINT = "http://172.24.3.130:3000/";
 const socket = socketIOClient(ENDPOINT);
 
 class Inici extends Component {
@@ -76,9 +76,10 @@ class Inici extends Component {
 
   render() {
     return (
+      
       <div>
         <div id="logo">
-          <img src="../logo.png"></img>
+          <img src="../logo.png" width="600" height="400"></img>
         </div>
          <div id="contenedor">
           <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center'}}> 

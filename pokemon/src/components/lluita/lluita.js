@@ -7,8 +7,10 @@ import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
 const ENDPOINT = "http://172.24.1.38:3000/";
 
+
 class App extends Component {
   state = {
+    percent:0,
     pokemon:{
       nom : '',
       imatge : '',
@@ -24,8 +26,10 @@ class App extends Component {
       pp : 0
 }
   }
+  
 
   componentDidMount(){
+    console.log(this.state.moviment.power);
     const socket = socketIOClient(ENDPOINT);
         socket.on("FromAPI", data => {
           console.log(data);
@@ -40,25 +44,33 @@ class App extends Component {
        this.setState({pokemon : res});
        console.log("HEREE");
        console.log(res);
+       this.vida(50);
       })
       getMoviment(11).then(res =>{
         console.log(res);
       })
     }
-
+    
+    vida(hostia){ 
+      this.state.percent =  hostia * 100 / this.state.pokemon.stats.vida;
+      this.state.percent *= 2.4
+      document.getElementById("vida").style.marginRight = this.state.percent + 30 + "px";
+      this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
+    }
 
   render() {
-    
     return (
      <div id={"interficie"}>
         <div id={"pokemons"}>
           <div id={"nom"}>
             <p>{this.state.pokemon.nom}</p>
             <div id={"vida"}></div><p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
+            <div id={"barra"}></div>
           </div>
           <div id={"nomEnemic"}>
             <p>{this.state.pokemon.nom}</p>
             <div id={"vidaEnemic"}></div><p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
+            <div id={"barraEnemic"}></div>
           </div>
           <img id={"spriteBack"} src={this.state.pokemon.imatgeBack} />
           <img id={"spriteFront"} src={this.state.pokemon.imatgeFront} />

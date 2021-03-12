@@ -4,10 +4,12 @@
   }
 
   #logo img{
-    position: absolute;
-    height: 70%;
-    top: -15%;
-    left: 30%;
+    left: 35%;
+    top: -10%;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    position: fixed;
   }
 
   #pic1{
