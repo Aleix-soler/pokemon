@@ -8,8 +8,10 @@ import socketIOClient from "socket.io-client";
 const ENDPOINT = "http://172.24.2.92:4444/";
 const socket = socketIOClient(ENDPOINT);
 
+
 class App extends Component {
   state = {
+    percent:0,
     pokemon:{
       nom : '',
       imatge : '',
@@ -28,6 +30,7 @@ class App extends Component {
   componentWillUnmount() {
    socket.close();
   }
+  
 
   componentDidMount(){
     const room = this.props.match.params.room
@@ -65,9 +68,14 @@ class App extends Component {
     
     }
     
+    vida(hostia){ 
+      this.state.percent =  hostia * 100 / this.state.pokemon.stats.vida;
+      this.state.percent *= 2.4
+      document.getElementById("vida").style.marginRight = this.state.percent + 30 + "px";
+      this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
+    }
 
   render() {
-    
     return (
      <div id={"interficie"}>
         <div id={"pokemons"}>
