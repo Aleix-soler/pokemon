@@ -5,7 +5,8 @@ import getPokemon from '../pokemon';
 import getMoviment from '../moviments';
 import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.1.38:3000/";
+const ENDPOINT = "http://172.24.2.92:4444/";
+const socket = socketIOClient(ENDPOINT);
 
 
 class App extends Component {
@@ -24,31 +25,47 @@ class App extends Component {
       accuracy: 0,
       power: 0,
       pp : 0
-}
+},
+  } 
+  componentWillUnmount() {
+   socket.close();
   }
   
 
   componentDidMount(){
-    console.log(this.state.moviment.power);
-    const socket = socketIOClient(ENDPOINT);
-        socket.on("FromAPI", data => {
-          console.log(data);
-        });
-        socket.emit("pokemonsInici");
-        socket.on("pokemonData", (pokemons) => {
-          console.log("infoPokemon");
-          console.log(JSON.parse(pokemons));
-        })
+    const room = this.props.match.params.room
+    const nomUser = this.props.match.params.nom
+    
+    console.log("GAME id =>"+room);
+    console.log("Nom =>"+nomUser);
+
+    this.setToRoom(room,nomUser);
+
+
       var random = Math.floor(Math.random() * 151) + 1;
       getPokemon(random).then(res => {
        this.setState({pokemon : res});
-       console.log("HEREE");
-       console.log(res);
-       this.vida(50);
       })
       getMoviment(11).then(res =>{
-        console.log(res);
       })
+    }
+
+    setToRoom(room,userId){
+      console.log("Room=>"+room+" User_ID=>"+userId);
+
+      socket.on('connect', () => { 
+        socket.emit('ROOM', { room, userId });
+     
+      socket.on('RECEIVE_ID', (userId) => {
+        console.log('RECEIVED AN ID', userId);
+      });
+      socket.emit('PROVES',{room : room , id : userId})
+        socket.on('SEND',(msg)=>{
+          console.log("Proves =>"+msg);
+        })
+    });
+   
+    
     }
     
     vida(hostia){ 

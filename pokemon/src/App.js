@@ -13,8 +13,8 @@ class App extends Component {
           <div className="container">
             <Switch>
               <Route exact path="/" component={Inici} />
-              <Route  path="/lluita" component={Pokemon} />
               <Route path="/login" component={login}/>
+              <Route  path="/lluita/:room/:nom" component={Pokemon} />
             </Switch>
           </div>
         </div>
