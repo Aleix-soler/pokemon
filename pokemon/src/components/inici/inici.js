@@ -4,40 +4,89 @@
 
 import React, { Component } from "react";
 import style from "./inici.css";
+import { Redirect } from 'react-router-dom';
+import getPokemon from '../pokemon'
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.3.130:3000/";
+const ENDPOINT = "http://172.24.2.92:4444/";
 const socket = socketIOClient(ENDPOINT);
+
+
 
 class Inici extends Component {
   
   state = {
     pokemons : [],
     loading : true,
-    value: ''
+    error: null,
+    name : '',
+    gameId: null,
+    waiting: false,
   };
   componentDidMount(){
-   this.getPokemons();
+    this.loadPokemons();
+
+    socket.on('connection', () => {
+      console.log('CONNECTED');
+    });
+  
+    // TODO: this is a bug
+    socket.on('START_GAME', (game) => {
+      this.receiveGame(game);
+      console.log("La room es =>"+game.room);
+    });
   }
 
-
-  async getPokemons(){
-    socket.emit("pokemonsInici");
-    socket.on("pokemonData", (pokemons) => {
-      console.log("infoPokemon");
-      console.log(pokemons);
-      this.state.pokemons = JSON.parse(pokemons)
-      console.log(JSON.parse(pokemons));
-      this.setState({loading : false})
-    })    
+  //Crea la room i si no la troba amb x segons salta un error
+  play(){
+    socket.emit('CREAR_ROOM',{pokemons : this.state.pokemons , nom : this.state.name})
+    this.setState({ waiting: true }, () => {
+      setTimeout(() => {
+        socket.on('RECEIVE_GAME', (game) => { //Promise amb timeout
+          this.receiveGame(game);
+        });
+      }, 500);
+      this.stopWaiting = setTimeout(() => {
+        socket.removeListener('RECEIVE_GAME');
+        this.setState({
+          error: 'Could not find an opponent at this time',
+          waiting: false,
+        });
+        setTimeout(() => {
+          this.setState({ error: null });
+        }, 2000);
+      }, 10000);
+    });
   }
+  //Un cop hi ha algu esperant va directe a la sala Creada
+  receiveGame = (game) => {
+    clearTimeout(this.stopWaiting);
+    this.setState({ waiting: false }, () => {
+      socket.removeListener('RECEIVE_GAME');
+      socket.emit('JOIN_GAME', game);
+    });
+    console.log("Els pokemons que rep =>"); console.log(game);
 
+    this.setState({
+      gameId: game.room,
+      gameNom : game.name
+    });
+  }
+  
+  async  loadPokemons(){
+    for (let i = 0; i < 6; i++) {
+     await getPokemon().then((res)=>{
+         this.state.pokemons[i] = res
+     })  
+    }
+    this.setState({loading : false})
+}
 
-  reroll(pokeReroll){
-    socket.emit ('reroll', {posicio: pokeReroll })
-      socket.on("pokemons", (msg)=>{
-        console.log(msg);
-        this.setState({pokemons : JSON.parse(msg)})
-      })
+  async reroll(pokeReroll){
+    await getPokemon().then((res)=>{
+      let aux = this.state.pokemons;
+      aux[pokeReroll] = res;
+      this.setState({pokemons : aux})
+  })  
   }
 
 
@@ -52,7 +101,7 @@ class Inici extends Component {
           <div id="pic1">
             <img
               id="img1"
-              src={element.imatgeFront}
+              src={element.imatgeGif.front_default ? element.imatgeGif.front_default : element.imatgeFront }
               onmouseover="this.style.opacity=1;"
               onmouseout="this.style.opacity=0.5;"
             />
@@ -72,11 +121,27 @@ class Inici extends Component {
    )
   }
   }
+ 
+  onTodoChange(value){
+    this.setState({
+         name: value
+    });
+}
+
 
 
   render() {
+
+    const redirect = this.state.gameId ?
+    <Redirect  to={{
+                  pathname: `/lluita/${this.state.gameId}/${this.state.name}`,
+    }}/>
+    :
+    null;
+
     return (
       <div>
+          { redirect}
         <div id="logo">
           <img src="../logo.png"></img>
         </div>
@@ -84,6 +149,15 @@ class Inici extends Component {
           <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center'}}> 
             {this.state.loading ? null :  this.renderPokemons()} 
           </div>
+          <input
+              type="text" value={this.state.name}
+              onChange={e => this.onTodoChange(e.target.value)}
+          />
+
+          {this.state.waiting ? 
+             <h1>S'Esta Buscant Partida</h1> 
+            :
+             (<button onClick={()=>this.play()}>Play</button>)}
       </div>
       </div>
        
