@@ -76,9 +76,10 @@ class Inici extends Component {
 
   render() {
     return (
+      
       <div>
         <div id="logo">
-          <img src="../logo.png"></img>
+          <img src="../logo.png" width="600" height="400"></img>
         </div>
          <div id="contenedor">
           <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center'}}> 
