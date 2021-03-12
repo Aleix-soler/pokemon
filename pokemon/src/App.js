@@ -3,6 +3,7 @@ import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Pokemon from './components/lluita/lluita';
 import Inici from './components/inici/inici';
+import login from './components/login/login';
 
 class App extends Component {
   render() {
@@ -13,6 +14,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={Inici} />
               <Route  path="/lluita" component={Pokemon} />
+              <Route path="/login" component={login}/>
             </Switch>
           </div>
         </div>

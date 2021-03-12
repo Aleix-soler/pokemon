@@ -21,6 +21,7 @@ mysql = MySQL(app)
 def home():
     return "BENVINGUT A LA API DE POKEMON";
 
+#LOGIN FUNCTION
 @app.route('/login', methods=['GET'])
 def login():
     if 'user' in request.args and 'pass' in request.args:
@@ -28,17 +29,25 @@ def login():
         password = str(request.args['pass'])
     else:
         info = {"userid": 0}
-        return jsonify(info)
+        response = jsonify(info)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
     
     cur=mysql.connection.cursor()
     value = cur.execute("SELECT id FROM users WHERE user=%s AND pass=%s", (user, password))
     if value > 0:
         info = {"userid": cur.fetchall()[0][0]}
-        return jsonify(info)
+        response = jsonify(info)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
     mysql.connection.commit()
     cur.close()
     info = {"userid": 0}
-    return jsonify(info)
+    response = jsonify(info)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+#REGISTER FUNCTION        
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if 'user' in request.args and 'pass' in request.args:
@@ -46,16 +55,23 @@ def register():
         password = str(request.args['pass'])
     else:
         info = {"userCreated": 0}
-        return jsonify(info)
+        response = jsonify(info)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+        
     cur=mysql.connection.cursor()
     value = cur.execute("SELECT id FROM users WHERE user=%s AND pass=%s", (user, password))
     if value > 0:
         info = {"userCreated": 0}
-        return jsonify(info)
+        response = jsonify(info)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
     cur = mysql.connection.cursor()
     value = cur.execute("INSERT INTO users (user, pass) VALUES (%s, %s)", (user,password))
     mysql.connection.commit()
     info = {"userCreated": 1}
-    return jsonify(info)
-    
+    response = jsonify(info)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
 app.run(host="172.24.4.216")
