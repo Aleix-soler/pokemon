@@ -4,18 +4,18 @@ import style from './login.css';
 
 class login extends Component{
     async loginPetition(){
-        var user = document.getElementById('username');
-        var pass = document.getElementById('password');
-        var response = await fetch("http://172.24.4.216:5000/login?user="+user.value+"&pass="+pass.value);
-        var json = await response.json();
+        let user = document.getElementById('username');
+        let pass = document.getElementById('password');
+        let response = await fetch("http://172.24.4.216:5000/login?user="+user.value+"&pass="+pass.value);
+        let json = await response.json();
         console.log("LOGIN=>",json);
     }
     
     async registerPetition(){
-        var user = document.getElementById('username');
-        var pass = document.getElementById('password');
-        var response = await fetch("http://172.24.4.216:5000/register?user="+user.value+"&pass="+pass.value);
-        var json = await response.json();
+        let user = document.getElementById('username');
+        let pass = document.getElementById('password');
+        let response = await fetch("http://172.24.4.216:5000/register?user="+user.value+"&pass="+pass.value);
+        let json = await response.json();
         console.log("REGISTER=>",json);
     }
 
@@ -24,8 +24,8 @@ class login extends Component{
             <div class="table">
                 <p>Username:<input id="username" type="text"></input></p>
                 <p>Password:<input id="password" type="password"></input></p>
-                <button type="submit" onClick={() => this.loginPetition()}>LOGIN</button>
-                <button type="submit" onclick={() => this.registerPetition()}>NEW USER</button>
+                <button onClick={() => this.loginPetition()}>LOGIN</button>
+                <button onClick={() => this.registerPetition()}>REGISTER</button>
             </div>
         )
     }

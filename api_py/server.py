@@ -69,6 +69,7 @@ def register():
     cur = mysql.connection.cursor()
     value = cur.execute("INSERT INTO users (user, pass) VALUES (%s, %s)", (user,password))
     mysql.connection.commit()
+    cur.close()
     info = {"userCreated": 1}
     response = jsonify(info)
     response.headers.add("Access-Control-Allow-Origin", "*")
