@@ -1,12 +1,14 @@
 import flask
 from flask import request, jsonify, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
+from flask_cors import CORS
 import requests
 import json
 
 server = "192.168.1.172";
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+CORS(app)
 
 # Configure db
 
@@ -188,6 +190,29 @@ def obtenirRegistresBatalla():
         return response
     info = {"registres_batalla": 0}
     response = jsonify(info)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+@app.route('/obtenir_combats_pagina', methods=['GET'])
+def obtenirCombatsPagina():
+    if "limit" and "quant" in request.args:
+        limit = int(request.args['limit'])
+        quant = int(request.args['quant'])
+    else:
+        info = {"combats": 0}
+        response = jsonfiy(info)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+    
+    cur = mysql.connection.cursor()
+    value = cur.execute("SELECT id, idJugador1, idJugador2 FROM combats ORDER BY id ASC LIMIT %s,%s",(limit, quant))
+    if value > 0:
+        info = {"combats": cur.fetchall()}
+        response = jsonify(info)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+    info = {"combats": 0}
+    response = jsonfiy(info)
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 

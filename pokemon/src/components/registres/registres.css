@@ -1,0 +1,10 @@
+#registres{
+    background-color: aqua;
+    margin: 30% 25% 0% 25%;
+    padding: 50px 20px 50px 20px;
+}
+#pagIndex{
+    margin-top:20px;
+    text-align: center;
+    border: 1px dashed black;
+}

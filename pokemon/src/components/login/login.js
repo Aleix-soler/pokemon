@@ -17,7 +17,6 @@ class login extends Component{
         let response = await fetch("http://"+API_SERVER+":5000/login?user="+user.value+"&pass="+pass.value);
         let json = await response.json();
         if(json["userid"]!=0){
-            console.log("LOGIN=>",json["userid"]);
             let userID = json["userid"]
             this.setState({
                 userId: userID
@@ -34,7 +33,6 @@ class login extends Component{
         let response = await fetch("http://"+API_SERVER+":5000/register?user="+user.value+"&pass="+pass.value);
         let json = await response.json();
         if(json["userCreated"]==1){
-            console.log("REGISTER=>",json);
             this.errorFunction("Compte Creat Correctament!!")
         }else{
             this.errorFunction("Ja existeix un usuari amb aquest nom")
