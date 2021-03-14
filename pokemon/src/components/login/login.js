@@ -54,7 +54,8 @@ class login extends Component{
 
         const redirect = this.state.userId ?
         <Redirect  to={{
-                      pathname: `/lobby/${this.state.userId}`,
+            pathname: `/lobby/`,
+            state: {"userId": this.state.userId}
         }}/>
         :
         null;

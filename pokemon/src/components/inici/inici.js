@@ -23,6 +23,7 @@ class Inici extends Component {
     waiting: false,
   };
   componentDidMount(){
+    console.log("PROPS => ", this.props.location.state.userId);
     this.loadPokemons();
 
     socket.on('connection', () => {
@@ -134,7 +135,8 @@ class Inici extends Component {
 
     const redirect = this.state.gameId ?
     <Redirect  to={{
-                  pathname: `/lluita/${this.state.gameId}/${this.state.name}`,
+      pathname: `/lluita/${this.state.gameId}`,
+      props: {"gameId": this.state.gameId, "userID": this.props.location.state.userId}
     }}/>
     :
     null;

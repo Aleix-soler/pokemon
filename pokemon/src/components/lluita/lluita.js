@@ -29,10 +29,12 @@ class App extends Component {
   } 
   componentWillUnmount() {
    socket.close();
+    
   }
   
 
   componentDidMount(){
+    console.log("PROPS => ", this.props.location.props)
     const room = this.props.match.params.room
     const nomUser = this.props.match.params.nom
     
