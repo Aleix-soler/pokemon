@@ -46,6 +46,16 @@ io.on('connection', (socket) => {
     io.emit('RECEIVE_IDS', ids);
   })
 
+  /* 
+  ENVIAT PETICIO Atac al SERVIDOR 
+    @param room = string sala
+    @param idJug = id del jugador que ataca
+    @param atac = objecte{"nom": nomatac, "punts": 70}
+  */
+  socket.on('ATAC', (room, idJug, atac) =>{
+    io.in(room).emit('NEW_MOVIMENT', idJug, atac);
+  })
+
 });
 
 
