@@ -44,9 +44,11 @@
   }
     
   #contenedor{
-    position: absolute;
-    top: 40%;
-    left: 9%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 15% 20% 0% 10%;
   }
   #jugar{
     width: 155px;
@@ -54,6 +56,16 @@
     border-radius: 5px;
     color:white;
     background-color: limegreen;
+  }
+  #logout{
+    width: 155px;
+    height: 40px;
+    border-radius: 5px;
+    color:white;
+    background-color: orangered;
+  }
+  #divButons{
+    margin: 0px 0px 40px 0px;
   }
   
   

@@ -7,7 +7,7 @@ import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
 import getPokemon from '../pokemon'
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://192.168.100.31:4444/";
+const ENDPOINT = "http://192.168.0.172:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 
@@ -153,24 +153,28 @@ class Inici extends Component {
     }}/>
     :
     null;
+    const buttons = this.state.waiting ? 
+      <h1>S'Esta Buscant Partida</h1> 
+     :
+     <div id="divButons">
+      <button id="jugar" onClick={()=>this.play()}>Play</button>
+      <button id="logout" onClick={() => this.logout()}>LOGOUT</button>
+     </div>
+      
     return (
       
       <div>
-          {logout}
-          {redirect}
+        {logout}
+        {redirect}
         <div id="logo">
           <img src="../logo.png" width="600" height="400"></img>
         </div>
-         <div id="contenedor">
-          <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center'}}> 
+        <div id="contenedor">
+          {buttons}
+          <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap'}}> 
             {this.state.loading ? null :  this.renderPokemons()} 
           </div>
-          <button id="logout" onClick={() => this.logout()}>LOGOUT</button>
-          {this.state.waiting ? 
-             <h1>S'Esta Buscant Partida</h1> 
-            :
-             (<button id="jugar" onClick={()=>this.play()}>Play</button>)}
-      </div>
+        </div>
       </div>
        
     );

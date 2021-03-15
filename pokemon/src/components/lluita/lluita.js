@@ -24,7 +24,7 @@ class App extends Component {
       power: 0,
       pp : 0
 },
-  } 
+  }
   componentWillUnmount() {
     console.log("entrsdasd");
     socket.close('connect');
@@ -39,7 +39,7 @@ class App extends Component {
     this.interval = setInterval(() => {
       this.setToRoom(room,nomUser);  
     }, 1000);
-
+    console.log("LLUITA STATE",this.state)
     }
 
     setToRoom(room,userId){
@@ -66,8 +66,11 @@ class App extends Component {
         socket.emit('SEND_POKEMON',userId.player1)
       }
       socket.on('POKEMONS', (msg)=>{
-        console.log(msg);
+        this.setState({
+          pokemons: msg
+        })
       })
+      console.log("Pokemons State=>", this.state)
     }
 
   render() {
