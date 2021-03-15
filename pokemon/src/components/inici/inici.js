@@ -127,7 +127,12 @@ class Inici extends Component {
     this.setState({
          name: value
     });
-}
+  }
+  logout(){
+    this.setState({
+      logout: true
+    })
+  }
 
 
 
@@ -140,11 +145,17 @@ class Inici extends Component {
     }}/>
     :
     null;
-
+    const logout = this.state.logout ?
+    <Redirect  to={{
+      pathname: `/`,
+    }}/>
+    :
+    null;
     return (
       
       <div>
-          { redirect}
+          {logout}
+          {redirect}
         <div id="logo">
           <img src="../logo.png" width="600" height="400"></img>
         </div>
@@ -156,7 +167,7 @@ class Inici extends Component {
               type="text" value={this.state.name}
               onChange={e => this.onTodoChange(e.target.value)}
           />
-
+          <button id="logout" onClick={() => this.logout()}>LOGOUT</button>
           {this.state.waiting ? 
              <h1>S'Esta Buscant Partida</h1> 
             :

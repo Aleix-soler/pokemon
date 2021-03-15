@@ -56,7 +56,7 @@ class login extends Component{
 
     noDbLogin(){
         this.setState({
-            userId: 1
+            userId: (Math.floor(Math.random()*1000000))+100
         })
     }
 

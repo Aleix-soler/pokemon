@@ -32,7 +32,8 @@ class registres extends Component{
             response = await petition.json();
             this.setState({
                 infoPag: response["combats"]
-            }) 
+            })
+            console.log(response["combats"]) 
         }catch(exception){
             console.log(exception);
             this.setState({
@@ -79,7 +80,6 @@ class registres extends Component{
             <div id="registres">
                 <p>REGISTRES</p>
                 {data}
-                <p id="errors">{this.state.errors}</p>
                 <div id="pagIndex">
                     <span><button onClick={() => this.baixarPagina()}>&lt;</button></span>{this.state.pag}<span><button onClick={() => this.pujarPagina()}>&gt;</button></span>
                 </div>
