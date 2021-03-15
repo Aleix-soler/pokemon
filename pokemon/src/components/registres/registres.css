@@ -8,3 +8,8 @@
     text-align: center;
     border: 1px dashed black;
 }
+#errors{
+    font-size: medium;
+    color:red;
+    font-weight: bold;
+}

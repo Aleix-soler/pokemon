@@ -48,6 +48,13 @@
     top: 40%;
     left: 9%;
   }
+  #jugar{
+    width: 155px;
+    height: 40px;
+    border-radius: 5px;
+    color:white;
+    background-color: limegreen;
+  }
   
   
   

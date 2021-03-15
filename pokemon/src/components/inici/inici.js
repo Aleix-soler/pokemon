@@ -7,7 +7,7 @@ import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
 import getPokemon from '../pokemon'
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://192.168.1.172:4444/";
+const ENDPOINT = "http://192.168.0.172:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 
@@ -160,7 +160,7 @@ class Inici extends Component {
           {this.state.waiting ? 
              <h1>S'Esta Buscant Partida</h1> 
             :
-             (<button onClick={()=>this.play()}>Play</button>)}
+             (<button id="jugar" onClick={()=>this.play()}>Play</button>)}
       </div>
       </div>
        

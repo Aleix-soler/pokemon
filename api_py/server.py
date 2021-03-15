@@ -1,14 +1,12 @@
 import flask
 from flask import request, jsonify, request, render_template, redirect, url_for
 from flask_mysqldb import MySQL
-from flask_cors import CORS
 import requests
 import json
 
-server = "192.168.1.172";
+server = "192.168.0.172";
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
-CORS(app)
 
 # Configure db
 
