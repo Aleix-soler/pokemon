@@ -13,7 +13,7 @@ io.on('connection', (socket) => {
   socket.on('CREAR_ROOM', (game) => {
     console.log('GAME RECEIVED', game.nom);
     game.room = Math.floor(Math.random() * 100000000);
-    
+    console.log( "Nom array =>"+game.nom);
     pokemons[game.nom] = game.pokemons;
     
     io.emit('RECEIVE_GAME', game);
@@ -42,6 +42,8 @@ io.on('connection', (socket) => {
     console.log(`USER ${userId} JOINED ROOM #${room}`);
   });
   socket.on('SEND_POKEMON',(userId)=>{
+    console.log(userId);
+    console.log(pokemons[userId]);
     io.emit('POKEMONS',pokemons[userId])
   })
 
@@ -60,5 +62,4 @@ io.on('connection', (socket) => {
 httpServer.listen(4444, () => {
     console.log("[SERVER] Listening at port 4444");
 })
-
 

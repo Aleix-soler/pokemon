@@ -55,8 +55,9 @@ class login extends Component{
     }
 
     noDbLogin(){
+        let aux = Math.floor(Math.random()*1000000);
         this.setState({
-            userId: (Math.floor(Math.random()*1000000))+100
+            userId: aux
         })
     }
 
@@ -75,7 +76,7 @@ class login extends Component{
         const redirect = this.state.userId ?
         <Redirect  to={{
             pathname: `/lobby/`,
-            state: {"userId": this.state.userId}
+            userId:  this.state.userId
         }}/>
         :
         null;

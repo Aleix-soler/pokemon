@@ -5,13 +5,11 @@ import getPokemon from '../pokemon';
 import getMoviment from '../moviments';
 import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.2.92:4444/";
+const ENDPOINT = "http://192.168.100.31:4444/";
 const socket = socketIOClient(ENDPOINT);
-
 
 class App extends Component {
   state = {
-    percent:0,
     pokemon:{
       nom : '',
       imatge : '',
@@ -28,56 +26,52 @@ class App extends Component {
 },
   } 
   componentWillUnmount() {
-   socket.close();
-    
+    console.log("entrsdasd");
+    socket.close('connect');
   }
-  
 
   componentDidMount(){
-    console.log("PROPS => ", this.props.location.props)
-    const room = this.props.match.params.room
-    const nomUser = this.props.match.params.nom
+    const room = this.props.match.params.room;
+    const nomUser = this.props.location.userId;
     
     console.log("GAME id =>"+room);
     console.log("Nom =>"+nomUser);
+    this.interval = setInterval(() => {
+      this.setToRoom(room,nomUser);  
+    }, 1000);
 
-    this.setToRoom(room,nomUser);
-
-
-      var random = Math.floor(Math.random() * 151) + 1;
-      getPokemon(random).then(res => {
-       this.setState({pokemon : res});
-      })
-      getMoviment(11).then(res =>{
-      })
     }
 
     setToRoom(room,userId){
       console.log("Room=>"+room+" User_ID=>"+userId);
-
-      socket.on('connect', () => { 
-        socket.emit('ROOM', { room, userId });
      
+        socket.emit('ROOM', { room, userId });
       socket.on('RECEIVE_ID', (userId) => {
-        console.log('RECEIVED AN ID', userId);
+        console.log("ENTREAS PARARERASF");
+        console.log(userId);
+        //Mirar si ha passat la id dels 2 players
+        if(userId.player1 !== null && userId.player1 !== ''){
+          if(userId.player2 !== null && userId.player2 !== ''){
+            this.renderPokemons(userId)
+          }
+        }
       });
-      socket.emit('PROVES',{room : room , id : userId})
-        socket.on('SEND',(msg)=>{
-          console.log("Proves =>"+msg);
-        })
-    });
-   
-    
     }
-    
-    vida(hostia){ 
-      this.state.percent =  hostia * 100 / this.state.pokemon.stats.vida;
-      this.state.percent *= 2.4
-      document.getElementById("vida").style.marginRight = this.state.percent + 30 + "px";
-      this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
+
+    renderPokemons(userId){
+      clearInterval(this.interval);
+      if(userId.player1 == this.props.location.userId){
+        socket.emit('SEND_POKEMON',userId.player2)
+      }else{
+        socket.emit('SEND_POKEMON',userId.player1)
+      }
+      socket.on('POKEMONS', (msg)=>{
+        console.log(msg);
+      })
     }
 
   render() {
+    
     return (
      <div id={"interficie"}>
         <div id={"pokemons"}>

@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 import axios from 'axios';
-
+import getMoviment from './moviments';
 var numExcluitPokemon = [];
 var random;
 
@@ -71,7 +71,9 @@ function getHabilitats(pokemon){
     let moviments = [];
     for (let i = 0; i < 4; i++) {
       let nMoviment = Math.floor(Math.random() * aux.length);
-      moviments[i] = { id : nMoviment , moviment : aux[nMoviment].move.name} 
+       getMoviment(nMoviment).then((res)=>{
+        moviments[i] = res
+       })
     }
     return(moviments)
   }  

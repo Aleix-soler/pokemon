@@ -7,7 +7,7 @@ import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
 import getPokemon from '../pokemon'
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://192.168.0.172:4444/";
+const ENDPOINT = "http://192.168.100.31:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 
@@ -18,11 +18,12 @@ class Inici extends Component {
     pokemons : [],
     loading : true,
     error: null,
-    name : '',
     gameId: null,
     waiting: false,
   };
   componentDidMount(){
+    console.log("HEY P");
+    console.log(this.props.location.userId);
     this.loadPokemons();
 
     socket.on('connection', () => {
@@ -38,7 +39,7 @@ class Inici extends Component {
 
   //Crea la room i si no la troba amb x segons salta un error
   play(){
-    socket.emit('CREAR_ROOM',{pokemons : this.state.pokemons , nom : this.state.name})
+    socket.emit('CREAR_ROOM',{pokemons : this.state.pokemons , nom :this.props.location.userId})
     this.setState({ waiting: true }, () => {
       setTimeout(() => {
         socket.on('RECEIVE_GAME', (game) => { //Promise amb timeout
@@ -140,7 +141,9 @@ class Inici extends Component {
     const redirect = this.state.gameId ?
     <Redirect  to={{
       pathname: `/lluita/${this.state.gameId}`,
-      props: {"gameId": this.state.gameId, "userID": this.props.location.state.userId}
+      gameId: this.state.gameId, 
+      userId : this.props.location.userId,
+      pokemons : this.state.pokemons,
     }}/>
     :
     null;
@@ -162,10 +165,6 @@ class Inici extends Component {
           <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center'}}> 
             {this.state.loading ? null :  this.renderPokemons()} 
           </div>
-          <input
-              type="text" value={this.state.name}
-              onChange={e => this.onTodoChange(e.target.value)}
-          />
           <button id="logout" onClick={() => this.logout()}>LOGOUT</button>
           {this.state.waiting ? 
              <h1>S'Esta Buscant Partida</h1> 
