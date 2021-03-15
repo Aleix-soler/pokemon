@@ -6,22 +6,22 @@ const io = require('socket.io')(httpServer, {
 });
 
 var pokemons =[]
-
+var clientRooms = []
 io.on('connection', (socket) => {
   console.log('SOCKET IS CONNECTED');
   // here you can start emitting events to the client
   socket.on('CREAR_ROOM', (game) => {
     console.log('GAME RECEIVED', game.nom);
-   
-    pokemons[game.nom] = game.pokemons;
     game.room = Math.floor(Math.random() * 100000000);
+    
+    pokemons[game.nom] = game.pokemons;
+    
     io.emit('RECEIVE_GAME', game);
   });
 
   socket.on('JOIN_GAME', (game) => {
    // socket.join(game.room)
-    io.in(game.room).emit('PROVA',game.nom)
-    io.emit('START_GAME', game);
+     io.emit('START_GAME', game);
   })
 
   socket.on('MOVE_PIECE', (data) => {
@@ -31,29 +31,27 @@ io.on('connection', (socket) => {
 
   socket.on('ROOM', (data) => {
     const { room, userId } = data;
-    console.log('INCOMING ROOM', room);
+    if( typeof clientRooms["Room"+room]?.player1 === 'undefined' ){
+      clientRooms["Room"+room] = {player1 : userId , player2 : '' }; 
+    }else if(clientRooms["Room"+room].player2 == ''){
+      clientRooms["Room"+room].player2 = userId ;
+    }
+    console.log( clientRooms["Room"+room]);
     socket.join(room);
-    socket.emit('RECEIVE_ID', userId);
+    socket.emit('RECEIVE_ID', clientRooms["Room"+room]);
     console.log(`USER ${userId} JOINED ROOM #${room}`);
   });
-
-  socket.on('PROVES' , (data) =>{
-    console.log("Entra"+data.room);
-    socket.to(data.room).emit('SEND',data.id)
+  socket.on('SEND_POKEMON',(userId)=>{
+    io.emit('POKEMONS',pokemons[userId])
   })
- 
+
+  socket.on('SELECT_PIECE', (data) => {
+    io.emit('PUSH_SELECT_PIECE', data);
+  });
+
+
   socket.on('SET_IDS', (ids) => {
     io.emit('RECEIVE_IDS', ids);
-  })
-
-  /* 
-  ENVIAT PETICIO Atac al SERVIDOR 
-    @param room = string sala
-    @param idJug = id del jugador que ataca
-    @param atac = objecte{"nom": nomatac, "punts": 70}
-  */
-  socket.on('ATAC', (room, idJug, atac) =>{
-    io.in(room).emit('NEW_MOVIMENT', idJug, atac);
   })
 
 });
@@ -62,4 +60,5 @@ io.on('connection', (socket) => {
 httpServer.listen(4444, () => {
     console.log("[SERVER] Listening at port 4444");
 })
+
 

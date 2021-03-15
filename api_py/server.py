@@ -103,7 +103,7 @@ def batalla():
     if value > 0:
         info = cur.fetchall()
         for row in info:
-            data = {"batalla": {"id": row[0], "jugador1": row[1], "jugador2": row[2], "guanyador": row[3]}}
+            data = {"batalla": {"id": row[0], "jugador1": row[1], "jugador2": row[2]}}
         response = jsonify(data)
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
@@ -205,8 +205,16 @@ def obtenirCombatsPagina():
     cur = mysql.connection.cursor()
     value = cur.execute("SELECT id, idJugador1, idJugador2 FROM combats ORDER BY id ASC LIMIT %s,%s",(limit, quant))
     if value > 0:
-        info = {"combats": cur.fetchall()}
-        response = jsonify(info)
+        info = cur.fetchall()
+        row0 = []
+        row1 = []
+        row2 = []
+        for row in info:
+            row0.append(row[0])
+            row1.append(row[1])
+            row2.append(row[2])
+        data = {"info": {"id": row0, "jug1": row1, "jug2": row2, "test": row}}
+        response = jsonify(data)
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
     info = {"combats": 0}

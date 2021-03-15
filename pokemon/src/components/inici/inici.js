@@ -23,7 +23,6 @@ class Inici extends Component {
     waiting: false,
   };
   componentDidMount(){
-    console.log("PROPS => ", this.props.location.state.userId);
     this.loadPokemons();
 
     socket.on('connection', () => {
