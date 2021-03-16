@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import style from './login.css';
 import { Redirect } from 'react-router-dom';
 
-const API_SERVER = "192.168.0.172";
+const API_SERVER = "172.24.4.225s";
 
 class login extends Component{
 

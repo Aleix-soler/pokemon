@@ -1,8 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
-import getPokemon from '../pokemon';
-import getMoviment from '../moviments';
 import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
 const ENDPOINT = "http://172.24.2.92:4444/";
@@ -66,6 +64,9 @@ class App extends Component {
     PokemonsRival(){
       console.log("arriba?");
       socket.on('POKEMONS', (msg)=>{  
+        if(this.state.pokemonTeam[0].nom == msg[0].nom){
+          console.log("S'han enviat els mateixos pokemons");
+        }
         if(this.state.pokemonRival.length == 0){
           console.log("entra i mostra aquest pokemons");
           console.log(msg);
@@ -75,8 +76,21 @@ class App extends Component {
       this.setState({render : true})
     }
 
+    vida(hostia){
+      let aux = this.state.pokemon.vida;
+      this.state.percent = hostia * 100 / this.state.pokemon.stats.vida;
+      this.state.percent *= 2.7;
+      document.getElementById("vida").style.marginRight = this.state.percent + "px";
+      this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
+      if (this.state.pokemon.stats.vida <= aux/2){
+        document.getElementById("vida").style.backgroundColor = "yellow";
+      } 
+      else if (this.state.pokemon.stats.vida <= aux/4){
+        document.getElementById("vida").style.backgroundColor = "red";
+      }
+    }
+
   render() {
-    
     return (
      <div id={"interficie"}>
         <div id={"pokemons"}>
@@ -96,10 +110,20 @@ class App extends Component {
         <div class="bottom-menu">
           <div class="battle-text text-box-left">
         </div>
-      <div class="box">
-        <div class="actions">
+        {this.state.render ?  
+        (
+        <div class="box">
+          <div class="actions">
+          <button>{this.state.pokemonTeam[0]?.moviments[1].nom}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[0].nom}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[2].nom}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[3].nom}</button>
+          </div>
         </div>
-      </div>
+        ) 
+        :
+        null
+        }
       </div>
      </div>
     );

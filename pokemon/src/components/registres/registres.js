@@ -3,7 +3,7 @@ import registre from './registra';
 import style from './registres.css';
 import { Redirect } from 'react-router-dom';
 
-const API_SERVER = "192.168.0.172";
+const API_SERVER = "172.24.4.225";
 
 class registres extends Component{
     infoAPI = null;
@@ -77,8 +77,19 @@ class registres extends Component{
             console.log(this.state.infoPag[0])
         }
     }
+    enrere(){
+        this.setState({
+            registres: true
+        })
+    }
 
     render(){
+        const registre = this.state.registres ?
+        <Redirect  to={{
+          pathname: `/lobby`,
+        }}/>
+        :
+        null;
 
         var data = this.state.infoPag!=null ?
         <tr>
@@ -89,6 +100,7 @@ class registres extends Component{
          : null;
         return(
             <div id="registres">
+                {registre}
                 <p>REGISTRES</p>
                 <table>
                     <tr>
@@ -101,6 +113,7 @@ class registres extends Component{
                 <div id="pagIndex">
                     <span><button onClick={() => this.baixarPagina()}>&lt;</button></span>{this.state.pag}<span><button onClick={() => this.pujarPagina()}>&gt;</button></span>
                 </div>
+                <button id="back" onClick={() => this.enrere()}>Enrere</button>
             </div>
         )
     }
