@@ -46,14 +46,6 @@
   width: 51%;
 }
 
-body {
-  background-image: url("../img/Fons.jpg");
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center center;
-  background-color: #464646;
-}
-
 .box button {
   text-transform: capitalize;
   position: relative;
@@ -152,4 +144,3 @@ table, th, tr {
   cursor: pointer;
   align-content: center;
 }
-

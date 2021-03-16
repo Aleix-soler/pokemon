@@ -92,6 +92,7 @@ class App extends Component {
 
   render() {
     return (
+    <body id="bod">
      <div id={"interficie"}>
         <div id={"pokemons"}>
           <div id={"nom"}>
@@ -126,6 +127,7 @@ class App extends Component {
         }
       </div>
      </div>
+     </body>
     );
   }
 }
