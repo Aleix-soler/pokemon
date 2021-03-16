@@ -78,8 +78,8 @@ class App extends Component {
     vida(hostia){
       let aux = this.state.pokemon.vida;
       this.state.percent = hostia * 100 / this.state.pokemon.stats.vida;
-      this.state.percent *= 2.4;
-      document.getElementById("vida").style.marginRight = this.state.percent + 30 + "px";
+      this.state.percent *= 2.7;
+      document.getElementById("vida").style.marginRight = this.state.percent + "px";
       this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
       if (this.state.pokemon.stats.vida <= aux/2){
         document.getElementById("vida").style.backgroundColor = "yellow";
@@ -96,13 +96,17 @@ class App extends Component {
         <div id={"pokemons"}>
           <div id={"nom"}>
             <p>{this.state.pokemon.nom}</p>
-            <div id={"vida"}></div><p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
-            <div id={"barra"}></div>
+            <div id={"barra"}>
+              <div id={"vida"}></div>
+            </div>
+            <p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
           </div>
           <div id={"nomEnemic"}>
             <p>{this.state.pokemon.nom}</p>
-            <div id={"vidaEnemic"}></div><p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
-            <div id={"barraEnemic"}></div>
+            <div id={"barraEnemic"}>
+              <div id={"vidaEnemic"}></div>
+            </div>
+            <p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
           </div>
           <img id={"spriteBack"} src={this.state.pokemon.imatgeBack} />
           <img id={"spriteFront"} src={this.state.pokemon.imatgeFront} />
