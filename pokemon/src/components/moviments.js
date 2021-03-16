@@ -23,6 +23,7 @@ const TYPE_COLORS = {
 
 export const getMoviment = async (random) =>{
     let moviment = {
+          nom : '',
           tipus: {nom: '', color:''},
           descripcio:'',
           accuracy: 0,
@@ -34,6 +35,7 @@ export const getMoviment = async (random) =>{
     const response = res.data;
     moviment.tipus = {nom:response.type.name, color : "#"+TYPE_COLORS[response.type.name]};
     moviment.power = response.power;
+    moviment.nom = response.name
     moviment.pp = response.pp;
     moviment.accuracy = response.accuracy;
     moviment.descripcio = response.flavor_text_entries[0]?.flavor_text;
