@@ -1,85 +1,86 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-unused-vars */
 import React, { Component } from 'react';
-import getPokemon from '../pokemon';
-import getMoviment from '../moviments';
 import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://192.168.100.31:4444/";
+const ENDPOINT = "http://172.24.2.92:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 class App extends Component {
   state = {
-    percent: 0,
-
-    pokemon:{
-      nom : '',
-      imatge : '',
-      moviments : [{id: 0 , moviment: ""}],
-      stats: { atack : 0 , defensa : 0 , vida : 0 }
-    },
-
-    moviment:{
-      tipus: {nom: '', color:''},
-      descripcio:'',
-      accuracy: 0,
-      power: 0,
-      pp : 0
-},
+    pokemonTeam : [],
+    pokemonRival :[],
+    render : false,
   }
+
   componentWillUnmount() {
-    console.log("entrsdasd");
     socket.close('connect');
   }
 
   componentDidMount(){
     const room = this.props.match.params.room;
     const nomUser = this.props.location.userId;
-    
-    console.log("GAME id =>"+room);
-    console.log("Nom =>"+nomUser);
+    const pokemons = this.props.location.pokemons;
+    this.setState({
+      pokemonTeam : pokemons
+    })
+   // console.log("GAME id =>"+room);
+   //console.log("Nom =>"+nomUser);
     this.interval = setInterval(() => {
-      this.setToRoom(room,nomUser);  
-    }, 1000);
-    console.log("LLUITA STATE",this.state)
+      this.setToRoom(room,nomUser, pokemons);  
+    }, 500);
     }
 
-    setToRoom(room,userId){
-      console.log("Room=>"+room+" User_ID=>"+userId);
-     
-        socket.emit('ROOM', { room, userId });
-      socket.on('RECEIVE_ID', (userId) => {
-        console.log("ENTREAS PARARERASF");
+    setToRoom(room,userId ,pokemonsJugador){
+      // console.log("Room=>"+room+" User_ID=>"+userId);
+       socket.emit('ROOM', { room, userId , pokemonsJugador });
+        socket.on('RECEIVE_ID', (userId) => {
         console.log(userId);
         //Mirar si ha passat la id dels 2 players
         if(userId.player1 !== null && userId.player1 !== ''){
           if(userId.player2 !== null && userId.player2 !== ''){
             this.renderPokemons(userId)
           }
-        }
+        } 
       });
     }
 
     renderPokemons(userId){
       clearInterval(this.interval);
+     // console.log("Aquest soc jo =>"+ this.props.location.userId);
+     // console.log("Player1 =>"+ userId.player1);
+     // console.log("Player2 =>"+userId.player2); 
+
       if(userId.player1 == this.props.location.userId){
         socket.emit('SEND_POKEMON',userId.player2)
-      }else{
+        this.PokemonsRival()
+      }else if(userId.player2 == this.props.location.userId){
         socket.emit('SEND_POKEMON',userId.player1)
-      }
-      socket.on('POKEMONS', (msg)=>{
-        this.setState({
-          pokemons: msg
-        })
+        this.PokemonsRival()
+      }  
+    
+    }
+
+    PokemonsRival(){
+      console.log("arriba?");
+      socket.on('POKEMONS', (msg)=>{  
+        if(this.state.pokemonTeam[0].nom == msg[0].nom){
+          console.log("S'han enviat els mateixos pokemons");
+        }
+        if(this.state.pokemonRival.length == 0){
+          console.log("entra i mostra aquest pokemons");
+          console.log(msg);
+          this.setState({pokemonRival : msg })
+        }
       })
-      console.log("Pokemons State=>", this.state)
+      this.setState({render : true})
     }
 
     vida(hostia){
       let aux = this.state.pokemon.vida;
       this.state.percent = hostia * 100 / this.state.pokemon.stats.vida;
-      this.state.percent *= 2.4;
-      document.getElementById("vida").style.marginRight = this.state.percent + 30 + "px";
+      this.state.percent *= 2.7;
+      document.getElementById("vida").style.marginRight = this.state.percent + "px";
       this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
       if (this.state.pokemon.stats.vida <= aux/2){
         document.getElementById("vida").style.backgroundColor = "yellow";
@@ -90,34 +91,39 @@ class App extends Component {
     }
 
   render() {
-    
     return (
      <div id={"interficie"}>
         <div id={"pokemons"}>
           <div id={"nom"}>
-            <p>{this.state.pokemon.nom}</p>
-            <div id={"vida"}></div><p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
+            <p>{this.state.pokemonTeam[0]?.nom}</p>
+            <div id={"vida"}></div><p style={{fontSize: 15}}>{this.state.pokemonTeam[0]?.stats.vida} PS</p>
             <div id={"barra"}></div>
           </div>
           <div id={"nomEnemic"}>
-            <p>{this.state.pokemon.nom}</p>
-            <div id={"vidaEnemic"}></div><p style={{fontSize: 15}}>{this.state.pokemon.stats.vida} PS</p>
+            <p>{this.state.pokemonRival[0]?.nom}</p>
+            <div id={"vidaEnemic"}></div><p style={{fontSize: 15}}>{this.state.pokemonRival[0]?.stats.vida} PS</p>
             <div id={"barraEnemic"}></div>
           </div>
-          <img id={"spriteBack"} src={this.state.pokemon.imatgeBack} />
-          <img id={"spriteFront"} src={this.state.pokemon.imatgeFront} />
+          <img id={"spriteBack"} src={this.state.pokemonTeam[0]?.imatgeGif.back_default} />
+          <img id={"spriteFront"} src={this.state.pokemonRival[0]?.imatgeGif.front_default} />
         </div>
         <div class="bottom-menu">
           <div class="battle-text text-box-left">
         </div>
-      <div class="box">
-        <div class="actions">
-          <button>{this.state.pokemon.moviments[0].moviment}</button>
-          <button>Water Pulse</button>
-          <button>Surf</button>
-          <button>Tacle</button>
+        {this.state.render ?  
+        (
+        <div class="box">
+          <div class="actions">
+          <button>{this.state.pokemonTeam[0]?.moviments[1].nom}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[0].nom}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[2].nom}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[3].nom}</button>
+          </div>
         </div>
-      </div>
+        ) 
+        :
+        null
+        }
       </div>
      </div>
     );
@@ -125,3 +131,23 @@ class App extends Component {
 }
 
 export default App;
+
+/*
+    {
+      nom : '',
+      imatgeBack : '',
+      imatgeFront : '',
+      imatgeGif :{ front_default : '' , back_default : ''},
+      moviments : [],
+      stats: { atack : 0 , defensa : 0 , vida : 0 , speed : 0 },
+
+      moviment:{
+        nom : '',
+        tipus: {nom: '', color:''},
+        descripcio:'',
+        accuracy: 0,
+        power: 0,
+        pp : 0
+      }
+    },
+    */

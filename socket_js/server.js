@@ -12,39 +12,44 @@ io.on('connection', (socket) => {
   // here you can start emitting events to the client
   socket.on('CREAR_ROOM', (game) => {
     console.log('GAME RECEIVED', game.nom);
-    game.room = Math.floor(Math.random() * 100000000);
-    console.log( "Nom array =>"+game.nom);
-    pokemons[game.nom] = game.pokemons;
-    
+    game.room = Math.floor(Math.random() * 100000000); 
     io.emit('RECEIVE_GAME', game);
   });
 
   socket.on('JOIN_GAME', (game) => {
    // socket.join(game.room)
+   console.log(game);
+   pokemons["Team"+game.nom] = game.pokemons;
      io.emit('START_GAME', game);
   })
 
   socket.on('MOVE_PIECE', (data) => {
     console.log('RECEIVED MOVE', data);
-    io.emit('PUSH_MOVE', data);
+    io.emit('PUSH_MOVE', data); 
   });
 
   socket.on('ROOM', (data) => {
-    const { room, userId } = data;
+    // console.log(data);
+    const { room, userId  } = data;
+   // console.log("L'userId =>"+userId+"Envia els pokemons"+data.pokemonsJugador);
     if( typeof clientRooms["Room"+room]?.player1 === 'undefined' ){
-      clientRooms["Room"+room] = {player1 : userId , player2 : '' }; 
+      clientRooms["Room"+room] = {player1 : userId , player2 : '' };
+      pokemons["Team"+userId] = data.pokemonsJugador;
     }else if(clientRooms["Room"+room].player2 == ''){
       clientRooms["Room"+room].player2 = userId ;
+      pokemons["Team"+userId] = data.pokemonsJugador;
+
     }
-    console.log( clientRooms["Room"+room]);
+  
     socket.join(room);
     socket.emit('RECEIVE_ID', clientRooms["Room"+room]);
     console.log(`USER ${userId} JOINED ROOM #${room}`);
   });
   socket.on('SEND_POKEMON',(userId)=>{
+    console.log("Arriba la peticio?");
     console.log(userId);
-    console.log(pokemons[userId]);
-    io.emit('POKEMONS',pokemons[userId])
+    //console.log(pokemons[userId]);
+    io.emit('POKEMONS',pokemons["Team"+userId])
   })
 
   socket.on('SELECT_PIECE', (data) => {
