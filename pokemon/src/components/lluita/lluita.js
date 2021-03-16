@@ -10,6 +10,8 @@ const socket = socketIOClient(ENDPOINT);
 
 class App extends Component {
   state = {
+    percent: 0,
+
     pokemon:{
       nom : '',
       imatge : '',
@@ -71,6 +73,20 @@ class App extends Component {
         })
       })
       console.log("Pokemons State=>", this.state)
+    }
+
+    vida(hostia){
+      let aux = this.state.pokemon.vida;
+      this.state.percent = hostia * 100 / this.state.pokemon.stats.vida;
+      this.state.percent *= 2.4;
+      document.getElementById("vida").style.marginRight = this.state.percent + 30 + "px";
+      this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
+      if (this.state.pokemon.stats.vida <= aux/2){
+        document.getElementById("vida").style.backgroundColor = "yellow";
+      } 
+      else if (this.state.pokemon.stats.vida <= aux/4){
+        document.getElementById("vida").style.backgroundColor = "red";
+      }
     }
 
   render() {
