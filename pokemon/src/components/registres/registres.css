@@ -1,8 +1,14 @@
 #registres{
     background-color: aqua;
-    margin: 30% 25% 0% 25%;
+    margin: 10% 25% 0% 25%;
     padding: 20px 20px 50px 20px;
+    font-family: monospace;
 }
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
 #pagIndex{
     margin-top:20px;
     text-align: center;

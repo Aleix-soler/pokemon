@@ -11,7 +11,6 @@ const socket = socketIOClient(ENDPOINT);
 class App extends Component {
   state = {
     percent: 0,
-
     pokemon:{
       nom : '',
       imatge : '',
@@ -78,8 +77,7 @@ class App extends Component {
     vida(hostia){
       let aux = this.state.pokemon.vida;
       this.state.percent = hostia * 100 / this.state.pokemon.stats.vida;
-      this.state.percent *= 2.7;
-      document.getElementById("vida").style.marginRight = this.state.percent + "px";
+      document.getElementById("vida").style.marginRight = this.state.percent + "%";
       this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
       if (this.state.pokemon.stats.vida <= aux/2){
         document.getElementById("vida").style.backgroundColor = "yellow";
