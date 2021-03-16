@@ -16,17 +16,12 @@
     flex-wrap: nowrap;
     justify-content: center;
 }
-.numeroPagReg{
-
-}
 .numeroPagReg:disabled{
     font-size: medium;
     color:black;
     background-color: white;
     border-radius: 10px;
     margin: 0px 5px 0px 5px;
-}
-#paginaReg{
 }
 .fletxaReg{
     margin: 0px;
@@ -50,11 +45,6 @@
     background-color: orangered;
     text-transform: uppercase;
 }
-/*
-table, td, th{
-    border:1px solid black;
-}
-*/
 .tableReg{
     width: 100%;
     margin: 0% 20% 0% 0%;

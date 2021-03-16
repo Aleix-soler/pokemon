@@ -141,8 +141,8 @@ class Inici extends Component {
             <p style={{fontSize:15 , padding: '2px', border: '1px solid black', marginLeft: '2px', backgroundColor: 'green', color: 'white'}}>PS: {element.stats.vida} </p>  
           </span>
           <div class="classButons">
-            <button class="reroll" onClick={()=>this.reroll(index)}>&#8634;</button>
             <button class={classe} onClick={()=>this.select(index)}>{text}</button>
+            <button class="reroll" onClick={()=>this.reroll(index)}>&#8634;</button>
           </div>
         </div>
       </div>
@@ -229,7 +229,7 @@ class Inici extends Component {
         </div>
         <div id="contenedor">
           {buttons}
-          <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap'}}> 
+          <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', width: '100%'}}> 
             {this.state.loading ? null :  this.renderPokemons()} 
           </div>
         </div>
