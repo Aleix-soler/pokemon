@@ -2,17 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 
 #nom {
   text-transform: capitalize;
@@ -47,17 +36,17 @@
 }
 
 .box {
-  position: absolute;
-  bottom: 12%;
-  right: 15%;
-  padding: 0.6%;
+  position: fixed;
+  top: 60%;
+  right: 20%;
+  padding: 0.5%;
   background: #333;
   border: 3px solid black;
   border-top: none;
   border-radius: 0 0 8px 8px;
   color: #fff;
-  height: 10%;
-  width: 72%;
+  height: auto;
+  width: 51%;
 }
 
 body {
@@ -78,8 +67,10 @@ body {
   font-family: monospace;
   font-size: 20px;
   line-height: 14px;
+  width: 20%;
+  height: auto;
   margin-top: 0.5%;
-  margin-right: 5%;
+  margin-right: 2%;
   padding: 2%;
 }
 
@@ -102,7 +93,7 @@ body {
 
 #barraEnemic {
   position: relative;
-  top: -38%;
+  top: -41.5%;
   margin-left: 10%;
   margin-right: 10%;
   border: 1px solid black;
@@ -110,52 +101,31 @@ body {
   border-radius: 5px;
 }
 
-#hero{
-  position: absolute;
-  width: 30%;
-  height: 25%;
-  border-radius: 50%;
-  bottom: 15%;
-  top: 50%;
-  left: 8%;
-  background: #E0E0E0;
-}
-
-#enemy{
-  position: absolute;
-  width: 25%;
-  height: 20%;
-  border-radius: 50%;
-  top: 30%;
-  right: 25%;
-  background: #E0E0E0;
-}
 
 #nomEnemic{
   text-transform: capitalize;
-  position: absolute;
-  width: 30%;
-  height: 30%;
+  position: fixed;
+  width: 15%;
+  height: 15%;
   border-radius: 10px;
-  top: 2%;
-  right: 10%;
+  top: 6%;
+  right: 25%;
   background: #F8F8D8;
   border: 6px solid #506860;
 }
 
 #spriteBack {
-  position: absolute;
-  left: 100px;
-  bottom: 15%;
-  top: 55%;
-  height: 50%;
+  position: fixed;
+  left: 35%;
+  top: 40%;
+  height: 25%;
 }
 
 #spriteFront {
-  position: absolute;
-  right: 15%;
-  height: 35%;
-  top: 35%;
+  position: fixed;
+  right: 28%;
+  height: 20%;
+  top: 25%;
 }
 
 #pokemons{
@@ -165,9 +135,10 @@ body {
   background-repeat: no-repeat;
   border: 3px solid black;
   border-radius: 8px 8px 0 0;
-  height: 520px;
-  right: 15%;
-  width: 1000px;
+  top: 5%;
+  height: 55%;
+  right: 20%;
+  width: 52%;
 }
 
 
