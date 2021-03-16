@@ -27,9 +27,9 @@
 
 #barra {
   position:relative;
-  top: -37%;
+  bottom: 50%;
   margin-left: 10%;
-  margin-right: 10%;
+  margin-right: 15%;
   border: 1px solid black;
   padding: 3px 0; 
   border-radius: 5px;
@@ -37,7 +37,7 @@
 
 .box {
   position: fixed;
-  top: 60%;
+  bottom: 25%;
   right: 20%;
   padding: 0.5%;
   background: #333;
@@ -59,7 +59,6 @@ body {
 
 .box button {
   text-transform: capitalize;
-  position: relative;
   background: #666;
   border: 3px solid #888;
   border-radius: 4px;
@@ -93,7 +92,7 @@ body {
 
 #barraEnemic {
   position: relative;
-  top: -41.5%;
+  bottom: 56%;
   margin-left: 10%;
   margin-right: 10%;
   border: 1px solid black;
@@ -135,10 +134,10 @@ body {
   background-repeat: no-repeat;
   border: 3px solid black;
   border-radius: 8px 8px 0 0;
+  height: 60%;
   top: 5%;
-  height: 55%;
   right: 20%;
-  width: 52%;
+  width: 60%;
 }
 
 
@@ -147,15 +146,5 @@ table, th, tr {
   border: 1px solid black;
 }
 
-#moviments{
-  position: absolute;
-  top: 70%;
-  background: #FFFAFA;
-  text-transform: capitalize;
-  width: 100%;
-  height: 30%;
-  border: 1px solid black;
-  cursor: pointer;
-  align-content: center;
-}
+
 
