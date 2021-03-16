@@ -27,7 +27,7 @@
   }
   
   #pic1:hover{
-   height: 370px;      
+   height: 420px;      
   }
   
   #img1{
@@ -83,17 +83,40 @@
     margin: 0px 0px 20px 0px;
   }
   .reroll{
-    width: 155px;
-    height: auto;
+    width: 90%;
+    height: 50px;
     border-radius: 5px;
     color:white;
-    background-color: lawngreen;
+    background-color: #6495ED;
     text-transform: uppercase;
     font-size: xx-large;
-    padding: 0px 0px 5px 0px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+  }
+  .active{
+    width: 90%;
+    background-color: #362F4B;
+    height: 50px;
+    border-radius: 5px;
+    color:white;
+    text-transform: uppercase;
+  }
+  .chosen{
+    text-transform: uppercase;
+    width: 90%;
+    background-color: limegreen;
+    height: 50px;
+    border-radius: 5px;
+    color:white;
   }
   #divButons{
     margin: 0px 0px 40px 0px;
+  }
+  .classButons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   #buscarPartida{
     color:white;
