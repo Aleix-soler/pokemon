@@ -5,9 +5,9 @@
 import React, { Component } from "react";
 import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
-import getPokemon from '../pokemon'
+import getPokemon from '../pokemon';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.4.225:4444/";
+const ENDPOINT = "http://172.24.2.92:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 
@@ -23,7 +23,11 @@ class Inici extends Component {
   };
   componentDidMount(){
     console.log("HEY P");
-    console.log(this.props.location.userId);
+    //POSAR USERID AL LOCALSTORAGE
+    if(localStorage.getItem("userid")==null){
+      console.log("USERID EN EL LOCALSTORAGE")
+      localStorage.setItem("userid", this.props.location.userId);
+    }
     this.loadPokemons();
 
     socket.on('connection', () => {
@@ -39,8 +43,16 @@ class Inici extends Component {
 
   //Crea la room i si no la troba amb x segons salta un error
   play(){
+    //BOTO CANCELAR COLOR VERMELL
+    setTimeout(()=>{
+      var buto = document.getElementById("cancelar");
+      if(buto){
+        buto.style.backgroundColor="orangered";
+      }
+    }, 100);
+    //SOCKET
     socket.emit('CREAR_ROOM',{pokemons : this.state.pokemons , nom :this.props.location.userId})
-    this.setState({ waiting: true }, () => {
+    this.setState({ waiting: true, error: null }, () => {
       setTimeout(() => {
         socket.on('RECEIVE_GAME', (game) => { //Promise amb timeout
           this.receiveGame(game);
@@ -75,9 +87,9 @@ class Inici extends Component {
   
   async  loadPokemons(){
     for (let i = 0; i < 6; i++) {
-     await getPokemon().then((res)=>{
-         this.state.pokemons[i] = res
-     })  
+      await getPokemon(i).then((res)=>{
+        this.state.pokemons[i] = res
+      })  
     }
     this.setState({loading : false})
 }
@@ -113,7 +125,7 @@ class Inici extends Component {
             <p style={{fontSize:15 , padding: '2px', border: '1px solid black', marginLeft: '2px', backgroundColor: 'blue', color: 'white'}}>DEF: {element.stats.defensa} </p> 
             <p style={{fontSize:15 , padding: '2px', border: '1px solid black', marginLeft: '2px', backgroundColor: 'green', color: 'white'}}>PS: {element.stats.vida} </p>  
           </span>
-          <button onClick={()=>this.reroll(index)}>Reroll</button>
+          <button class="reroll" onClick={()=>this.reroll(index)}>&#8634;</button>
         </div>
       </div>
       </div>
@@ -137,6 +149,23 @@ class Inici extends Component {
     this.setState({
       registres: true
     })
+  }
+  cancelarBusqueda(){
+    this.setState({
+      waiting: false
+    })
+    setTimeout(()=>{
+      var buto = document.getElementById("jugar");
+      buto.disabled = true;
+      buto.style.backgroundColor = "grey";
+      var interval = setInterval(() => {
+        if(this.state.error != null){
+          buto.disabled = false;
+          buto.style.backgroundColor = "limegreen";
+          clearInterval(interval);
+        }
+      },1000);
+    },100)
   }
 
 
@@ -166,7 +195,10 @@ class Inici extends Component {
     null;
 
     const buttons = this.state.waiting ? 
-      <h1 id="buscarPartida">S'Esta Buscant Partida</h1> 
+      <div>
+        <h1 id="buscarPartida">S'Esta Buscant Partida</h1>
+        <button id="cancelar" onClick={() => this.cancelarBusqueda()}>Cancelar</button>
+      </div> 
      :
      <div id="divButons">
       <button id="registre" onClick={()=>this.registres()}>REGISTRES</button>

@@ -1,6 +1,6 @@
 #registres{
     background-color: aqua;
-    margin: 30% 25% 0% 25%;
+    margin: 10% 25% 0% 25%;
     padding: 20px 20px 50px 20px;
 }
 #pagIndex{
@@ -12,4 +12,12 @@
     font-size: medium;
     color:red;
     font-weight: bold;
+}
+#back{
+    width: 155px;
+    height: 40px;
+    border-radius: 5px;
+    color:white;
+    background-color: orangered;
+    text-transform: uppercase;
 }
