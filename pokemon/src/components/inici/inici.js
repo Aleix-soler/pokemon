@@ -158,6 +158,7 @@ class Inici extends Component {
       var buto = document.getElementById("jugar");
       buto.disabled = true;
       buto.style.backgroundColor = "grey";
+      socket.removeListener('RECEIVE_GAME');
       var interval = setInterval(() => {
         if(this.state.error != null){
           buto.disabled = false;
