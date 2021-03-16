@@ -64,11 +64,19 @@
     color:white;
     background-color: orangered;
   }
+  #registre{
+    width: 155px;
+    height: 40px;
+    border-radius: 5px;
+    color:white;
+    background-color: cornflowerblue;
+  }
   #divButons{
     margin: 0px 0px 40px 0px;
   }
-  
-  
+  #buscarPartida{
+    color:white;
+  }
   
   
   

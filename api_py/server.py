@@ -4,7 +4,7 @@ from flask_mysqldb import MySQL
 import requests
 import json
 
-server = "192.168.0.172";
+server = "172.24.4.225";
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
@@ -58,7 +58,13 @@ def register():
         response = jsonify(info)
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
-        
+    
+    if user == '' or password != '':
+        info = {"userCreated": 0}
+        response = jsonify(info)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+
     cur=mysql.connection.cursor()
     value = cur.execute("SELECT id FROM users WHERE user=%s AND pass=%s", (user, password))
     if value > 0:

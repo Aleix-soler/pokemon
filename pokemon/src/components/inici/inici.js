@@ -7,7 +7,7 @@ import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
 import getPokemon from '../pokemon'
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://192.168.0.172:4444/";
+const ENDPOINT = "http://172.24.4.225:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 
@@ -133,6 +133,11 @@ class Inici extends Component {
       logout: true
     })
   }
+  registres(){
+    this.setState({
+      registres: true
+    })
+  }
 
 
 
@@ -152,18 +157,27 @@ class Inici extends Component {
       pathname: `/`,
     }}/>
     :
+    null;    
+    const registre = this.state.registres ?
+    <Redirect  to={{
+      pathname: `/registres`,
+    }}/>
+    :
     null;
+
     const buttons = this.state.waiting ? 
-      <h1>S'Esta Buscant Partida</h1> 
+      <h1 id="buscarPartida">S'Esta Buscant Partida</h1> 
      :
      <div id="divButons">
-      <button id="jugar" onClick={()=>this.play()}>Play</button>
+      <button id="registre" onClick={()=>this.registres()}>REGISTRES</button>
+      <button id="jugar" onClick={()=>this.play()}>PLAY</button>
       <button id="logout" onClick={() => this.logout()}>LOGOUT</button>
-     </div>
+     </div>;
       
     return (
       
       <div>
+        {registre}
         {logout}
         {redirect}
         <div id="logo">
