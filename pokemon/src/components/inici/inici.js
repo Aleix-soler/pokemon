@@ -49,7 +49,7 @@ class Inici extends Component {
       if(buto){
         buto.style.backgroundColor="orangered";
       }
-    }, 100);
+    }, 10);
     //SOCKET
     socket.emit('CREAR_ROOM',{pokemons : this.state.pokemons , nom :this.props.location.userId})
     this.setState({ waiting: true, error: null }, () => {
@@ -154,19 +154,12 @@ class Inici extends Component {
     this.setState({
       waiting: false
     })
-    setTimeout(()=>{
+    setTimeout(()=> {
       var buto = document.getElementById("jugar");
-      buto.disabled = true;
-      buto.style.backgroundColor = "grey";
-      socket.removeListener('RECEIVE_GAME');
-      var interval = setInterval(() => {
-        if(this.state.error != null){
-          buto.disabled = false;
-          buto.style.backgroundColor = "limegreen";
-          clearInterval(interval);
-        }
-      },1000);
-    },100)
+      buto.style.backgroundColor = "limegreen";
+      socket.removeListener('RECEIVE_GAME'); 
+    },10);
+
   }
 
 
@@ -209,7 +202,7 @@ class Inici extends Component {
       
     return (
       
-      <div>
+      <div id="inici">
         {registre}
         {logout}
         {redirect}
