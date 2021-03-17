@@ -30,17 +30,32 @@ export const getMoviment = async (random) =>{
           power: 0,
           pp : 0
     }
-  await axios.get(`https://pokeapi.co/api/v2/move/${random}`)
-  .then(res => {
-    const response = res.data;
-    moviment.tipus = {nom:response.type.name, color : "#"+TYPE_COLORS[response.type.name]};
-    moviment.power = response.power;
-    moviment.nom = response.name
-    moviment.pp = response.pp;
-    moviment.accuracy = response.accuracy;
-    moviment.descripcio = response.flavor_text_entries[0]?.flavor_text;
-  })
-  return(moviment)
+    let finito = false;
+    let vegades = 0;
+  while(!finito){
+    try{
+      await axios.get(`https://pokeapi.co/api/v2/move/${random}`)
+      .then(res => {
+        const response = res.data;
+        moviment.tipus = {nom:response.type.name, color : "#"+TYPE_COLORS[response.type.name]};
+        moviment.power = response.power;
+        moviment.nom = response.name
+        moviment.pp = response.pp;
+        moviment.accuracy = response.accuracy;
+        moviment.descripcio = response.flavor_text_entries[0]?.flavor_text;
+      })
+      finito = true;
+      return(moviment)
+    }catch(exception){
+      //console.log(exception);
+      vegades++;
+      if(vegades == 3){
+        finito = true;
+        //console.log("HA PETAT")
+      }
+      //window.location.reload();
+    }
+  }
 }
 
   export default getMoviment;
