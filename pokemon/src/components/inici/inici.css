@@ -3,19 +3,17 @@
     font-size: 30px;
   }
 
+
   #logo img{
-    left: 35%;
-    top: -10%;
-    width: 50%;
-    max-width: 400px;
-    height: auto;
-    position: fixed;
+    width: 25%;
+    height: 25%;
+    margin-bottom: -15%;
   }
 
   #pic1{
     width: 200px;
     text-transform: capitalize;
-    border: 2px solid black;
+    border: 1px solid black;
     height: 300px;
     padding-top: 35px;
     overflow:hidden;
@@ -31,11 +29,12 @@
   }
   
   #img1{
-     width: 150px;
-     height: 150px;
+     width: 80%;
+     height: 50%;
     padding-left:25px;
   }
-    
+ 
+  
   progress {  
       background-color: #f3f3f3;  
       border: 0;  
@@ -74,7 +73,7 @@
     text-transform: uppercase;
   }  
   #cancelar{
-    width: 155px;
+    width: 70%;
     height: 40px;
     border-radius: 5px;
     color:white;
@@ -91,9 +90,6 @@
     text-transform: uppercase;
     font-size: xx-large;
     padding: 0px 0px 5px 0px;
-  }
-  #divButons{
-    margin: 0px 0px 40px 0px;
   }
   #buscarPartida{
     color:white;
