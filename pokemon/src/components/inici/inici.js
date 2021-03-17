@@ -63,7 +63,6 @@ class Inici extends Component {
       errorClase = "";
       error = "";
     }
-    console.log(error);
   }
 
   //Crea la room i si no la troba amb x segons salta un error
