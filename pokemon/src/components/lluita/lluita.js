@@ -58,8 +58,8 @@ class App extends Component {
         socket.emit('SEND_POKEMON',userId.player1)
         this.PokemonsRival()
       }  
-    
     }
+
 
     PokemonsRival(){
       console.log("arriba?");
@@ -91,6 +91,14 @@ class App extends Component {
       }
     }
 
+    enviarAtack(numMviment){
+      console.log("Entra enviat Atack");
+        socket.emit('SEND_ATTACK',{ moviment :numMviment, room :this.props.match.params.room});
+        socket.on('ATACK',(atac)=>{
+          console.log(atac);
+        })
+    }
+
   render() {
     return (
       <div id={"interficie"}>
@@ -115,7 +123,7 @@ class App extends Component {
         (
         <div class="box">
           <div class="actions">
-          <button>{this.state.pokemonTeam[0]?.moviments[0] ? this.state.pokemonTeam[0]?.moviments[0].nom : 'UPS'}</button>
+          <button onClick={()=>{this.enviarAtack(0)}}>{this.state.pokemonTeam[0]?.moviments[0] ? this.state.pokemonTeam[0]?.moviments[0].nom : 'UPS'}</button>
           <button>{this.state.pokemonTeam[0]?.moviments[1] ? this.state.pokemonTeam[0]?.moviments[1].nom : 'UPS'}</button>
           <button>{this.state.pokemonTeam[0]?.moviments[2] ? this.state.pokemonTeam[0]?.moviments[2].nom : 'UPS'}</button>
           <button>{this.state.pokemonTeam[0]?.moviments[3] ? this.state.pokemonTeam[0]?.moviments[3].nom : 'UPS'}</button>
