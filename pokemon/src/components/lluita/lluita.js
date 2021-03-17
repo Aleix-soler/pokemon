@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.3.98:4444/";
+const ENDPOINT = "http://172.24.2.92:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 class App extends Component {
@@ -95,13 +95,17 @@ class App extends Component {
         <div id={"pokemons"}>
           <div id={"nom"}>
             <p>{this.state.pokemonTeam[0]?.nom}</p>
-            <div id={"vida"}></div><p style={{fontSize: 15}}>{this.state.pokemonTeam[0]?.stats.vida} PS</p>
-            <div id={"barra"}></div>
+            <div id={"barra"}>
+              <div id={"vida"}></div>
+            </div>
+            {/*<div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>*/}
           </div>
           <div id={"nomEnemic"}>
             <p>{this.state.pokemonRival[0]?.nom}</p>
-            <div id={"vidaEnemic"}></div><p style={{fontSize: 15}}>{this.state.pokemonRival[0]?.stats.vida} PS</p>
-            <div id={"barraEnemic"}></div>
+            <div id={"barraEnemic"}>
+              <div id={"vidaEnemic"}></div>
+            </div>
+            {/*<div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>*/}
           </div>
           <img id={"spriteBack"} src={this.state.pokemonTeam[0]?.imatgeGif.back_default} />
           <img id={"spriteFront"} src={this.state.pokemonRival[0]?.imatgeGif.front_default} />
