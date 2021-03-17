@@ -93,7 +93,7 @@ class App extends Component {
 
   render() {
     return (
-     <div id={"interficie"}>
+      <div id={"interficie"}>
         <div id={"pokemons"}>
           <div id={"nom"}>
             <p>{this.state.pokemonTeam[0]?.nom}</p>

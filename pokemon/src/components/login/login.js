@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import style from './login.css';
 import { Redirect } from 'react-router-dom';
 
-const API_SERVER = "172.24.4.225s";
+const API_SERVER = "192.168.0.172";
 
 class login extends Component{
 
@@ -82,7 +82,7 @@ class login extends Component{
         null;
 
         return(
-            <div>
+            <div id="loginD">
             {redirect}
                 <div class="table">
                     <input id="username" placeholder="Username" type="text"></input><br></br>

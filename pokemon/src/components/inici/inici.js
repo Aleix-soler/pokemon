@@ -7,7 +7,7 @@ import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
 import getPokemon from '../pokemon';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.2.92:4444/";
+const ENDPOINT = "http://192.168.0.172:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 
@@ -20,6 +20,7 @@ class Inici extends Component {
     error: null,
     gameId: null,
     waiting: false,
+    selected: 0
   };
   componentDidMount(){
     console.log("HEY P");
@@ -49,7 +50,7 @@ class Inici extends Component {
       if(buto){
         buto.style.backgroundColor="orangered";
       }
-    }, 100);
+    }, 10);
     //SOCKET
     socket.emit('CREAR_ROOM',{pokemons : this.state.pokemons , nom :this.props.location.userId})
     this.setState({ waiting: true, error: null }, () => {
@@ -101,14 +102,28 @@ class Inici extends Component {
       this.setState({pokemons : aux})
   })  
   }
+  async select(id){
+    this.setState({
+      selected: id
+    })
+  }
 
 
   renderPokemons(){
     console.log("entra");
     console.log(this.state.pokemons);
     if(this.state.pokemons != undefined && this.state.pokemons != null){
+      let classe, text;
    return(
+
      this.state.pokemons.map((element,index)=>{
+       if(index == this.state.selected){
+         classe = "chosen";
+         text = "selected";
+       }else{
+         classe = "active";
+         text = "select";
+       }
        return(
         <div key={index}> 
           <div id="pic1">
@@ -125,7 +140,10 @@ class Inici extends Component {
             <p style={{fontSize:15 , padding: '2px', border: '1px solid black', marginLeft: '2px', backgroundColor: 'blue', color: 'white'}}>DEF: {element.stats.defensa} </p> 
             <p style={{fontSize:15 , padding: '2px', border: '1px solid black', marginLeft: '2px', backgroundColor: 'green', color: 'white'}}>PS: {element.stats.vida} </p>  
           </span>
-          <button class="reroll" onClick={()=>this.reroll(index)}>&#8634;</button>
+          <div class="classButons">
+            <button class={classe} onClick={()=>this.select(index)}>{text}</button>
+            <button class="reroll" onClick={()=>this.reroll(index)}>&#8634;</button>
+          </div>
         </div>
       </div>
       </div>
@@ -154,19 +172,12 @@ class Inici extends Component {
     this.setState({
       waiting: false
     })
-    setTimeout(()=>{
+    setTimeout(()=> {
       var buto = document.getElementById("jugar");
-      buto.disabled = true;
-      buto.style.backgroundColor = "grey";
-      socket.removeListener('RECEIVE_GAME');
-      var interval = setInterval(() => {
-        if(this.state.error != null){
-          buto.disabled = false;
-          buto.style.backgroundColor = "limegreen";
-          clearInterval(interval);
-        }
-      },1000);
-    },100)
+      buto.style.backgroundColor = "limegreen";
+      socket.removeListener('RECEIVE_GAME'); 
+    },10);
+
   }
 
 
@@ -208,7 +219,8 @@ class Inici extends Component {
      </div>;
       
     return (
-      <div>
+      
+      <div id="inici">
         {registre}
         {logout}
         {redirect}
@@ -217,7 +229,7 @@ class Inici extends Component {
         </div>
         <div id="contenedor">
           {buttons}
-          <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap'}}> 
+          <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', width: '100%'}}> 
             {this.state.loading ? null :  this.renderPokemons()} 
           </div>
         </div>
