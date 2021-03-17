@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.2.92:4444/";
+const ENDPOINT = "http://172.24.3.98:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 class App extends Component {
@@ -91,8 +91,7 @@ class App extends Component {
 
   render() {
     return (
-    <body id="bod">
-     <div id={"interficie"}>
+      <div id={"interficie"}>
         <div id={"pokemons"}>
           <div id={"nom"}>
             <p>{this.state.pokemonTeam[0]?.nom}</p>
@@ -126,7 +125,6 @@ class App extends Component {
         }
       </div>
      </div>
-     </body>
     );
   }
 }

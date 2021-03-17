@@ -1,8 +1,12 @@
 #registres{
-    background-color: aqua;
-    margin: 10% 25% 0% 25%;
-    padding: 20px 20px 50px 20px;
-    font-family: monospace;
+    background-color: #6F56CB;
+    margin: 10% 20% 0% 20%;
+    padding: 20px 40px 50px 40px;
+    -webkit-box-shadow: 0px 10px 10px 2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 10px 10px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 10px 10px 2px rgba(0,0,0,0.75);
+    border-radius: 10px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 table, th, td {
@@ -12,7 +16,25 @@ table, th, td {
 #pagIndex{
     margin-top:20px;
     text-align: center;
-    border: 1px dashed black;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+.numeroPagReg:disabled{
+    font-size: medium;
+    color:black;
+    background-color: white;
+    border-radius: 10px;
+    margin: 0px 5px 0px 5px;
+}
+.fletxaReg{
+    margin: 0px;
+    padding: 5px 10px 5px 10px;
+    font-size: medium;
+    border-radius: 5px;
+    background-color: #362F4B;
+    color:white;
 }
 #errors{
     font-size: medium;
@@ -20,10 +42,43 @@ table, th, td {
     font-weight: bold;
 }
 #back{
-    width: 155px;
+    margin:10px 0px 0px 0px;
+    width: 180px;
     height: 40px;
     border-radius: 5px;
     color:white;
     background-color: orangered;
     text-transform: uppercase;
+}
+.tableReg{
+    width: 100%;
+    margin: 0% 20% 0% 0%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    border-style: hidden;
+}
+.rowTable1{
+    background-color: #FFFFFF;
+}
+.rowTable2{
+    background-color: #F6F6F6;
+}
+.rowTable1 > td{
+    padding:5px;
+}
+.rowTable2 > td{
+    padding:5px;
+}
+.rowHeading{
+    background-color: #362F4B;
+    border: 0px solid black;
+}
+.rowHeading > th{
+    color:white;
+    padding:5px;
+}
+#titolReg{
+    color:white;
+    text-transform: uppercase;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }

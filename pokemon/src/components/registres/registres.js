@@ -1,18 +1,19 @@
 import React, { Component } from "react";
-import registre from './registra';
-import style from './registres.css';
+import styles from './registres.css';
 import { Redirect } from 'react-router-dom';
 
-const API_SERVER = "172.24.4.225";
+const API_SERVER = "192.168.0.172";
 
 class registres extends Component{
     infoAPI = null;
     state = {
         desde: 0,
-        per_pag: 2,
+        per_pag: 5,
         pag: 1,
         infoPag: null,
-        errors: ''
+        errors: '',
+        loading: false,
+        id: 0
     }
 
     obtenirValorsPagina(pagina){
@@ -28,13 +29,17 @@ class registres extends Component{
     async obtenirDataPag(){
         let petition;
         let response;
+        this.setState({
+            loading:true,
+            id: this.state.id++
+        })
+        console.log(this.state.id)
         try{
             petition = await fetch("http://"+API_SERVER+":5000/obtenir_combats_pagina?limit="+this.state.desde+"&quant="+this.state.per_pag);
             response = await petition.json();
-            console.log(response.info);
             this.infoAPI = response;
             this.setState({
-                infoPag: response
+                infoPag: response.info
             })
              
         }catch(exception){
@@ -55,7 +60,7 @@ class registres extends Component{
             this.setState({
                 pag: this.state.pag+1,
                 desde: desde,
-                infoPag: response
+                infoPag: response.info
             })
         }
     }
@@ -71,7 +76,7 @@ class registres extends Component{
                 this.setState({
                     pag: this.state.pag-1,
                     desde: desde,
-                    infoPag: response
+                    infoPag: response.info
                 })
             }
             console.log(this.state.infoPag[0])
@@ -82,6 +87,27 @@ class registres extends Component{
             registres: true
         })
     }
+    renderData(){
+        if(this.state.infoPag!=null&&this.state.infoPag!=undefined){
+            let clase;
+            return(
+            this.state.infoPag.id.map((element,index)=>{
+                if((index%2) == 0){
+                    clase = "rowTable1";
+                }else{
+                    clase = "rowTable2";
+                }
+                return(
+                    <tr class={clase} key={index}>
+                        <td>{this.state.infoPag.id[index]}</td>
+                        <td>{this.state.infoPag.jug1[index]}</td>
+                        <td>{this.state.infoPag.jug2[index]}</td>
+                    </tr>
+                )
+            })
+            )
+        }
+    }
 
     render(){
         const registre = this.state.registres ?
@@ -90,7 +116,7 @@ class registres extends Component{
         }}/>
         :
         null;
-
+        /*
         var data = this.state.infoPag!=null ?
         <tr>
             <td>{this.state.infoPag.info.id}</td>
@@ -98,22 +124,25 @@ class registres extends Component{
             <td>{this.state.infoPag.info.jug2}</td>
         </tr>
          : null;
+         */
         return(
             <div id="registres">
                 {registre}
-                <p>REGISTRES</p>
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>JUG1</th>
-                        <th>JUG2</th>
+                <h1 id="titolReg">REGISTRES</h1>
+                <table class="tableReg">
+                    <tr class="rowHeading">
+                        <th>Id</th>
+                        <th>Jugador1</th>
+                        <th>Jugador2</th>
                     </tr>
-                    {data}
+                    {this.renderData()}
                 </table>
                 <div id="pagIndex">
-                    <span><button onClick={() => this.baixarPagina()}>&lt;</button></span>{this.state.pag}<span><button onClick={() => this.pujarPagina()}>&gt;</button></span>
+                        <button class="fletxaReg" onClick={() => this.baixarPagina()}>&lt;</button>
+                        <button class="numeroPagReg" disabled>{this.state.pag}</button>
+                        <button class="fletxaReg" onClick={() => this.pujarPagina()}>&gt;</button>
                 </div>
-                <button id="back" onClick={() => this.enrere()}>Enrere</button>
+                <button id="back" onClick={() => this.enrere()}>Tornar Menu Pokemons</button>
             </div>
         )
     }

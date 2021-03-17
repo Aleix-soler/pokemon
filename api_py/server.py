@@ -4,7 +4,7 @@ from flask_mysqldb import MySQL
 import requests
 import json
 
-server = "172.24.4.225";
+server = "192.168.0.172";
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
