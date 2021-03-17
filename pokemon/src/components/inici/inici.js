@@ -208,7 +208,6 @@ class Inici extends Component {
      </div>;
       
     return (
-      
       <div>
         {registre}
         {logout}
@@ -222,8 +221,7 @@ class Inici extends Component {
             {this.state.loading ? null :  this.renderPokemons()} 
           </div>
         </div>
-      </div>
-       
+      </div>      
     );
   }
 }
