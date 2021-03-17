@@ -33,6 +33,8 @@
   #img1{
      width: 80%;
      height: 50%;
+     max-height: 150px;
+     
     padding-left:25px;
   }
  
