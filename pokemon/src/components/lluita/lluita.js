@@ -64,8 +64,9 @@ class App extends Component {
     PokemonsRival(){
       console.log("arriba?");
       socket.on('POKEMONS', (msg)=>{  
-        if(this.state.pokemonTeam[0].nom == msg[0].nom){
-          console.log("S'han enviat els mateixos pokemons");
+        if(this.state.pokemonTeam[0].nom == msg[0].nom || msg[0].nom == '' || msg[0].nom == null){
+          console.log("ha entrat?");
+         this.PokemonsRival();
         }
         if(this.state.pokemonRival.length == 0){
           console.log("entra i mostra aquest pokemons");
@@ -117,10 +118,10 @@ class App extends Component {
         (
         <div class="box">
           <div class="actions">
-          <button>{this.state.pokemonTeam[0]?.moviments[1].nom}</button>
-          <button>{this.state.pokemonTeam[0]?.moviments[0].nom}</button>
-          <button>{this.state.pokemonTeam[0]?.moviments[2].nom}</button>
-          <button>{this.state.pokemonTeam[0]?.moviments[3].nom}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[0] ? this.state.pokemonTeam[0]?.moviments[0].nom : 'UPS'}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[1] ? this.state.pokemonTeam[0]?.moviments[1].nom : 'UPS'}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[2] ? this.state.pokemonTeam[0]?.moviments[2].nom : 'UPS'}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[3] ? this.state.pokemonTeam[0]?.moviments[3].nom : 'UPS'}</button>
           </div>
         </div>
         ) 
