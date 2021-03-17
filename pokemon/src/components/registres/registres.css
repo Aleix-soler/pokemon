@@ -8,6 +8,11 @@
     border-radius: 10px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
 #pagIndex{
     margin-top:20px;
     text-align: center;

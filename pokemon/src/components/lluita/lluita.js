@@ -64,8 +64,9 @@ class App extends Component {
     PokemonsRival(){
       console.log("arriba?");
       socket.on('POKEMONS', (msg)=>{  
-        if(this.state.pokemonTeam[0].nom == msg[0].nom){
-          console.log("S'han enviat els mateixos pokemons");
+        if(this.state.pokemonTeam[0].nom == msg[0].nom || msg[0].nom == '' || msg[0].nom == null){
+          console.log("ha entrat?");
+         this.PokemonsRival();
         }
         if(this.state.pokemonRival.length == 0){
           console.log("entra i mostra aquest pokemons");
@@ -79,8 +80,7 @@ class App extends Component {
     vida(hostia){
       let aux = this.state.pokemon.vida;
       this.state.percent = hostia * 100 / this.state.pokemon.stats.vida;
-      this.state.percent *= 2.7;
-      document.getElementById("vida").style.marginRight = this.state.percent + "px";
+      document.getElementById("vida").style.marginRight = this.state.percent + "%";
       this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
       if (this.state.pokemon.stats.vida <= aux/2){
         document.getElementById("vida").style.backgroundColor = "yellow";
@@ -96,13 +96,17 @@ class App extends Component {
         <div id={"pokemons"}>
           <div id={"nom"}>
             <p>{this.state.pokemonTeam[0]?.nom}</p>
-            <div id={"vida"}></div><p style={{fontSize: 15}}>{this.state.pokemonTeam[0]?.stats.vida} PS</p>
-            <div id={"barra"}></div>
+            <div id={"barra"}>
+              <div id={"vida"}></div>
+            </div>
+            {/*<div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>*/}
           </div>
           <div id={"nomEnemic"}>
             <p>{this.state.pokemonRival[0]?.nom}</p>
-            <div id={"vidaEnemic"}></div><p style={{fontSize: 15}}>{this.state.pokemonRival[0]?.stats.vida} PS</p>
-            <div id={"barraEnemic"}></div>
+            <div id={"barraEnemic"}>
+              <div id={"vidaEnemic"}></div>
+            </div>
+            {/*<div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>*/}
           </div>
           <img id={"spriteBack"} src={this.state.pokemonTeam[0]?.imatgeGif.back_default} />
           <img id={"spriteFront"} src={this.state.pokemonRival[0]?.imatgeGif.front_default} />
@@ -114,10 +118,10 @@ class App extends Component {
         (
         <div class="box">
           <div class="actions">
-          <button>{this.state.pokemonTeam[0]?.moviments[1].nom}</button>
-          <button>{this.state.pokemonTeam[0]?.moviments[0].nom}</button>
-          <button>{this.state.pokemonTeam[0]?.moviments[2].nom}</button>
-          <button>{this.state.pokemonTeam[0]?.moviments[3].nom}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[0] ? this.state.pokemonTeam[0]?.moviments[0].nom : 'UPS'}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[1] ? this.state.pokemonTeam[0]?.moviments[1].nom : 'UPS'}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[2] ? this.state.pokemonTeam[0]?.moviments[2].nom : 'UPS'}</button>
+          <button>{this.state.pokemonTeam[0]?.moviments[3] ? this.state.pokemonTeam[0]?.moviments[3].nom : 'UPS'}</button>
           </div>
         </div>
         ) 

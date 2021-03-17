@@ -3,6 +3,7 @@
     font-size: 30px;
   }
 
+
   #logo img{
     left: 38%;
     top: -10%;
@@ -30,11 +31,12 @@
   }
   
   #img1{
-     width: 150px;
-     height: 150px;
+     width: 80%;
+     height: 50%;
     padding-left:25px;
   }
-    
+ 
+  
   progress {  
       background-color: #f3f3f3;  
       border: 0;  
@@ -73,7 +75,7 @@
     text-transform: uppercase;
   }  
   #cancelar{
-    width: 155px;
+    width: 70%;
     height: 40px;
     border-radius: 5px;
     color:white;
