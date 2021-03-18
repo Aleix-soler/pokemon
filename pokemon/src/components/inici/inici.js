@@ -102,7 +102,7 @@ class Inici extends Component {
 
     this.setState({
       gameId: game.room,
-      gameNom : game.name
+      gameNom : game.nom
     });
   }
   
@@ -161,7 +161,7 @@ class Inici extends Component {
             <p style={{fontSize:15 , padding: '2px', border: '1px solid black', marginLeft: '2px', backgroundColor: 'green', color: 'white'}}>PS: {element.stats.vida} </p>  
           </span>
           <div class="classButons">
-            {/*<button class={classe} onClick={()=>this.select(index)}>{text}</button>*/}
+            <button class={classe} onClick={()=>this.select(index)}>{text}</button>
             <button class="reroll" onClick={()=>this.reroll(index)}>&#8634;</button>
           </div>
         </div>
@@ -210,6 +210,7 @@ class Inici extends Component {
       gameId: this.state.gameId, 
       userId : this.props.location.userId,
       pokemons : this.state.pokemons,
+      selected: this.state.selected
     }}/>
     :
     null;
