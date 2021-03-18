@@ -7,7 +7,7 @@ import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
 import getPokemon from '../pokemon';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://192.168.0.172:4444/";
+const ENDPOINT = "http://172.24.4.230:4444/";
 const socket = socketIOClient(ENDPOINT);
 var error = '';
 var errorClase = '';
@@ -230,17 +230,20 @@ class Inici extends Component {
     :
     null;
 
-    const buttons = this.state.waiting ? 
+    const buttons = this.state.waiting && this.state.loading ? 
       <div>
         <h1 id="buscarPartida">S'Esta Buscant Partida</h1>
         <button id="cancelar" onClick={() => this.cancelarBusqueda()}>Cancelar</button>
       </div> 
      :
+     <div>
      <div id="divButons">
       <button id="registre" onClick={()=>this.registres()}>REGISTRES</button>
       <button id="jugar" onClick={()=>this.play()}>PLAY</button>
       <button id="logout" onClick={() => this.logout()}>LOGOUT</button>
-     </div>;
+     </div>
+      <div id={errorClase}>{error}</div>
+    </div>;
       
     return (
       
@@ -253,7 +256,7 @@ class Inici extends Component {
         </div>
         <div id="contenedor">
           {buttons}
-          <div id={errorClase}>{error}</div>
+
           <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', width: '100%'}}> 
             {this.state.loading ? null :  this.renderPokemons()} 
           </div>

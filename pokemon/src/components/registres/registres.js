@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styles from './registres.css';
 import { Redirect } from 'react-router-dom';
 
-const API_SERVER = "192.168.0.172";
+const API_SERVER = "172.24.4.230";
 
 class registres extends Component{
     infoAPI = null;

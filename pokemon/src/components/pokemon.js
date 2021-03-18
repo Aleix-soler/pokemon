@@ -36,11 +36,13 @@ export const getPokemon = async (pos) =>{
     
       })
       finito = true;
-      random = checkExcep(pos);
       return(pokemon)
     }catch(exception){
       //console.log(exception)
+      console.log("NUMERO RANDOM ANTERIOR =>",random)
+      random = checkExcep(pos);
       console.log("PETAT POKEMON")
+      console.log("NUMERO RANDOM =>",random)
       vegades++;
       if(vegades == 3){
         finito = true;
