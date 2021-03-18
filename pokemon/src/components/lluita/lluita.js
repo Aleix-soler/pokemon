@@ -97,9 +97,11 @@ class App extends Component {
       <div id={"interficie"}>
         <div id={"pokemons"}>
           <div id={"nom"}>
-            <p>{this.state.pokemonTeam[0]?.nom}</p>
+            <div id={"informacio"}>
+              <p>{this.state.pokemonTeam[0]?.nom}</p>
+            </div>
             <div id={"barra"}>
-              <div id={"vida"}></div>
+                <div id={"vida"}></div>
             </div>
             {/*<div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>*/}
           </div>
