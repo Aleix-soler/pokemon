@@ -7,6 +7,7 @@ import url from '../Connections';
 const ENDPOINT = url.SocketUrl;
 const socket = socketIOClient(ENDPOINT);
 
+
 class App extends Component {
   state = {
     pokemonTeam : [],
@@ -19,14 +20,14 @@ class App extends Component {
   }
 
   componentDidMount(){
+
     const room = this.props.match.params.room;
     const nomUser = this.props.location.userId;
     const pokemons = this.props.location.pokemons;
+
     this.setState({
       pokemonTeam : pokemons
     })
-   // console.log("GAME id =>"+room);
-   //console.log("Nom =>"+nomUser);
     this.interval = setInterval(() => {
       this.setToRoom(room,nomUser, pokemons);  
     }, 500);
@@ -37,12 +38,7 @@ class App extends Component {
        socket.emit('ROOM', { room, userId , pokemonsJugador });
         socket.on('RECEIVE_ID', (userId) => {
         console.log(userId);
-        //Mirar si ha passat la id dels 2 players
-        if(userId.player1 !== null && userId.player1 !== ''){
-          if(userId.player2 !== null && userId.player2 !== ''){
             this.renderPokemons(userId)
-          }
-        } 
       });
     }
 
@@ -51,31 +47,28 @@ class App extends Component {
      // console.log("Aquest soc jo =>"+ this.props.location.userId);
      // console.log("Player1 =>"+ userId.player1);
      // console.log("Player2 =>"+userId.player2); 
-
-      if(userId.player1 == this.props.location.userId){
-        socket.emit('SEND_POKEMON',userId.player2)
-        this.PokemonsRival()
-      }else if(userId.player2 == this.props.location.userId){
-        socket.emit('SEND_POKEMON',userId.player1)
-        this.PokemonsRival()
-      }  
+        socket.emit('SEND_POKEMON',userId,this.props.match.params.room)
+        this.PokemonsRival(userId)
     }
 
 
-    PokemonsRival(){
+    PokemonsRival(userId){
       console.log("arriba?");
-      socket.on('POKEMONS', (msg)=>{  
-        if(this.state.pokemonTeam[0].nom == msg[0].nom || msg[0].nom == '' || msg[0].nom == null){
-          console.log("ha entrat?");
-         this.PokemonsRival();
+     
+      socket.on('POKEMONS', (msg)=>{ 
+          console.log("Missatge");
+          console.log(msg)
+        
+        if(msg.player2 != undefined || msg.player2 != null){
+          if( userId.player1 == this.props.location.userId ){          
+              this.setState({pokemonRival : msg.player2})
+              this.setState({render : true})
+          }else if(userId.player2 == this.props.location.userId){  
+              this.setState({pokemonRival : msg.player1})
+              this.setState({render : true})
         }
-        if(this.state.pokemonRival.length == 0){
-          console.log("entra i mostra aquest pokemons");
-          console.log(msg);
-          this.setState({pokemonRival : msg })
-        }
-      })
-      this.setState({render : true})
+      }
+      })    
     }
 
     vida(hostia){
