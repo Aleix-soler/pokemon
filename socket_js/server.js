@@ -33,7 +33,6 @@ io.on('connection', (socket) => {
     }else if(clientRooms["Room"+room].player2 == ''){
       clientRooms["Room"+room].player2 = userId ;
       pokemons["Team"+userId] = data.pokemonsJugador;
-
     }
   
     socket.join(room);

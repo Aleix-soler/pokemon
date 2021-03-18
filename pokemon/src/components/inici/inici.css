@@ -76,7 +76,7 @@
     text-transform: uppercase;
   }  
   #cancelar{
-    width: 70%;
+    width: 20%;
     height: 40px;
     border-radius: 5px;
     color:white;
@@ -126,6 +126,7 @@
     color:white;
   }
   #textError{
+    border-radius: 5px;
     padding: 5px;
     background-color: orangered;
     margin: 0% 31% 2% 31%;
