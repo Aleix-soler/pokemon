@@ -3,35 +3,31 @@
 import React, { Component } from 'react';
 import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.4.230:4444/";
+import url from '../Connections';
+const ENDPOINT = url.SocketUrl;
 const socket = socketIOClient(ENDPOINT);
+
 
 class App extends Component {
   state = {
     pokemonTeam : [],
     pokemonRival :[],
     render : false,
-    idPokemon: 0
   }
 
   componentWillUnmount() {
     socket.close('connect');
-
   }
 
   componentDidMount(){
-    console.log("PROPS",this.props);
-    this.setState({
-      idPokemon: this.props.location.selected
-    })
+
     const room = this.props.match.params.room;
     const nomUser = this.props.location.userId;
     const pokemons = this.props.location.pokemons;
+
     this.setState({
       pokemonTeam : pokemons
     })
-   // console.log("GAME id =>"+room);
-   //console.log("Nom =>"+nomUser);
     this.interval = setInterval(() => {
       this.setToRoom(room,nomUser, pokemons);  
     }, 500);
@@ -42,46 +38,37 @@ class App extends Component {
        socket.emit('ROOM', { room, userId , pokemonsJugador });
         socket.on('RECEIVE_ID', (userId) => {
         console.log(userId);
-        //Mirar si ha passat la id dels 2 players
-        if(userId.player1 !== null && userId.player1 !== ''){
-          if(userId.player2 !== null && userId.player2 !== ''){
             this.renderPokemons(userId)
-          }
-        } 
       });
     }
 
     renderPokemons(userId){
-      console.log(this.state.pokemonTeam)
       clearInterval(this.interval);
      // console.log("Aquest soc jo =>"+ this.props.location.userId);
      // console.log("Player1 =>"+ userId.player1);
      // console.log("Player2 =>"+userId.player2); 
-
-      if(userId.player1 == this.props.location.userId){
-        socket.emit('SEND_POKEMON',userId.player2)
-        this.PokemonsRival()
-      }else if(userId.player2 == this.props.location.userId){
-        socket.emit('SEND_POKEMON',userId.player1)
-        this.PokemonsRival()
-      }  
+        socket.emit('SEND_POKEMON',userId,this.props.match.params.room)
+        this.PokemonsRival(userId)
     }
 
 
-    PokemonsRival(){
+    PokemonsRival(userId){
       console.log("arriba?");
-      socket.on('POKEMONS', (msg)=>{  
-        if(this.state.pokemonTeam[0].nom == msg[0].nom || msg[0].nom == '' || msg[0].nom == null){
-          console.log("ha entrat?");
-         this.PokemonsRival();
+     
+      socket.on('POKEMONS', (msg)=>{ 
+          console.log("Missatge");
+          console.log(msg)
+        
+        if(msg.player2 != undefined || msg.player2 != null){
+          if( userId.player1 == this.props.location.userId ){          
+              this.setState({pokemonRival : msg.player2})
+              this.setState({render : true})
+          }else if(userId.player2 == this.props.location.userId){  
+              this.setState({pokemonRival : msg.player1})
+              this.setState({render : true})
         }
-        if(this.state.pokemonRival.length == 0){
-          console.log("entra i mostra aquest pokemons");
-          console.log(msg);
-          this.setState({pokemonRival : msg })
-        }
-      })
-      this.setState({render : true})
+      }
+      })    
     }
 
     vida(hostia){
@@ -104,22 +91,23 @@ class App extends Component {
           console.log(atac);
         })
     }
-    changePokemon(pos){
-      this.setState({
-        idPokemon: pos
-      });
+    renderBotonsPokemons(){
+      return(
+    this.state.pokemonTeam.map((element , index) =>{
+      if(index != this.state.selected){
+        return(
+          <img height="50px" width="50px" src={element.imatgeGif.front_default}></img>
+        )
+      }
+    })
+    )
     }
-
   render() {
     return (
       <div id={"interficie"}>
         <div id={"myPokemons"}>
-          <img height="50px" width="50px" onClick={() => this.changePokemon(0)} src={this.state.pokemonTeam[0]?.imatgeGif.front_default}></img>
-          <img height="50px" width="50px" onClick={() => this.changePokemon(1)} src={this.state.pokemonTeam[1]?.imatgeGif.front_default}></img>
-          <img height="50px" width="50px" onClick={() => this.changePokemon(2)} src={this.state.pokemonTeam[2]?.imatgeGif.front_default}></img>
-          <img height="50px" width="50px" onClick={() => this.changePokemon(3)} src={this.state.pokemonTeam[3]?.imatgeGif.front_default}></img>
-          <img height="50px" width="50px" onClick={() => this.changePokemon(4)} src={this.state.pokemonTeam[4]?.imatgeGif.front_default}></img>
-          <img height="50px" width="50px" onClick={() => this.changePokemon(5)} src={this.state.pokemonTeam[5]?.imatgeGif.front_default}></img>
+          
+          {this.state.render ? this.renderBotonsPokemons() : null}
         </div>
         <div id={"pokemons"}>
           <div id={"nom"}>
@@ -138,7 +126,7 @@ class App extends Component {
             </div>
             {/*<div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>*/}
           </div>
-          <img id={"spriteBack"} src={this.state.pokemonTeam[this.state.idPokemon]?.imatgeGif.back_default} />
+          <img id={"spriteBack"} src={this.state.pokemonTeam[0]?.imatgeGif.back_default} />
           <img id={"spriteFront"} src={this.state.pokemonRival[0]?.imatgeGif.front_default} />
         </div>
         <div class="bottom-menu">

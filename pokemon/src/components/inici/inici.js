@@ -6,8 +6,9 @@ import React, { Component } from "react";
 import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
 import getPokemon from '../pokemon';
-import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.4.230:4444/";
+import socketIOClient from "socket.io-client";
+import url from '../Connections'  
+const ENDPOINT = url.SocketUrl;
 const socket = socketIOClient(ENDPOINT);
 var error = '';
 var errorClase = '';
@@ -102,7 +103,7 @@ class Inici extends Component {
 
     this.setState({
       gameId: game.room,
-      gameNom : game.nom
+      gameNom : game.name
     });
   }
   
@@ -161,7 +162,7 @@ class Inici extends Component {
             <p style={{fontSize:15 , padding: '2px', border: '1px solid black', marginLeft: '2px', backgroundColor: 'green', color: 'white'}}>PS: {element.stats.vida} </p>  
           </span>
           <div class="classButons">
-            <button class={classe} onClick={()=>this.select(index)}>{text}</button>
+            {<button class={classe} onClick={()=>this.select(index)}>{text}</button>}
             <button class="reroll" onClick={()=>this.reroll(index)}>&#8634;</button>
           </div>
         </div>
@@ -210,7 +211,6 @@ class Inici extends Component {
       gameId: this.state.gameId, 
       userId : this.props.location.userId,
       pokemons : this.state.pokemons,
-      selected: this.state.selected
     }}/>
     :
     null;

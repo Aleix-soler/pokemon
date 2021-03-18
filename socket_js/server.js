@@ -41,18 +41,19 @@ io.on('connection', (socket) => {
   });
 
   
-  socket.on('SEND_POKEMON',(userId)=>{
+  socket.on('SEND_POKEMON',(userId,room)=>{
     console.log("Arriba la peticio?");
     console.log(userId);
-    //console.log(pokemons[userId]);
-    io.emit('POKEMONS',pokemons["Team"+userId])
+    console.log(room);
+    socket.join(room);
+    io.to(room).emit('POKEMONS',{player1:pokemons["Team"+userId.player1],player2:pokemons["Team"+userId.player2]})
+   // io.emit('POKEMONS',{player1:pokemons["Team"+userId.player1],player2:pokemons["Team"+userId.player2]})
   })
 
+  
   socket.on('SEND_ATTACK',data =>{
-
     console.log(data.moviment);
     socket.join(data.room);
-
     socket.broadcast.to(data.room).emit("ATACK",data.moviment)
   })
   
