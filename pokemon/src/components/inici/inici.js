@@ -30,10 +30,7 @@ class Inici extends Component {
     console.log("USERID PROPS=>", this.props.location);
     this.funcioInici();
     this.checkUSER();
-    setTimeout(()=>{
-      this.loadPokemons();
-    },500)
-
+    this.loadPokemons();
     socket.on('connection', () => {
       console.log('CONNECTED');
     });
@@ -230,7 +227,7 @@ class Inici extends Component {
     :
     null;
 
-    const buttons = this.state.waiting && this.state.loading ? 
+    const buttons = this.state.waiting ? 
       <div>
         <h1 id="buscarPartida">S'Esta Buscant Partida</h1>
         <button id="cancelar" onClick={() => this.cancelarBusqueda()}>Cancelar</button>
