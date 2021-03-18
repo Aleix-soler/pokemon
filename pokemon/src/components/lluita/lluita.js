@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://192.168.0.172:4444/";
+const ENDPOINT = "http://172.24.4.230:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 class App extends Component {
@@ -11,13 +11,19 @@ class App extends Component {
     pokemonTeam : [],
     pokemonRival :[],
     render : false,
+    idPokemon: 0
   }
 
   componentWillUnmount() {
     socket.close('connect');
+
   }
 
   componentDidMount(){
+    console.log("PROPS",this.props);
+    this.setState({
+      idPokemon: this.props.location.selected
+    })
     const room = this.props.match.params.room;
     const nomUser = this.props.location.userId;
     const pokemons = this.props.location.pokemons;
@@ -46,6 +52,7 @@ class App extends Component {
     }
 
     renderPokemons(userId){
+      console.log(this.state.pokemonTeam)
       clearInterval(this.interval);
      // console.log("Aquest soc jo =>"+ this.props.location.userId);
      // console.log("Player1 =>"+ userId.player1);
@@ -97,10 +104,23 @@ class App extends Component {
           console.log(atac);
         })
     }
+    changePokemon(pos){
+      this.setState({
+        idPokemon: pos
+      });
+    }
 
   render() {
     return (
       <div id={"interficie"}>
+        <div id={"myPokemons"}>
+          <img height="50px" width="50px" onClick={() => this.changePokemon(0)} src={this.state.pokemonTeam[0]?.imatgeGif.front_default}></img>
+          <img height="50px" width="50px" onClick={() => this.changePokemon(1)} src={this.state.pokemonTeam[1]?.imatgeGif.front_default}></img>
+          <img height="50px" width="50px" onClick={() => this.changePokemon(2)} src={this.state.pokemonTeam[2]?.imatgeGif.front_default}></img>
+          <img height="50px" width="50px" onClick={() => this.changePokemon(3)} src={this.state.pokemonTeam[3]?.imatgeGif.front_default}></img>
+          <img height="50px" width="50px" onClick={() => this.changePokemon(4)} src={this.state.pokemonTeam[4]?.imatgeGif.front_default}></img>
+          <img height="50px" width="50px" onClick={() => this.changePokemon(5)} src={this.state.pokemonTeam[5]?.imatgeGif.front_default}></img>
+        </div>
         <div id={"pokemons"}>
           <div id={"nom"}>
             <p>{this.state.pokemonTeam[0]?.nom}</p>
@@ -116,7 +136,7 @@ class App extends Component {
             </div>
             {/*<div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>*/}
           </div>
-          <img id={"spriteBack"} src={this.state.pokemonTeam[0]?.imatgeGif.back_default} />
+          <img id={"spriteBack"} src={this.state.pokemonTeam[this.state.idPokemon]?.imatgeGif.back_default} />
           <img id={"spriteFront"} src={this.state.pokemonRival[0]?.imatgeGif.front_default} />
         </div>
         <div class="bottom-menu">

@@ -102,7 +102,7 @@ class Inici extends Component {
 
     this.setState({
       gameId: game.room,
-      gameNom : game.name
+      gameNom : game.nom
     });
   }
   
@@ -210,6 +210,7 @@ class Inici extends Component {
       gameId: this.state.gameId, 
       userId : this.props.location.userId,
       pokemons : this.state.pokemons,
+      selected: this.state.selected
     }}/>
     :
     null;
