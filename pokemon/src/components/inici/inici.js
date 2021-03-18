@@ -7,7 +7,7 @@ import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
 import getPokemon from '../pokemon';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.4.230:4444/";
+const ENDPOINT = "http://192.168.92.1:4444/";
 const socket = socketIOClient(ENDPOINT);
 var error = '';
 var errorClase = '';

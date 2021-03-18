@@ -1,10 +1,11 @@
+const { Socket } = require('dgram');
 const express = require('express');
 const httpServer = require('http').Server(express);
 
 const io = require('socket.io')(httpServer, {
     cors: { origin: "*", methods: ["GET", "POST"] }
 });
-
+var currentRoomId
 var pokemons =[]
 var clientRooms = []
 io.on('connection', (socket) => {
@@ -38,6 +39,7 @@ io.on('connection', (socket) => {
     socket.join(room);
     socket.emit('RECEIVE_ID', clientRooms["Room"+room]);
     console.log(`USER ${userId} JOINED ROOM #${room}`);
+    currentRoomId = roomId;
   });
 
   
@@ -56,8 +58,12 @@ io.on('connection', (socket) => {
     socket.broadcast.to(data.room).emit("ATACK",data.moviment)
   })
   
+  socket.on('disconnect', function() {
+    socket.broadcast.in(currentRoomId).emit('user:left', socket.id);
+  });
 
 });
+
 
 
 httpServer.listen(4444, () => {
