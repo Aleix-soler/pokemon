@@ -40,6 +40,8 @@ class Inici extends Component {
       this.receiveGame(game);
       console.log("La room es =>"+game.room);
     });
+
+
   }
   async funcioInici(){
     

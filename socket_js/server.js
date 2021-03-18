@@ -39,7 +39,6 @@ io.on('connection', (socket) => {
     socket.join(room);
     socket.emit('RECEIVE_ID', clientRooms["Room"+room]);
     console.log(`USER ${userId} JOINED ROOM #${room}`);
-    currentRoomId = roomId;
   });
 
   
@@ -51,16 +50,14 @@ io.on('connection', (socket) => {
   })
 
   socket.on('SEND_ATTACK',data =>{
-
     console.log(data.moviment);
     socket.join(data.room);
-
     socket.broadcast.to(data.room).emit("ATACK",data.moviment)
   })
   
-  socket.on('disconnect', function() {
-    socket.broadcast.in(currentRoomId).emit('user:left', socket.id);
-  });
+  socket.on('disconnecting', function(){
+    socket.broadcast.in(currentRoom).emit('user:left', socket.id);
+});
 
 });
 
