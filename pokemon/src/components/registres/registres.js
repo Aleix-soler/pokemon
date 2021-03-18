@@ -113,6 +113,7 @@ class registres extends Component{
         const registre = this.state.registres ?
         <Redirect  to={{
           pathname: `/lobby`,
+          userId:  this.props.location.userId
         }}/>
         :
         null;

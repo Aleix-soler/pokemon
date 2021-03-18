@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.2.92:4444/";
+const ENDPOINT = "http://192.168.0.172:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 class App extends Component {

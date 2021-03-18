@@ -3,8 +3,9 @@ import axios from 'axios';
 import getMoviment from './moviments';
 var numExcluitPokemon = [];
 var random;
+const API_SERVER = "192.168.0.172";
 
-export const getPokemon = async () =>{
+export const getPokemon = async (pos) =>{
     let pokemon = {
             nom : '',
             imatgeBack : '',
@@ -13,38 +14,79 @@ export const getPokemon = async () =>{
             moviments : [],
             stats: { atack : 0 , defensa : 0 , vida : 0 , speed : 0 }
     }
-     random = checkRandom()
+    random = checkRandom();
+    //random = Math.floor(Math.random()*151)+1;
 
-  await axios.get(`https://pokeapi.co/api/v2/pokemon/${random}`)
-  .then(res => {
+    let finito = false;
+    let vegades = 0;
+  while(!finito){
+    try{
+      await axios.get(`https://pokeapi.co/api/v2/pokemon/${random}`)
+      .then(res => {
+        
+        const response = res.data;
+        pokemon.imatgeBack =response.sprites.back_default
+        pokemon.imatgeFront =response.sprites.front_default
+        pokemon.nom =response.name
+        console.log(response.sprites.versions["generation-v"]["black-white"].animated["back_default"]);
+        pokemon.imatgeGif.back_default = response.sprites.versions["generation-v"]["black-white"].animated["back_default"]
+        pokemon.imatgeGif.front_default = response.sprites.versions["generation-v"]["black-white"].animated["front_default"]
+        pokemon.moviments =  getHabilitats(response);
+        pokemon.stats = getStats(response);
     
-    const response = res.data;
-    pokemon.imatgeBack =response.sprites.back_default
-    pokemon.imatgeFront =response.sprites.front_default
-    pokemon.nom =response.name
-    console.log(response.sprites.versions["generation-v"]["black-white"].animated["back_default"]);
-    pokemon.imatgeGif.back_default = response.sprites.versions["generation-v"]["black-white"].animated["back_default"]
-    pokemon.imatgeGif.front_default = response.sprites.versions["generation-v"]["black-white"].animated["front_default"]
-    pokemon.moviments =  getHabilitats(response);
-    pokemon.stats = getStats(response);
-
-  })
-  return(pokemon)
+      })
+      finito = true;
+      random = checkExcep(pos);
+      return(pokemon)
+    }catch(exception){
+      //console.log(exception)
+      console.log("PETAT POKEMON")
+      vegades++;
+      if(vegades == 3){
+        finito = true;
+      }
+    }
+  }
 }
 
 function checkRandom(){
+  //console.log("ARRAY LENGTH =>",numExcluitPokemon.length)
   let trobat = false;
   random = Math.floor(Math.random()*151)+1;
+  //console.log("Entra checkRandom");
   for (let j = 0; j < numExcluitPokemon.length; j++) {
       if(random==numExcluitPokemon[j]){
           random = Math.floor(Math.random()*151)+1;
-          numExcluitPokemon.push(random);
           trobat = true;
           checkRandom();
       }
   }
-  if(!trobat){ return(random) }
+  if(!trobat){ 
+    if(numExcluitPokemon.length==6){
+      numExcluitPokemon=[];
+    }
+    numExcluitPokemon.push(random);
+    return(random) 
+  }
 }
+function checkExcep(pos){
+  //console.log("ARRAY LENGTH =>",numExcluitPokemon.length)
+  let trobat = false;
+  random = Math.floor(Math.random()*151)+1;
+  //console.log("Entra checkRandom");
+  for (let j = 0; j < numExcluitPokemon.length; j++) {
+      if(random==numExcluitPokemon[j]){
+          random = Math.floor(Math.random()*151)+1;
+          trobat = true;
+          checkRandom();
+      }
+  }
+  if(!trobat){ 
+    numExcluitPokemon[pos] = random;
+    return(random) 
+  }
+}
+
 function getStats(pokemon){
   let stats = {atack : 0 , defensa : 0 , vida : 0}
   pokemon.stats.forEach(element => {
