@@ -49,7 +49,6 @@ io.on('connection', (socket) => {
   })
 
   socket.on('SEND_ATTACK',data =>{
-
     console.log(data.moviment);
     socket.join(data.room);
 

@@ -6,8 +6,9 @@ import React, { Component } from "react";
 import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
 import getPokemon from '../pokemon';
-import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.4.230:4444/";
+import socketIOClient from "socket.io-client";
+import url from '../Connections'  
+const ENDPOINT = url.SocketUrl;
 const socket = socketIOClient(ENDPOINT);
 var error = '';
 var errorClase = '';
