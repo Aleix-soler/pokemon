@@ -7,8 +7,10 @@ import style from "./inici.css";
 import { Redirect } from 'react-router-dom';
 import getPokemon from '../pokemon';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.2.92:4444/";
+const ENDPOINT = "http://172.24.4.230:4444/";
 const socket = socketIOClient(ENDPOINT);
+var error = '';
+var errorClase = '';
 
 
 
@@ -20,17 +22,15 @@ class Inici extends Component {
     error: null,
     gameId: null,
     waiting: false,
-    selected: 0
+    selected: 0,
   };
   componentDidMount(){
     console.log("HEY P");
     //POSAR USERID AL LOCALSTORAGE
-    if(localStorage.getItem("userid")==null){
-      console.log("USERID EN EL LOCALSTORAGE")
-      localStorage.setItem("userid", this.props.location.userId);
-    }
+    console.log("USERID PROPS=>", this.props.location);
+    this.funcioInici();
+    this.checkUSER();
     this.loadPokemons();
-
     socket.on('connection', () => {
       console.log('CONNECTED');
     });
@@ -40,6 +40,26 @@ class Inici extends Component {
       this.receiveGame(game);
       console.log("La room es =>"+game.room);
     });
+  }
+  async funcioInici(){
+    
+  }
+  //COMPROBA SI TE USERID SI NO ES AIXI ET REDIRIEGIX A L'INICI
+  checkUSER(){
+    console.log(this.props.location.userId)
+    if(this.props.location.userId == undefined || this.props.location.userId == null){
+      var jugar = document.getElementById("jugar");
+      var reg = document.getElementById("registre");
+      jugar.disabled = true;
+      jugar.style.backgroundColor="lightgrey";
+      reg.disabled = true;
+      reg.style.backgroundColor="lightgrey";
+      errorClase = "textError";
+      error = "No tens Identificador, Torna a loginejar-te per obtenir-lo!";
+    }else{
+      errorClase = "";
+      error = "";
+    }
   }
 
   //Crea la room i si no la troba amb x segons salta un error
@@ -96,7 +116,7 @@ class Inici extends Component {
 }
 
   async reroll(pokeReroll){
-    await getPokemon().then((res)=>{
+    await getPokemon(pokeReroll).then((res)=>{
       let aux = this.state.pokemons;
       aux[pokeReroll] = res;
       this.setState({pokemons : aux})
@@ -193,7 +213,7 @@ class Inici extends Component {
     }}/>
     :
     null;
-    const logout = this.state.logout ?
+    const logout = this.state.logout || this.state.check ?
     <Redirect  to={{
       pathname: `/`,
     }}/>
@@ -202,6 +222,7 @@ class Inici extends Component {
     const registre = this.state.registres ?
     <Redirect  to={{
       pathname: `/registres`,
+      userId:  this.props.location.userId
     }}/>
     :
     null;
@@ -212,11 +233,14 @@ class Inici extends Component {
         <button id="cancelar" onClick={() => this.cancelarBusqueda()}>Cancelar</button>
       </div> 
      :
+     <div>
      <div id="divButons">
       <button id="registre" onClick={()=>this.registres()}>REGISTRES</button>
       <button id="jugar" onClick={()=>this.play()}>PLAY</button>
       <button id="logout" onClick={() => this.logout()}>LOGOUT</button>
-     </div>;
+     </div>
+      <div id={errorClase}>{error}</div>
+    </div>;
       
     return (
       
@@ -229,6 +253,7 @@ class Inici extends Component {
         </div>
         <div id="contenedor">
           {buttons}
+
           <div  style={{ display:'flex',flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', width: '100%'}}> 
             {this.state.loading ? null :  this.renderPokemons()} 
           </div>

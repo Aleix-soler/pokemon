@@ -23,11 +23,6 @@ io.on('connection', (socket) => {
      io.emit('START_GAME', game);
   })
 
-  socket.on('MOVE_PIECE', (data) => {
-    console.log('RECEIVED MOVE', data);
-    io.emit('PUSH_MOVE', data); 
-  });
-
   socket.on('ROOM', (data) => {
     // console.log(data);
     const { room, userId  } = data;
@@ -38,13 +33,14 @@ io.on('connection', (socket) => {
     }else if(clientRooms["Room"+room].player2 == ''){
       clientRooms["Room"+room].player2 = userId ;
       pokemons["Team"+userId] = data.pokemonsJugador;
-
     }
   
     socket.join(room);
     socket.emit('RECEIVE_ID', clientRooms["Room"+room]);
     console.log(`USER ${userId} JOINED ROOM #${room}`);
   });
+
+  
   socket.on('SEND_POKEMON',(userId)=>{
     console.log("Arriba la peticio?");
     console.log(userId);
@@ -52,14 +48,14 @@ io.on('connection', (socket) => {
     io.emit('POKEMONS',pokemons["Team"+userId])
   })
 
-  socket.on('SELECT_PIECE', (data) => {
-    io.emit('PUSH_SELECT_PIECE', data);
-  });
+  socket.on('SEND_ATTACK',data =>{
 
+    console.log(data.moviment);
+    socket.join(data.room);
 
-  socket.on('SET_IDS', (ids) => {
-    io.emit('RECEIVE_IDS', ids);
+    socket.broadcast.to(data.room).emit("ATACK",data.moviment)
   })
+  
 
 });
 
@@ -68,3 +64,12 @@ httpServer.listen(4444, () => {
     console.log("[SERVER] Listening at port 4444");
 })
 
+/*
+
+socket.on('SEND_POKEMON',(userId)=>{
+    console.log("Arriba la peticio?");
+    console.log(userId);
+    //console.log(pokemons[userId]);
+    io.emit('POKEMONS',pokemons["Team"+userId])
+  })
+  */

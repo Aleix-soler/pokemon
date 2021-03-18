@@ -17,7 +17,7 @@
 }
 #username{
     font-size: medium;
-    width: 80%;
+    width: 68%;
     text-align: center;
     margin: 0px 0px 5px 0px;
     border-radius: 5px;
@@ -25,14 +25,14 @@
 }
 #password{
     font-size: medium;
-    width: 80%;
+    width: 68%;
     text-align: center;
     border-radius: 5px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin: 0px 0px 10px 0px;
 }
 .button{
-    width: 80%;
+    width: 35%;
     height: 40px;
     border-radius: 5px;
     color:white;
@@ -44,7 +44,7 @@
     background-color: crimson;
 }
 #anonymous{
-    width: 80%;
+    width: 70%;
     height: 40px;
     border-radius: 5px;
     color:white;

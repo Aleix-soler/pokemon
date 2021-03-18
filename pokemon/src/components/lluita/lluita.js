@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import styles from './lluita.css';
 import socketIOClient from "socket.io-client";  
-const ENDPOINT = "http://172.24.2.92:4444/";
+const ENDPOINT = "http://192.168.0.172:4444/";
 const socket = socketIOClient(ENDPOINT);
 
 class App extends Component {
@@ -58,8 +58,8 @@ class App extends Component {
         socket.emit('SEND_POKEMON',userId.player1)
         this.PokemonsRival()
       }  
-    
     }
+
 
     PokemonsRival(){
       console.log("arriba?");
@@ -88,6 +88,14 @@ class App extends Component {
       else if (this.state.pokemon.stats.vida <= aux/4){
         document.getElementById("vida").style.backgroundColor = "red";
       }
+    }
+
+    enviarAtack(numMviment){
+      console.log("Entra enviat Atack");
+        socket.emit('SEND_ATTACK',{ moviment :numMviment, room :this.props.match.params.room});
+        socket.on('ATACK',(atac)=>{
+          console.log(atac);
+        })
     }
 
   render() {
@@ -120,7 +128,7 @@ class App extends Component {
         (
         <div class="box">
           <div class="actions">
-          <button>{this.state.pokemonTeam[0]?.moviments[0] ? this.state.pokemonTeam[0]?.moviments[0].nom : 'UPS'}</button>
+          <button onClick={()=>{this.enviarAtack(0)}}>{this.state.pokemonTeam[0]?.moviments[0] ? this.state.pokemonTeam[0]?.moviments[0].nom : 'UPS'}</button>
           <button>{this.state.pokemonTeam[0]?.moviments[1] ? this.state.pokemonTeam[0]?.moviments[1].nom : 'UPS'}</button>
           <button>{this.state.pokemonTeam[0]?.moviments[2] ? this.state.pokemonTeam[0]?.moviments[2].nom : 'UPS'}</button>
           <button>{this.state.pokemonTeam[0]?.moviments[3] ? this.state.pokemonTeam[0]?.moviments[3].nom : 'UPS'}</button>

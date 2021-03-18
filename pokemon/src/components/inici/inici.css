@@ -33,6 +33,7 @@
   #img1{
      width: 80%;
      height: 50%;
+     max-height: 150px;
     padding-left:25px;
   }
  
@@ -75,7 +76,7 @@
     text-transform: uppercase;
   }  
   #cancelar{
-    width: 70%;
+    width: 20%;
     height: 40px;
     border-radius: 5px;
     color:white;
@@ -124,7 +125,10 @@
   #buscarPartida{
     color:white;
   }
-  
-  
-  
-  
+  #textError{
+    border-radius: 5px;
+    padding: 5px;
+    background-color: orangered;
+    margin: 0% 31% 2% 31%;
+    color: white;
+  } 
