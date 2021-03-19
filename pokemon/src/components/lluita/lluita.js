@@ -13,6 +13,7 @@ class App extends Component {
     pokemonTeam : [],
     pokemonRival :[],
     render : false,
+    isYourTurn : true,
     selected: 0,
     rivalSelected: 0
   }
@@ -36,7 +37,7 @@ class App extends Component {
     const pokemons = this.props.location.pokemons;
     const selectedProps = this.props.location.selected;
     console.log("USERID",this.props);
-    this.changeSelectedPokemon(selectedProps);
+
     this.setState({
       pokemonTeam : pokemons,
       selected: selectedProps
@@ -44,6 +45,19 @@ class App extends Component {
     this.interval = setInterval(() => {
       this.setToRoom(room,nomUser, pokemons);  
     }, 500);
+
+
+    socket.on('ATACK',(atac)=>{
+      console.log(atac);
+      this.setState({isYourTurn : true})
+    })
+
+    socket.on("SELECTED", (info)=>{
+      console.log(info);
+      this.setState({ rivalSelected: info })
+      this.setState({isYourTurn : true})
+    })
+    
     }
 
     setToRoom(room,userId ,pokemonsJugador){
@@ -75,11 +89,15 @@ class App extends Component {
         
         if(msg.player2 != undefined || msg.player2 != null){
           if( userId.player1 == this.props.location.userId ){          
+
               this.setState({pokemonRival : msg.player2})
               this.setState({render : true})
+              this.setState({isYourTurn : false});
+
           }else if(userId.player2 == this.props.location.userId){  
               this.setState({pokemonRival : msg.player1})
               this.setState({render : true})
+              this.setState({isYourTurn : true})
         }
       }
       })    
@@ -100,24 +118,17 @@ class App extends Component {
 
     enviarAtack(numMviment){
       console.log("Entra enviat Atack");
-        socket.emit('SEND_ATTACK',{ moviment:numMviment, room:this.props.match.params.room, userId:this.props.location.userId});
-        socket.on('ATACK',(atac)=>{
-          console.log(atac);
-        })
+      this.setState({isYourTurn : false})
+        socket.emit('SEND_ATTACK',{ moviment :numMviment, room :this.props.match.params.room});
     }
     changeSelectedPokemon(pos){
+      this.setState({isYourTurn : false})
       socket.emit("SELECTED_POKEMONS", {room:this.props.match.params.room, userId:this.props.location.userId, selected:pos});
-      socket.on("SELECTED", (info)=>{
-        console.log(info);
-        this.setState({
-          rivalSelected: info
-        })
-      })
+
       this.setState({
         selected: pos
       })
     }
-
     renderBotonsPokemons(){
       let imgHeight = "100px";
       let imgWidth = "100px";
@@ -140,19 +151,19 @@ class App extends Component {
         <div id={"pokemons"}>
           <div id={"nom"}>
             <div id={"informacio"}>
-            <p>{this.state.pokemonTeam[0]?.nom}</p>
+              <p>{this.state.pokemonTeam[0]?.nom}</p>
             </div>
             <div id={"barra"}>
                 <div id={"vida"}></div>
             </div>
-            {/*<div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>*/}
+            <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>
           </div>
           <div id={"nomEnemic"}>
             <p>{this.state.pokemonRival[this.state.rivalSelected]?.nom}</p>
             <div id={"barraEnemic"}>
               <div id={"vidaEnemic"}></div>
             </div>
-            {/*<div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>*/}
+          <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>
           </div>
           <img id={"spriteBack"} src={this.state.pokemonTeam[this.state.selected]?.imatgeGif.back_default} />
           <img id={"spriteFront"} src={this.state.pokemonRival[this.state.rivalSelected]?.imatgeGif.front_default} />
@@ -163,12 +174,22 @@ class App extends Component {
         {this.state.render ?  
         (
         <div class="box">
-          <div class="actions">
-          <button onClick={()=>{this.enviarAtack(0)}}>{this.state.pokemonTeam[this.state.selected]?.moviments[0] ? this.state.pokemonTeam[this.state.selected]?.moviments[0].nom : 'UPS'}</button>
-          <button>{this.state.pokemonTeam[this.state.selected]?.moviments[2] ? this.state.pokemonTeam[this.state.selected]?.moviments[2].nom : 'UPS'}</button>
-          <button>{this.state.pokemonTeam[this.state.selected]?.moviments[3] ? this.state.pokemonTeam[this.state.selected]?.moviments[3].nom : 'UPS'}</button>
-          <button>{this.state.pokemonTeam[this.state.selected]?.moviments[1] ? this.state.pokemonTeam[this.state.selected]?.moviments[1].nom : 'UPS'}</button>
-          </div>
+          {this.state.isYourTurn ?
+          (
+            <div class="actions">
+            <button onClick={()=>{this.enviarAtack(0)}}>{this.state.pokemonTeam[0]?.moviments[0] ? this.state.pokemonTeam[0]?.moviments[0].nom : 'UPS'}</button>
+            <button onClick={()=>{this.enviarAtack(1)}}>{this.state.pokemonTeam[0]?.moviments[1] ? this.state.pokemonTeam[0]?.moviments[1].nom : 'UPS'}</button>
+            <button onClick={()=>{this.enviarAtack(2)}}>{this.state.pokemonTeam[0]?.moviments[2] ? this.state.pokemonTeam[0]?.moviments[2].nom : 'UPS'}</button>
+            <button onClick={()=>{this.enviarAtack(3)}}>{this.state.pokemonTeam[0]?.moviments[3] ? this.state.pokemonTeam[0]?.moviments[3].nom : 'UPS'}</button>
+            </div>
+          ):
+          (
+            <div class="actions">
+              <h1>Esperant el rival ...</h1>
+            </div>
+          )
+        }
+         
         </div>
         ) 
         :

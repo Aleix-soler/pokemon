@@ -56,11 +56,12 @@ io.on('connection', (socket) => {
     socket.join(data.room);
     socket.broadcast.to(data.room).emit("ATACK",data.moviment)
   })
+
   socket.on('SELECTED_POKEMONS', data => {
     console.log(data.userId);
     console.log(data.selected);
     console.log(data.room)
-    socket.broadcast.to(data.room).emit("SELECTED", data.selected);
+    socket.broadcast.to(data.room).emit("SELECTED", (data.userId, data.selected));
   })
   
 
@@ -70,6 +71,16 @@ io.on('connection', (socket) => {
 httpServer.listen(4444, () => {
     console.log("[SERVER] Listening at port 4444");
 })
+
+/*
+
+socket.on('SEND_POKEMON',(userId)=>{
+    console.log("Arriba la peticio?");
+    console.log(userId);
+    //console.log(pokemons[userId]);
+    io.emit('POKEMONS',pokemons["Team"+userId])
+  })
+  */
 
 /*
 
