@@ -2,15 +2,26 @@
 import React, { Component } from "react";
 import style from './login.css';
 import { Redirect } from 'react-router-dom';
-
-const API_SERVER = "172.24.4.230";
+import url from '../Connections'  
+const API_SERVER = url.Ip;
 
 class login extends Component{
 
     state={
         userId: null
     }
-
+    //COMPROBAR SI HI HA UN USERID al localStorage
+    /*
+    componentDidMount(){
+        let userID = localStorage.getItem('userId');
+        if(userID!=null&&userID!=undefined){
+            console.log("hi ha id")
+            this.setState({
+                userId: userID
+            })
+        }
+    }
+    */
     async loginPetition(){
         let user = document.getElementById('username');
         let pass = document.getElementById('password');

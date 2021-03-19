@@ -50,12 +50,18 @@ io.on('connection', (socket) => {
     io.to(room).emit('POKEMONS',{player1:pokemons["Team"+userId.player1],player2:pokemons["Team"+userId.player2]})
    // io.emit('POKEMONS',{player1:pokemons["Team"+userId.player1],player2:pokemons["Team"+userId.player2]})
   })
-
   
   socket.on('SEND_ATTACK',data =>{
+    //console.log(data)
     console.log(data.moviment);
     socket.join(data.room);
     socket.broadcast.to(data.room).emit("ATACK",data.moviment)
+  })
+  socket.on('SELECTED_POKEMONS', data => {
+    console.log(data.userId);
+    console.log(data.selected);
+    console.log(data.room)
+    socket.broadcast.to(data.room).emit("SELECTED", (data.userId, data.selected));
   })
   
   socket.on('disconnecting', function(){

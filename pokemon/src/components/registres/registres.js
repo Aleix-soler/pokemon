@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import styles from './registres.css';
 import { Redirect } from 'react-router-dom';
-
-const API_SERVER = "172.24.4.230";
+import url from '../Connections'  
+const API_SERVER = url.Ip;
 
 class registres extends Component{
     infoAPI = null;
@@ -24,6 +24,7 @@ class registres extends Component{
         }
     }
     componentDidMount(){
+        console.log(API_SERVER)
         this.obtenirDataPag();
     }
     async obtenirDataPag(){
