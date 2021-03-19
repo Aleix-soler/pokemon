@@ -49,6 +49,7 @@ class App extends Component {
 
     socket.on('ATACK',(atac)=>{
       console.log(atac);
+      this.vida(atac,this.state.selected);
       if(!this.checkPS(this.state.selected)){
         let trobat = false;
         let aux;
@@ -118,27 +119,40 @@ class App extends Component {
       })    
     }
 
-    vida(hostia){
-      let aux = this.state.pokemon.vida;
-      this.state.percent = hostia * 100 / this.state.pokemon.stats.vida;
-      document.getElementById("vida").style.marginRight = this.state.percent + "%";
-      this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
-      if (this.state.pokemon.stats.vida <= aux/2){
-        document.getElementById("vida").style.backgroundColor = "yellow";
-      } 
-      else if (this.state.pokemon.stats.vida <= aux/4){
-        document.getElementById("vida").style.backgroundColor = "red";
+    vida(hostia,id){
+      if(this.state.isYourTurn){
+        let aux = this.state.pokemonRival[id].stats.vida;
+         let percent = hostia * 100 / this.state.pokemonRival[id].stats.vida;
+        document.getElementById("vidaEnemic").style.marginRight = percent + "%";
+        this.state.pokemonRival[id].stats.vida = this.state.pokemonRival[id].stats.vida - hostia;
+        if (this.state.pokemonRival[id].stats.vida <= aux/2){
+          document.getElementById("vidaEnemic").style.backgroundColor = "yellow";
+        } 
+        else if (this.state.pokemonRival[id].stats.vida <= aux/4){
+          document.getElementById("vidaEnemic").style.backgroundColor = "red";
+        }
+      }else{
+        let aux = this.state.pokemonTeam[id].stats.vida;
+        let percent = hostia * 100 / this.state.pokemonTeam[id].stats.vida;
+        document.getElementById("vida").style.marginRight = this.state.percent + "%";
+        this.state.pokemonTeam[id].stats.vida = this.state.pokemonTeam[id].stats.vida - hostia;
+        if (this.state.pokemonTeam[id].stats.vida <= aux/2){
+          document.getElementById("vida").style.backgroundColor = "yellow";
+        } 
+        else if (this.state.pokemonTeam[id].stats.vida <= aux/4){ 
+          document.getElementById("vida").style.backgroundColor = "red";
+        }
       }
     }
-
+/*
     zeroPS(){
       this.state.pokemonTeam[this.state.selected].stats.vida = 0;
       console.log("zerops")
       this.changeSelectedPokemon(this.state.selected)
     }
-
+*/
     checkPS(pos){
-      if(this.state.pokemonTeam[pos].stats.vida==0){
+      if(this.state.pokemonTeam[pos].stats.vida <=0){
         return false;
       }else{
         return true;
@@ -146,9 +160,22 @@ class App extends Component {
     }
 
     enviarAtack(numMviment){
-      console.log("Entra enviat Atack");
+
+      //mirar si un moviment no te poder i assignar-li 50 de poder
+      if(this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power <= 0){
+        console.log("No te poder");
+        console.log(this.state.pokemonTeam[this.state.selected].moviments[numMviment]);
+        this.state.pokemonTeam[this.state.selected].moviments[numMviment].power = 50;
+      }
+
       this.setState({isYourTurn : false})
-        socket.emit('SEND_ATTACK',{ moviment :numMviment, room :this.props.match.params.room});
+
+      var Damage = this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power; 
+     // Damage = ((((2/5 + 2) * this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power * (this.state.pokemonTeam[this.state.selected].stats.atack/this.state.pokemonRival[this.state.rivalSelected].stats.defensa))/30)+2);
+      this.vida(Damage,this.state.rivalSelected);
+
+      console.log("Envia atac Amb un total de mal de =>" + Damage);
+        socket.emit('SEND_ATTACK',{ moviment : Damage, room :this.props.match.params.room});
     }
     changeSelectedPokemon(pos){
       if(this.checkPS(pos)){
@@ -160,14 +187,13 @@ class App extends Component {
         })
       }else{
         console.log("NO PS");
-      }
+      }}
 
-    }
-    renderBotonsPokemons(){
+  renderBotonsPokemons(){
       let imgHeight = "100px";
       let imgWidth = "100px";
 
-      return(
+    return(
     this.state.pokemonTeam.map((element , index) =>{
       let classe
       if(this.state.pokemonTeam[index].stats.vida==0){
@@ -177,12 +203,13 @@ class App extends Component {
       }
       if(index != this.state.selected){
         return(
-          <img class={classe} height={imgHeight} width={imgWidth} onClick={()=>this.changeSelectedPokemon(index)} src={element.imatgeGif.front_default}></img>
+          <img class={classe} height={imgHeight} width={imgWidth} onClick={()=>{if(this.state.isYourTurn)this.changeSelectedPokemon(index)}} src={element.imatgeGif.front_default}></img>
         )
       }
     })
     )
-    }
+  }
+  
   render() {
     return (
       <div id={"interficie"}>
