@@ -36,7 +36,7 @@ class App extends Component {
     const pokemons = this.props.location.pokemons;
     const selectedProps = this.props.location.selected;
     console.log("USERID",this.props);
-
+    this.changeSelectedPokemon(selectedProps);
     this.setState({
       pokemonTeam : pokemons,
       selected: selectedProps
@@ -140,7 +140,7 @@ class App extends Component {
         <div id={"pokemons"}>
           <div id={"nom"}>
             <div id={"informacio"}>
-              <p>{this.state.pokemonTeam[0]?.nom}</p>
+            <p>{this.state.pokemonTeam[0]?.nom}</p>
             </div>
             <div id={"barra"}>
                 <div id={"vida"}></div>

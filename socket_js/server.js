@@ -60,7 +60,7 @@ io.on('connection', (socket) => {
     console.log(data.userId);
     console.log(data.selected);
     console.log(data.room)
-    socket.broadcast.to(data.room).emit("SELECTED", (data.userId, data.selected));
+    socket.broadcast.to(data.room).emit("SELECTED", data.selected);
   })
   
 
