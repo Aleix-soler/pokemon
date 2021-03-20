@@ -5,6 +5,7 @@ import Pokemon from './components/lluita/lluita';
 import Inici from './components/inici/inici';
 import login from './components/login/login';
 import registres from './components/registres/registres';
+import gameOver from './components/gameOver/gameOver';
 
 class App extends Component {
   render() {    
@@ -17,6 +18,7 @@ class App extends Component {
               <Route exact path="/" component={login}/>
               <Route path="/lluita/:room" component={Pokemon} />
               <Route path="/registres" component={registres} />
+              <Route path="/game_over" component={gameOver} />
             </Switch>
           </div>
         </div>
