@@ -14,7 +14,7 @@ class App extends Component {
     pokemonTeam : [],
     pokemonRival :[],
     render : false,
-    isYourTurn : true,
+    isYourTurn : false,
     selected: 0,
     rivalSelected: 0,
     guanyador: false
@@ -85,17 +85,9 @@ class App extends Component {
 
     socket.on("SELECTED", (info)=>{
       console.log(info);
+      this.setState({isYourTurn : true})
       this.setState({ rivalSelected: info })
-      this.vida(0, this.state.rivalSelected);
-      //this.setState({isYourTurn : true})
-    })
-    socket.on("SELECTED_PRE", (info)=>{
-      console.log(info);
-      this.setState({ rivalSelected: info })
-      this.vida(0, this.state.rivalSelected);
-      //this.setState({isYourTurn : true})
-    })
-    
+    })    
     }
 
     setToRoom(room,userId ,pokemonsJugador){
@@ -115,9 +107,6 @@ class App extends Component {
         }
         console.log("ENEMY ID=>",this.state.enemyId)
         this.renderPokemons(userId);
-          setTimeout(()=>{
-            this.changeSelectedPokemonPre(this.state.selected);
-          },100)
       });
     }
 
@@ -204,7 +193,8 @@ class App extends Component {
     }
 
     enviarAtack(numMviment){
-
+      console.log(this.state.isYourTurn);
+      this.setState({isYourTurn : false})
       //mirar si un moviment no te poder i assignar-li 50 de poder
       if(this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power <= 0){
         console.log("No te poder");
@@ -212,7 +202,7 @@ class App extends Component {
         this.state.pokemonTeam[this.state.selected].moviments[numMviment].power = 50;
       }
 
-      this.setState({isYourTurn : false})
+
 
       var Damage = this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power; 
      // Damage = ((((2/5 + 2) * this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power * (this.state.pokemonTeam[this.state.selected].stats.atack/this.state.pokemonRival[this.state.rivalSelected].stats.defensa))/30)+2);
@@ -221,21 +211,11 @@ class App extends Component {
       console.log("Envia atac Amb un total de mal de =>" + Damage);
         socket.emit('SEND_ATTACK',{ moviment : Damage, room :this.props.match.params.room});
     }
+
     changeSelectedPokemon(pos){
       if(this.checkPS(pos)){
         this.setState({isYourTurn : false})
         socket.emit("SELECTED_POKEMONS", {room:this.props.match.params.room, userId:this.props.location.userId, selected:pos});
-  
-        this.setState({
-          selected: pos
-        })
-        this.vida(0, pos);
-      }else{
-        console.log("NO PS");
-      }}
-    changeSelectedPokemonPre(pos){
-      if(this.checkPS(pos)){
-        socket.emit("SELECTED_POKEMONS_PRE", {room:this.props.match.params.room, userId:this.props.location.userId, selected:pos});
   
         this.setState({
           selected: pos
