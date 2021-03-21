@@ -63,7 +63,13 @@ io.on('connection', (socket) => {
     console.log(data.room)
     socket.broadcast.to(data.room).emit("SELECTED", (data.userId, data.selected));
   })  
-
+  //PER POSAR ELS POKEMONS ELS CUALS HAN SELECCIONAT A EL LOBBY
+  socket.on('SELECTED_POKEMONS_PRE', data => {
+    console.log(data.userId);
+    console.log(data.selected);
+    console.log(data.room)
+    socket.broadcast.to(data.room).emit("SELECTED_PRE", (data.userId, data.selected));
+  })
   socket.on('GAME_OVER', data => {
     console.log(data)
     console.log("GAME OVER")
