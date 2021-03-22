@@ -57,13 +57,25 @@ io.on('connection', (socket) => {
     socket.join(data.room);
     socket.broadcast.to(data.room).emit("ATACK",data.moviment)
   })
+
   socket.on('SELECTED_POKEMONS', data => {
     console.log(data.userId);
     console.log(data.selected);
     console.log(data.room)
     socket.broadcast.to(data.room).emit("SELECTED", (data.userId, data.selected));
+  })  
+  //PER POSAR ELS POKEMONS ELS CUALS HAN SELECCIONAT A EL LOBBY
+  socket.on('SELECTED_POKEMONS_PRE', data => {
+    console.log(data.userId);
+    console.log(data.selected);
+    console.log(data.room)
+    socket.broadcast.to(data.room).emit("SELECTED_PRE", (data.userId, data.selected));
   })
-  
+  socket.on('GAME_OVER', data => {
+    console.log(data)
+    console.log("GAME OVER")
+    socket.broadcast.to(data.room).emit("GUANYADOR", data.userId);
+  })
 
 });
 
@@ -72,6 +84,16 @@ io.on('connection', (socket) => {
 httpServer.listen(4444, () => {
     console.log("[SERVER] Listening at port 4444");
 })
+
+/*
+
+socket.on('SEND_POKEMON',(userId)=>{
+    console.log("Arriba la peticio?");
+    console.log(userId);
+    //console.log(pokemons[userId]);
+    io.emit('POKEMONS',pokemons["Team"+userId])
+  })
+  */
 
 /*
 

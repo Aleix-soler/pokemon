@@ -101,7 +101,9 @@
   border: 1px solid rgb(46, 21, 21);
   border-radius: 5px;
 }
-
+.noHP{
+  background-color: red;
+}
 #nomEnemic{
   text-transform: capitalize;
   position: fixed;
