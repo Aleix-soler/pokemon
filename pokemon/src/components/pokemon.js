@@ -12,7 +12,7 @@ export const getPokemon = async (pos) =>{
             imatgeFront : '',
             imatgeGif :{ front_default : '' , back_default : ''},
             moviments : [],
-            stats: { atack : 0 , defensa : 0 , vida : 0 , speed : 0 }
+            stats: { atack : 0 , defensa : 0 , vida : 0 , speed : 0 , vidaQueLiQueda : 0 }
     }
     random = checkRandom();
     //random = Math.floor(Math.random()*151)+1;
@@ -101,6 +101,7 @@ function getStats(pokemon){
         break;
       case "hp":
         stats.vida = element.base_stat
+        stats.vidaQueLiQueda = element.base_stat;
         break;
       case "speed":
         stats.speed = element.base_stat

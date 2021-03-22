@@ -28,26 +28,19 @@ class App extends Component {
 
     const room = this.props.match.params.room;
     const nomUser = this.props.location.userId;
-    //CHECK USER ID
-    /*
-    if(this.props.location.userId == null || this.props.location.userId == undefined){
-      console.log(localStorage.getItem('userId'))
-    }else{
-      console.log()
-    }
-    */
     const pokemons = this.props.location.pokemons;
     const selectedProps = this.props.location.selected;
+
     console.log("USERID",this.props);
 
     this.setState({
       pokemonTeam : pokemons,
       selected: selectedProps
     })
+    console.log(pokemons);
     this.interval = setInterval(() => {
       this.setToRoom(room,nomUser, pokemons);  
     }, 500);
-
 
     socket.on('ATACK',(atac)=>{
       console.log(atac);
@@ -87,14 +80,9 @@ class App extends Component {
       console.log(info);
       this.setState({ rivalSelected: info })
       this.vida(0, this.state.rivalSelected);
-      //this.setState({isYourTurn : true})
+      if(!this.state.isYourTurn){this.setState({isYourTurn : true})}
     })
-    socket.on("SELECTED_PRE", (info)=>{
-      console.log(info);
-      this.setState({ rivalSelected: info })
-      this.vida(0, this.state.rivalSelected);
-      //this.setState({isYourTurn : true})
-    })
+
     
     }
 
@@ -115,9 +103,7 @@ class App extends Component {
         }
         console.log("ENEMY ID=>",this.state.enemyId)
         this.renderPokemons(userId);
-          setTimeout(()=>{
-            this.changeSelectedPokemonPre(this.state.selected);
-          },100)
+        
       });
     }
 
@@ -157,37 +143,23 @@ class App extends Component {
         }
       }
       })    
-    }
+    } 
 
     vida(hostia,id){
       if(this.state.isYourTurn){
-        let aux = this.state.pokemonRival[id].stats.vida;
-        let percent = hostia * 100 / this.state.pokemonRival[id].stats.vida;
-        document.getElementById("vidaEnemic").style.marginRight = percent + "%";
-        this.state.pokemonRival[id].stats.vida = this.state.pokemonRival[id].stats.vida - hostia;
-        if(this.state.pokemonTeam[id].stats.vida > aux/2){
-          document.getElementById("vida").style.backgroundColor = "green";
-        }else if (this.state.pokemonRival[id].stats.vida <= aux/2){
-          document.getElementById("vidaEnemic").style.backgroundColor = "yellow";
-        } 
-        else if (this.state.pokemonRival[id].stats.vida <= aux/4){
-          document.getElementById("vidaEnemic").style.backgroundColor = "red";
-        }
+        console.log("La vida que li quead es"+  this.state.pokemonRival[id].stats.vidaQueLiQueda);
+        this.state.pokemonRival[id].stats.vidaQueLiQueda -=  hostia;
+        console.log("hey hey enetra aeffs");
+        console.log(this.state.pokemonTeam[id].stats.vidaQueLiQueda);
+
       }else{
-        let aux = this.state.pokemonTeam[id].stats.vida;
-        let percent = hostia * 100 / this.state.pokemonTeam[id].stats.vida;
-        document.getElementById("vida").style.marginRight = percent + "%";
-        this.state.pokemonTeam[id].stats.vida = this.state.pokemonTeam[id].stats.vida - hostia;
-        if(this.state.pokemonTeam[id].stats.vida > aux/2){
-          document.getElementById("vida").style.backgroundColor = "green";
-        }else if (this.state.pokemonTeam[id].stats.vida <= aux/2){
-          document.getElementById("vida").style.backgroundColor = "yellow";
-        } 
-        else if (this.state.pokemonTeam[id].stats.vida <= aux/4){ 
-          document.getElementById("vida").style.backgroundColor = "red";
-        }
+        console.log("La vida que li quead es"+  this.state.pokemonTeam[id].stats.vidaQueLiQueda);
+        this.state.pokemonTeam[id].stats.vidaQueLiQueda -= hostia;
+        console.log("hey hey enetra aeffs");
+        console.log(this.state.pokemonTeam[id].stats.vidaQueLiQueda);
       }
     }
+    //this.state.pokemonTeam[id].stats.vida = this.state.pokemonTeam[id].stats.vida - hostia;
 /*
     zeroPS(){
       this.state.pokemonTeam[this.state.selected].stats.vida = 0;
@@ -196,7 +168,8 @@ class App extends Component {
     }
 */
     checkPS(pos){
-      if(this.state.pokemonTeam[pos].stats.vida<=0){
+      if(this.state.pokemonTeam[pos].stats.vidaQueLiQueda <= 0){
+        //No te ps
         return false;
       }else{
         return true;
@@ -214,16 +187,17 @@ class App extends Component {
 
       this.setState({isYourTurn : false})
 
-      var Damage = this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power; 
+      var Damage = this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power /3; 
      // Damage = ((((2/5 + 2) * this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power * (this.state.pokemonTeam[this.state.selected].stats.atack/this.state.pokemonRival[this.state.rivalSelected].stats.defensa))/30)+2);
       this.vida(Damage,this.state.rivalSelected);
 
       console.log("Envia atac Amb un total de mal de =>" + Damage);
         socket.emit('SEND_ATTACK',{ moviment : Damage, room :this.props.match.params.room});
     }
+
     changeSelectedPokemon(pos){
       if(this.checkPS(pos)){
-        this.setState({isYourTurn : false})
+        setTimeout(()=>{  this.setState({isYourTurn : false})},10)
         socket.emit("SELECTED_POKEMONS", {room:this.props.match.params.room, userId:this.props.location.userId, selected:pos});
   
         this.setState({
@@ -232,17 +206,8 @@ class App extends Component {
         this.vida(0, pos);
       }else{
         console.log("NO PS");
-      }}
-    changeSelectedPokemonPre(pos){
-      if(this.checkPS(pos)){
-        socket.emit("SELECTED_POKEMONS_PRE", {room:this.props.match.params.room, userId:this.props.location.userId, selected:pos});
-  
-        this.setState({
-          selected: pos
-        })
-      }else{
-        console.log("NO PS");
-      }}
+      }
+    }
 
   renderBotonsPokemons(){
       let imgHeight = "100px";
@@ -288,14 +253,14 @@ class App extends Component {
               <p>{this.state.pokemonTeam[this.state.selected]?.nom}</p>
             </div>
             <div id={"barra"}>
-                <div id={"vida"}></div>
+            <input type="range" id="vol" name="vol" min="0" max={this.state.pokemonTeam[this.state.selected]?.stats.vida} value={this.state.pokemonTeam[this.state.selected]?.stats.vidaQueLiQueda}/>
             </div>
             <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonTeam[this.state.selected]?.stats.vida} PS</p></div>
           </div>
           <div id={"nomEnemic"}>
             <p>{this.state.pokemonRival[this.state.rivalSelected]?.nom}</p>
             <div id={"barraEnemic"}>
-              <div id={"vidaEnemic"}></div>
+            <input type="range" id="vol" name="vol" min="0" max={this.state.pokemonRival[this.state.rivalSelected]?.stats.vida} value={this.state.pokemonRival[this.state.rivalSelected]?.stats.vidaQueLiQueda}/>
             </div>
           <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[this.state.rivalSelected]?.stats.vida} PS</p></div>
           </div>
