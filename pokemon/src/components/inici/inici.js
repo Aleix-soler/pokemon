@@ -24,16 +24,19 @@ class Inici extends Component {
     gameId: null,
     waiting: false,
     selected: 0,
-    userId: localStorage.getItem('userId')
+    userId: localStorage.getItem('userID')
+
   };
+
+  componentWillUnmount() {
+    socket.close('connect');
+  }
   componentDidMount(){
     console.log("HEY P");
     console.log("USER ID=>", this.state.userId)
-    //POSAR USERID AL LOCALSTORAGE
-    console.log("USERID PROPS=>", this.props.location);
-    this.funcioInici();
     this.checkUSER();
     this.loadPokemons();
+
     socket.on('connection', () => {
       console.log('CONNECTED');
     });
@@ -44,26 +47,19 @@ class Inici extends Component {
       console.log("La room es =>"+game.room);
     });
   }
-  async funcioInici(){
-    
+
+  async comprovarId(){
+    let value = await localStorage.getItem('userID')
+    if(value != null){
+      this.setState({userId: value})
+    }
   }
 
-  checkUSER(){
-    //COMRPOBAR SI HI HA USERID AL LOCALHOST
-    /*
-    console.log(this.props.location.userId)
-    if(this.props.location.userId!=null||this.props.location.userId!=undefined){
-      localStorage.setItem('userId', this.props.location.userId);
-      console.log("userId guardat")
-    }else if(localStorage.getItem('userId')!=null||localStorage.getItem('userId')!=undefined){
-      this.setState({
-        userId: localStorage.getItem('userId')
-      })
-    }
-    */
 
+  checkUSER(){
+    this.comprovarId()
     //SI NO HI HA ID POSA MISSATGE QUE FA FALTA TORNAR A LOGINEJARSE
-    if((this.props.location.userId == undefined || this.props.location.userId == null)/* && localStorage.getItem('userId')==null*/){
+    if(this.state.userId == undefined || this.state.userId == null){
       var jugar = document.getElementById("jugar");
       var reg = document.getElementById("registre");
       jugar.disabled = true;
@@ -72,12 +68,6 @@ class Inici extends Component {
       reg.style.backgroundColor="lightgrey";
       errorClase = "textError";
       error = "No tens Identificador, Torna a loginejar-te per obtenir-lo!";
-    }else{
-      this.setState({
-        userId: this.props.location.userId
-      })
-      errorClase = "";
-      error = "";
     }
   }
 
@@ -198,7 +188,7 @@ class Inici extends Component {
     });
   }
   logout(){
-    localStorage.removeItem('userId');
+    localStorage.removeItem('userID');
     this.setState({
       logout: true
     })
@@ -243,7 +233,7 @@ class Inici extends Component {
     const registre = this.state.registres ?
     <Redirect  to={{
       pathname: `/registres`,
-      userId:  this.props.location.userId
+      userId:  this.state.userId
     }}/>
     :
     null;

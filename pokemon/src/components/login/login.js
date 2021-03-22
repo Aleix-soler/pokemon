@@ -11,17 +11,17 @@ class login extends Component{
         userId: null
     }
     //COMPROBAR SI HI HA UN USERID al localStorage
-    /*
+    
     componentDidMount(){
-        let userID = localStorage.getItem('userId');
-        if(userID!=null&&userID!=undefined){
+        let value = localStorage.getItem('userID');
+        if(value != null){
             console.log("hi ha id")
             this.setState({
-                userId: userID
+                userId: value
             })
         }
     }
-    */
+
     async loginPetition(){
         let user = document.getElementById('username');
         let pass = document.getElementById('password');
@@ -31,10 +31,12 @@ class login extends Component{
             response = await fetch("http://"+API_SERVER+":5000/login?user="+user.value+"&pass="+pass.value);
             json = await response.json();
             if(json["userid"]!=0){
+                
                 let userID = json["userid"]
                 this.setState({
                     userId: userID
                 })
+                localStorage.setItem('userID',userID);
             }else{
                 this.errorFunction("No existeix cap usuari amb aquest Usuari/Contrasenya");
             }
@@ -67,6 +69,7 @@ class login extends Component{
 
     noDbLogin(){
         let aux = Math.floor(Math.random()*1000000);
+        localStorage.setItem('userID',aux);
         this.setState({
             userId: aux
         })

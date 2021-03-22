@@ -29,8 +29,14 @@ export const getPokemon = async (pos) =>{
         pokemon.imatgeFront =response.sprites.front_default
         pokemon.nom =response.name
         console.log(response.sprites.versions["generation-v"]["black-white"].animated["back_default"]);
+
+        if(Math.floor(Math.random()*20)+1 == 4){
+          pokemon.imatgeGif.back_default = response.sprites.versions["generation-v"]["black-white"].animated["back_shiny"]
+          pokemon.imatgeGif.front_default = response.sprites.versions["generation-v"]["black-white"].animated["front_shiny"]
+        }else{
         pokemon.imatgeGif.back_default = response.sprites.versions["generation-v"]["black-white"].animated["back_default"]
         pokemon.imatgeGif.front_default = response.sprites.versions["generation-v"]["black-white"].animated["front_default"]
+        }
         pokemon.moviments =  getHabilitats(response);
         pokemon.stats = getStats(response);
     

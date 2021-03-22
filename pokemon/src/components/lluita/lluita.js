@@ -20,10 +20,6 @@ class App extends Component {
     guanyador: false
   }
 
-  componentWillUnmount() {
-    socket.close('connect');
-  }
-
   componentDidMount(){
 
     const room = this.props.match.params.room;
@@ -149,24 +145,12 @@ class App extends Component {
       if(this.state.isYourTurn){
         console.log("La vida que li quead es"+  this.state.pokemonRival[id].stats.vidaQueLiQueda);
         this.state.pokemonRival[id].stats.vidaQueLiQueda -=  hostia;
-        console.log("hey hey enetra aeffs");
-        console.log(this.state.pokemonTeam[id].stats.vidaQueLiQueda);
-
       }else{
         console.log("La vida que li quead es"+  this.state.pokemonTeam[id].stats.vidaQueLiQueda);
         this.state.pokemonTeam[id].stats.vidaQueLiQueda -= hostia;
-        console.log("hey hey enetra aeffs");
-        console.log(this.state.pokemonTeam[id].stats.vidaQueLiQueda);
       }
     }
-    //this.state.pokemonTeam[id].stats.vida = this.state.pokemonTeam[id].stats.vida - hostia;
-/*
-    zeroPS(){
-      this.state.pokemonTeam[this.state.selected].stats.vida = 0;
-      console.log("zerops")
-      this.changeSelectedPokemon(this.state.selected)
-    }
-*/
+
     checkPS(pos){
       if(this.state.pokemonTeam[pos].stats.vidaQueLiQueda <= 0){
         //No te ps
@@ -177,18 +161,21 @@ class App extends Component {
     }
 
     enviarAtack(numMviment){
-
+      //mirar si no ha fallat l'api
+      if(this.state.pokemonTeam[this.state.selected]?.moviments[numMviment] == undefined || this.state.pokemonTeam[this.state.selected]?.moviments[numMviment] == null){
+        var Damage =  50;
+        this.setState({isYourTurn : false})
+      }else{
       //mirar si un moviment no te poder i assignar-li 50 de poder
       if(this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power <= 0){
         console.log("No te poder");
         console.log(this.state.pokemonTeam[this.state.selected].moviments[numMviment]);
         this.state.pokemonTeam[this.state.selected].moviments[numMviment].power = 50;
       }
-
       this.setState({isYourTurn : false})
-
-      var Damage = this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power /3; 
-     // Damage = ((((2/5 + 2) * this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power * (this.state.pokemonTeam[this.state.selected].stats.atack/this.state.pokemonRival[this.state.rivalSelected].stats.defensa))/30)+2);
+      var Damage = 5+((((2/5 + 2) * this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power * (this.state.pokemonTeam[this.state.selected].stats.atack/this.state.pokemonRival[this.state.rivalSelected].stats.defensa))/30)+2);
+      }
+        
       this.vida(Damage,this.state.rivalSelected);
 
       console.log("Envia atac Amb un total de mal de =>" + Damage);
@@ -216,7 +203,7 @@ class App extends Component {
     return(
     this.state.pokemonTeam.map((element , index) =>{
       let classe
-      if(this.state.pokemonTeam[index].stats.vida<=0){
+      if(this.state.pokemonTeam[index].stats.vidaQueLiQueda<=0){
         classe = "noHP";
       }else{
         classe = "HP";
@@ -253,14 +240,14 @@ class App extends Component {
               <p>{this.state.pokemonTeam[this.state.selected]?.nom}</p>
             </div>
             <div id={"barra"}>
-            <input type="range" id="vol" name="vol" min="0" max={this.state.pokemonTeam[this.state.selected]?.stats.vida} value={this.state.pokemonTeam[this.state.selected]?.stats.vidaQueLiQueda}/>
+            <input type="range" id="vida" name="vol" min="0" max={this.state.pokemonTeam[this.state.selected]?.stats.vida} value={this.state.pokemonTeam[this.state.selected]?.stats.vidaQueLiQueda}/>
             </div>
             <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonTeam[this.state.selected]?.stats.vida} PS</p></div>
           </div>
           <div id={"nomEnemic"}>
             <p>{this.state.pokemonRival[this.state.rivalSelected]?.nom}</p>
             <div id={"barraEnemic"}>
-            <input type="range" id="vol" name="vol" min="0" max={this.state.pokemonRival[this.state.rivalSelected]?.stats.vida} value={this.state.pokemonRival[this.state.rivalSelected]?.stats.vidaQueLiQueda}/>
+            <input type="range" id="vida" name="vol" min="0" max={this.state.pokemonRival[this.state.rivalSelected]?.stats.vida} value={this.state.pokemonRival[this.state.rivalSelected]?.stats.vidaQueLiQueda}/>
             </div>
           <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[this.state.rivalSelected]?.stats.vida} PS</p></div>
           </div>
@@ -277,10 +264,18 @@ class App extends Component {
           (
             <div class="actions">
             {/*<button onClick={() =>this.zeroPS()}>ZERO PS</button>*/}
-            <button onClick={()=>{this.enviarAtack(0)}}>{this.state.pokemonTeam[this.state.selected]?.moviments[0] ? this.state.pokemonTeam[this.state.selected]?.moviments[0].nom : 'UPS'}</button>
-            <button onClick={()=>{this.enviarAtack(1)}}>{this.state.pokemonTeam[this.state.selected]?.moviments[1] ? this.state.pokemonTeam[this.state.selected]?.moviments[1].nom : 'UPS'}</button>
-            <button onClick={()=>{this.enviarAtack(2)}}>{this.state.pokemonTeam[this.state.selected]?.moviments[2] ? this.state.pokemonTeam[this.state.selected]?.moviments[2].nom : 'UPS'}</button>
-            <button onClick={()=>{this.enviarAtack(3)}}>{this.state.pokemonTeam[this.state.selected]?.moviments[3] ? this.state.pokemonTeam[this.state.selected]?.moviments[3].nom : 'UPS'}</button>
+            <button onClick={()=>{this.enviarAtack(0)}} style={this.state.pokemonTeam[this.state.selected]?.moviments[0] ? {backgroundColor: this.state.pokemonTeam[this.state.selected]?.moviments[0].tipus.color } : null}>
+              {this.state.pokemonTeam[this.state.selected]?.moviments[0] ? this.state.pokemonTeam[this.state.selected]?.moviments[0].nom : 'MISSIGNO POWER'}
+            </button>
+            <button onClick={()=>{this.enviarAtack(1)}} style={this.state.pokemonTeam[this.state.selected]?.moviments[1] ? {backgroundColor: this.state.pokemonTeam[this.state.selected]?.moviments[1].tipus.color } : null}>
+              {this.state.pokemonTeam[this.state.selected]?.moviments[1] ? this.state.pokemonTeam[this.state.selected]?.moviments[1].nom : 'MISSIGNO POWER'}
+              </button>
+              <button onClick={()=>{this.enviarAtack(2)}} style={this.state.pokemonTeam[this.state.selected]?.moviments[2] ? {backgroundColor: this.state.pokemonTeam[this.state.selected]?.moviments[2].tipus.color } : null}>
+              {this.state.pokemonTeam[this.state.selected]?.moviments[2] ? this.state.pokemonTeam[this.state.selected]?.moviments[2].nom : 'MISSIGNO POWER'}
+              </button>
+              <button onClick={()=>{this.enviarAtack(3)}} style={this.state.pokemonTeam[this.state.selected]?.moviments[3] ? {backgroundColor: this.state.pokemonTeam[this.state.selected]?.moviments[3].tipus.color } : null}>
+              {this.state.pokemonTeam[this.state.selected]?.moviments[3] ? this.state.pokemonTeam[this.state.selected]?.moviments[3].nom : 'MISSIGNO POWER'}
+              </button>
             </div>
           ):
           (
