@@ -218,7 +218,7 @@ class Inici extends Component {
     <Redirect  to={{
       pathname: `/lluita/${this.state.gameId}`,
       gameId: this.state.gameId, 
-      userId : this.state.userId,
+      userId : this.props.location.userId,
       pokemons : this.state.pokemons,
       selected: this.state.selected
     }}/>
