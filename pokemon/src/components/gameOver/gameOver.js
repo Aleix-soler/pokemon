@@ -15,9 +15,9 @@ class gameOver extends Component {
         let text;
         if(this.props.location.guanyador == true){
             this.pujarBatalla()
-            text = "WINNER"
+            text = "YOU WIN"
         }else{
-            text = "LOSER";
+            text = "YOU LOSE";
         }
         this.setState({
             info: text
@@ -51,7 +51,8 @@ class gameOver extends Component {
         return(
             <div id={"INFO"}>
                 {lobby}
-                <p>{this.state.info}</p>
+                <img src={"../game_over.png"} height="400px" width="400px"></img>
+                <h1 id="loser-winner">{this.state.info}</h1>
                 <div id={"butonsGameOver"}>
                     <button onClick={() => this.goLobby()}>GO LOBBY</button>
                 </div>

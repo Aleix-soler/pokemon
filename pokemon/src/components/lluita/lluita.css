@@ -36,25 +36,12 @@
   bottom: 5%;
 }
 
-input[type="range"] { 
-  margin: auto;
-  -webkit-appearance: none;
-  position: relative;
-  overflow: hidden;
-  height: 5px;
-  width: 70%;
-}
-
-::-webkit-slider-runnable-track {
-  background: #ddd;
-}
-
-/*
-* 1. Set to 0 width and remove border for a slider without a thumb
-*/
-::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  box-shadow: -100vw 0 0 100vw green;
+#barra {
+  position:relative;
+  bottom: 10%;
+  margin-left: 10%;
+  margin-right: 15%;
+  border-radius: 5px;
 }
 
 
@@ -101,13 +88,18 @@ input[type="range"] {
 
 #vidaEnemic{
   border: 1px solid black;
-  bottom: 15%;
-  right: 15%;
-  position: absolute;
+  padding: 0px 0; 
   border-radius: 5px;
   background-color: green;
 }
 
+#barraEnemic {
+  position: relative;
+  bottom: 10%;
+  margin-left: 10%;
+  margin-right: 15%;
+  border-radius: 5px;
+}
 .noHP{
   content:url("../img/grave.png");
 }
@@ -178,4 +170,35 @@ table, th, tr {
   border: 1px solid black;
   cursor: pointer;
   align-content: center;
+}
+
+input[type="range"] { 
+  margin: auto;
+  -webkit-appearance: none;
+  position: relative;
+  overflow: hidden;
+  height: 20px;
+  width: 90px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background: green;
+  box-shadow: -100vw 0 0 100vw green;
+  border-radius: 0;
+}
+
+::-moz-range-track {
+  height: 40px;
+  background: #ddd;
+}
+
+::-moz-range-thumb {
+  width: 0px;
+  height: 20px;
+  color: transparent;
+  background: green;
+  box-shadow: -100vw 0 0 100vw green;
+  border-radius: 15px;
 }
