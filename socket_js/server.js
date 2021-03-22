@@ -64,9 +64,6 @@ io.on('connection', (socket) => {
     socket.broadcast.to(data.room).emit("SELECTED", (data.userId, data.selected));
   })
   
-  socket.on('disconnecting', function(){
-    socket.broadcast.in(currentRoom).emit('user:left', socket.id);
-});
 
 });
 

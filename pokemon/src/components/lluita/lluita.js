@@ -21,6 +21,7 @@ class App extends Component {
     socket.close('connect');
   }
 
+
   componentDidMount(){
 
     const room = this.props.match.params.room;
@@ -65,9 +66,6 @@ class App extends Component {
         this.PokemonsRival(userId)
     }
 
-    CheckConnection(){
-
-    }
 
     PokemonsRival(userId){
       console.log("arriba?");
@@ -89,15 +87,15 @@ class App extends Component {
     }
 
     vida(hostia){
-      let aux = this.state.pokemon.vida;
-      this.state.percent = hostia * 100 / this.state.pokemon.stats.vida;
-      document.getElementById("vida").style.marginRight = this.state.percent + "%";
-      this.state.pokemon.stats.vida = this.state.pokemon.stats.vida - hostia;
-      if (this.state.pokemon.stats.vida <= aux/2){
-        document.getElementById("vida").style.backgroundColor = "yellow";
+      let aux = this.state.pokemonRival[this.state.rivalSelected].stats.vida;
+      this.state.percent = hostia * 100 / this.state.pokemonRival[this.state.rivalSelected].stats.vida;
+      document.getElementById("vidaEnemic").style.marginRight = this.state.percent + "%";
+      this.state.pokemonRival[this.state.rivalSelected].stats.vida = this.state.pokemonRival[this.state.rivalSelected].stats.vida - hostia;
+      if (this.state.pokemonRival[this.state.rivalSelected].stats.vida <= aux/2){
+        document.getElementById("vidaEnemic").style.backgroundColor = "yellow";
       } 
-      else if (this.state.pokemon.stats.vida <= aux/4){
-        document.getElementById("vida").style.backgroundColor = "red";
+      else if (this.state.pokemonRival[this.state.rivalSelected].stats.vida <= aux/4){
+        document.getElementById("vidaEnemic").style.backgroundColor = "red";
       }
     }
 
@@ -107,6 +105,7 @@ class App extends Component {
         socket.on('ATACK',(atac)=>{
           console.log(atac);
         })
+      this.CalculDany();  
     }
     changeSelectedPokemon(pos){
       socket.emit("SELECTED_POKEMONS", {room:this.props.match.params.room, userId:this.props.location.userId, selected:pos});
@@ -119,6 +118,13 @@ class App extends Component {
       this.setState({
         selected: pos
       })
+    }
+
+    CalculDany(){
+      var Damage;
+      
+      Damage = ((((2/5 + 2) * this.state.pokemonTeam[this.state.selected]?.moviments[this.state.selected].power * (this.state.pokemonTeam[0].stats.atack/this.state.pokemonRival[this.state.rivalSelected].stats.defensa))/30)+2);
+      this.vida(Damage);
     }
 
     renderBotonsPokemons(){
@@ -155,7 +161,7 @@ class App extends Component {
             <div id={"barraEnemic"}>
               <div id={"vidaEnemic"}></div>
             </div>
-            {/*<div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>*/}
+            <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>
           </div>
           <img id={"spriteBack"} src={this.state.pokemonTeam[this.state.selected]?.imatgeGif.back_default} />
           <img id={"spriteFront"} src={this.state.pokemonRival[this.state.rivalSelected]?.imatgeGif.front_default} />
