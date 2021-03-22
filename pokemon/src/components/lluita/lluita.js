@@ -81,8 +81,6 @@ class App extends Component {
       this.vida(0, this.state.rivalSelected);
       if(!this.state.isYourTurn){this.setState({isYourTurn : true})}
     })
-
-    
     }
 
     setToRoom(room,userId ,pokemonsJugador){
@@ -147,13 +145,13 @@ class App extends Component {
 
     vida(hostia,id){
       if(this.state.isYourTurn){
-        console.log("La vida que li quead es"+  this.state.pokemonRival[id].stats.vidaQueLiQueda);
+        let inputRival = document.getElementById("volE");
+        console.log("La vida que li queda es"+  this.state.pokemonRival[id].stats.vidaQueLiQueda);
         this.state.pokemonRival[id].stats.vidaQueLiQueda -=  hostia;
         console.log("hey hey enetra aeffs");
         console.log(this.state.pokemonTeam[id].stats.vidaQueLiQueda);
-
       }else{
-        console.log("La vida que li quead es"+  this.state.pokemonTeam[id].stats.vidaQueLiQueda);
+        console.log("La vida que li queda es"+  this.state.pokemonTeam[id].stats.vidaQueLiQueda);
         this.state.pokemonTeam[id].stats.vidaQueLiQueda -= hostia;
         console.log("hey hey enetra aeffs");
         console.log(this.state.pokemonTeam[id].stats.vidaQueLiQueda);
@@ -252,16 +250,16 @@ class App extends Component {
               <p>{this.state.pokemonTeam[this.state.selected]?.nom}</p>
             </div>
             <div id={"barra"}>
-            <input type="range" id="vol" name="vol" min="0" max={this.state.pokemonTeam[this.state.selected]?.stats.vida} value={this.state.pokemonTeam[this.state.selected]?.stats.vidaQueLiQueda}/>
+              <input type="range" class={this.state.vidaAliat} id="vol" name="vol" min="0" max={this.state.pokemonTeam[this.state.selected]?.stats.vida} value={this.state.pokemonTeam[this.state.selected]?.stats.vidaQueLiQueda}/>
             </div>
-            <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonTeam[this.state.selected]?.stats.vida} PS</p></div>
+            <div id={"puntsVida"}><p style={{fontSize: 10}}>{Math.floor(this.state.pokemonTeam[this.state.selected]?.stats.vidaQueLiQueda)} PS</p></div>
           </div>
           <div id={"nomEnemic"}>
             <p>{this.state.pokemonRival[this.state.rivalSelected]?.nom}</p>
             <div id={"barraEnemic"}>
-            <input type="range" id="vol" name="vol" min="0" max={this.state.pokemonRival[this.state.rivalSelected]?.stats.vida} value={this.state.pokemonRival[this.state.rivalSelected]?.stats.vidaQueLiQueda}/>
+              <input type="range" class={this.state.vidaRival} id="volE" name="volE" min="0" max={this.state.pokemonRival[this.state.rivalSelected]?.stats.vida} value={this.state.pokemonRival[this.state.rivalSelected]?.stats.vidaQueLiQueda}/>
             </div>
-          <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[this.state.rivalSelected]?.stats.vida} PS</p></div>
+          <div id={"puntsVida"}><p style={{fontSize: 10}}>{Math.floor(this.state.pokemonRival[this.state.rivalSelected]?.stats.vidaQueLiQueda)} PS</p></div>
           </div>
           <img id={"spriteBack"} src={this.state.pokemonTeam[this.state.selected]?.imatgeGif.back_default} />
           <img id={"spriteFront"} src={this.state.pokemonRival[this.state.rivalSelected]?.imatgeGif.front_default} />
