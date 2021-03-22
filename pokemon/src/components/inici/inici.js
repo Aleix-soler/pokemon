@@ -24,13 +24,12 @@ class Inici extends Component {
     gameId: null,
     waiting: false,
     selected: 0,
-    userId: localStorage.getItem('userId')
   };
   componentDidMount(){
     console.log("HEY P");
-    console.log("USER ID=>", this.state.userId)
     //POSAR USERID AL LOCALSTORAGE
-    console.log("USERID PROPS=>", this.props.location);
+    let propsUser = this.props.location.userId;
+    console.log("USERID PROPS=>", this.props.location.userId);
     this.funcioInici();
     this.checkUSER();
     this.loadPokemons();
@@ -228,7 +227,7 @@ class Inici extends Component {
     <Redirect  to={{
       pathname: `/lluita/${this.state.gameId}`,
       gameId: this.state.gameId, 
-      userId : this.state.userId,
+      userId : this.props.location.userId,
       pokemons : this.state.pokemons,
       selected: this.state.selected
     }}/>

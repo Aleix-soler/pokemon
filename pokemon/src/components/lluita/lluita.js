@@ -23,7 +23,6 @@ class App extends Component {
   componentWillUnmount() {
     socket.close('connect');
   }
-
   componentDidMount(){
 
     const room = this.props.match.params.room;
@@ -134,6 +133,7 @@ class App extends Component {
     gameOver(room, userId){
       console.log("S'ha finito la partida");
       socket.emit('GAME_OVER', {room: room, userId: userId})
+      socket.close('connect');
     }
 
     PokemonsRival(userId){
@@ -225,7 +225,6 @@ class App extends Component {
       if(this.checkPS(pos)){
         this.setState({isYourTurn : false})
         socket.emit("SELECTED_POKEMONS", {room:this.props.match.params.room, userId:this.props.location.userId, selected:pos});
-  
         this.setState({
           selected: pos
         })
@@ -240,6 +239,7 @@ class App extends Component {
         this.setState({
           selected: pos
         })
+        this.vida(0, this.state.selected)
       }else{
         console.log("NO PS");
       }}

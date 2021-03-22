@@ -1,8 +1,20 @@
 #INFO{
     background-color: aqua;
+    width: 40%;
+    margin: 10% 30% 0% 30%;
+    padding: 50px;
+    border-radius: 45px;
 }
 #butonsGameOver > button{
-    width: 150px;
+    width: 40%;
     height: 50px;
     background-color: blueviolet;
+    font-size: large;
+    color: white;
+    border-radius: 15px;
+    cursor: pointer;
+}
+#loser-winner{
+    margin-top: -60px;
+    margin-bottom: 50px;
 }
