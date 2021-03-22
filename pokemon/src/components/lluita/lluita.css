@@ -31,19 +31,34 @@
 
 #vida{
   border: 1px solid black;
-  padding: 3px 0;
   border-radius: 5px;
   background-color: green;
+  bottom: 5%;
 }
 
-#barra {
-  position:relative;
-  bottom: 10%;
-  margin-left: 10%;
-  margin-right: 15%;
-  border: 1px solid black;
-  border-radius: 5px;
+input[type="range"] { 
+  margin: auto;
+  -webkit-appearance: none;
+  position: relative;
+  overflow: hidden;
+  height: 5px;
+  width: 70%;
 }
+
+::-webkit-slider-runnable-track {
+  background: #ddd;
+}
+
+/*
+* 1. Set to 0 width and remove border for a slider without a thumb
+*/
+::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  box-shadow: -100vw 0 0 100vw green;
+}
+
+
+
 
 .box {
   position: fixed;
@@ -86,23 +101,15 @@
 
 #vidaEnemic{
   border: 1px solid black;
-  padding: 3px 0; 
+  bottom: 15%;
+  right: 15%;
+  position: absolute;
   border-radius: 5px;
   background-color: green;
-  
 }
 
-#barraEnemic {
-  position: relative;
-  bottom: 10%;
-  margin-left: 10%;
-  margin-right: 10%;
-  bottom: 20%;
-  border: 1px solid rgb(46, 21, 21);
-  border-radius: 5px;
-}
 .noHP{
-  background-color: red;
+  content:url("../img/grave.png");
 }
 #nomEnemic{
   text-transform: capitalize;
@@ -116,7 +123,17 @@
   border: 3px solid #506860;
 }
 
+@keyframes MoveUpDown {
+  0%, 100% {
+    bottom: 0;
+  }
+  50% {
+    bottom: 100px;
+  }
+}
+
 #spriteBack {
+  
   left: 20%;
   bottom: 30%;
   position: fixed;

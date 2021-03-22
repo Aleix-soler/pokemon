@@ -160,18 +160,6 @@ class App extends Component {
       })    
     }
 
-<<<<<<< HEAD
-    vida(hostia){
-      let aux = this.state.pokemonRival[this.state.rivalSelected].stats.vida;
-      this.state.percent = hostia * 100 / this.state.pokemonRival[this.state.rivalSelected].stats.vida;
-      document.getElementById("vidaEnemic").style.marginRight = this.state.percent + "%";
-      this.state.pokemonRival[this.state.rivalSelected].stats.vida = this.state.pokemonRival[this.state.rivalSelected].stats.vida - hostia;
-      if (this.state.pokemonRival[this.state.rivalSelected].stats.vida <= aux/2){
-        document.getElementById("vidaEnemic").style.backgroundColor = "yellow";
-      } 
-      else if (this.state.pokemonRival[this.state.rivalSelected].stats.vida <= aux/4){
-        document.getElementById("vidaEnemic").style.backgroundColor = "red";
-=======
     vida(hostia,id){
       if(this.state.isYourTurn){
         let aux = this.state.pokemonRival[id].stats.vida;
@@ -213,19 +201,10 @@ class App extends Component {
         return false;
       }else{
         return true;
->>>>>>> 850ece1af1446ea4b6c8604b1f43bf19321744a0
       }
     }
 
     enviarAtack(numMviment){
-<<<<<<< HEAD
-      console.log("Entra enviat Atack");
-        socket.emit('SEND_ATTACK',{ moviment:numMviment, room:this.props.match.params.room, userId:this.props.location.userId});
-        socket.on('ATACK',(atac)=>{
-          console.log(atac);
-        })
-      this.CalculDany();  
-=======
 
       //mirar si un moviment no te poder i assignar-li 50 de poder
       if(this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power <= 0){
@@ -242,7 +221,6 @@ class App extends Component {
 
       console.log("Envia atac Amb un total de mal de =>" + Damage);
         socket.emit('SEND_ATTACK',{ moviment : Damage, room :this.props.match.params.room});
->>>>>>> 850ece1af1446ea4b6c8604b1f43bf19321744a0
     }
     changeSelectedPokemon(pos){
       if(this.checkPS(pos)){
@@ -267,18 +245,7 @@ class App extends Component {
         console.log("NO PS");
       }}
 
-<<<<<<< HEAD
-    CalculDany(){
-      var Damage;
-      
-      Damage = ((((2/5 + 2) * this.state.pokemonTeam[this.state.selected]?.moviments[this.state.selected].power * (this.state.pokemonTeam[0].stats.atack/this.state.pokemonRival[this.state.rivalSelected].stats.defensa))/30)+2);
-      this.vida(Damage);
-    }
-
-    renderBotonsPokemons(){
-=======
   renderBotonsPokemons(){
->>>>>>> 850ece1af1446ea4b6c8604b1f43bf19321744a0
       let imgHeight = "100px";
       let imgWidth = "100px";
 
@@ -288,7 +255,7 @@ class App extends Component {
       if(this.state.pokemonTeam[index].stats.vida<=0){
         classe = "noHP";
       }else{
-        classe = "HP";
+        classe = "";
       }
       if(index != this.state.selected){
         return(
@@ -322,7 +289,9 @@ class App extends Component {
               <p>{this.state.pokemonTeam[this.state.selected]?.nom}</p>
             </div>
             <div id={"barra"}>
-                <div id={"vida"}></div>
+                <div id={"vida"}>
+                  <input type="range" value="25"></input>
+                </div>
             </div>
             <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonTeam[this.state.selected]?.stats.vida} PS</p></div>
           </div>
@@ -331,11 +300,7 @@ class App extends Component {
             <div id={"barraEnemic"}>
               <div id={"vidaEnemic"}></div>
             </div>
-<<<<<<< HEAD
-            <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[0]?.stats.vida} PS</p></div>
-=======
           <div id={"puntsVida"}><p style={{fontSize: 10}}>{this.state.pokemonRival[this.state.rivalSelected]?.stats.vida} PS</p></div>
->>>>>>> 850ece1af1446ea4b6c8604b1f43bf19321744a0
           </div>
           <img id={"spriteBack"} src={this.state.pokemonTeam[this.state.selected]?.imatgeGif.back_default} />
           <img id={"spriteFront"} src={this.state.pokemonRival[this.state.rivalSelected]?.imatgeGif.front_default} />
