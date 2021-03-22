@@ -142,7 +142,6 @@ class App extends Component {
 
     vida(hostia,id){
       if(this.state.isYourTurn){
-        let inputRival = document.getElementById("volE");
         console.log("La vida que li queda es"+  this.state.pokemonRival[id].stats.vidaQueLiQueda);
         this.state.pokemonRival[id].stats.vidaQueLiQueda -=  hostia;
       }else{
@@ -163,7 +162,7 @@ class App extends Component {
     enviarAtack(numMviment){
       //mirar si no ha fallat l'api
       if(this.state.pokemonTeam[this.state.selected]?.moviments[numMviment] == undefined || this.state.pokemonTeam[this.state.selected]?.moviments[numMviment] == null){
-        var Damage =  50;
+        var Damage =  80;
         this.setState({isYourTurn : false})
       }else{
       //mirar si un moviment no te poder i assignar-li 50 de poder
