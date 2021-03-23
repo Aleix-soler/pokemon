@@ -101,7 +101,7 @@
   border-radius: 5px;
 }
 .noHP{
-  content:url("../img/grave.png");
+  content: url("../img/grave.png");
 }
 #nomEnemic{
   text-transform: capitalize;

@@ -51,7 +51,11 @@ class App extends Component {
           }
         }
         if(trobat){
-          this.changeSelectedPokemon(aux);
+          document.getElementById("spriteBack").style = "animation: MoveUpDown 3s linear infinite;"
+          setTimeout(()=> {
+            document.getElementById("spriteBack").style = "animation: null";
+            this.changeSelectedPokemon(aux);
+          }, 1000);
         }else{
           this.gameOver(room, nomUser);
           this.setState({
@@ -174,7 +178,13 @@ class App extends Component {
       this.setState({isYourTurn : false})
       var Damage = 5+((((2/5 + 2) * this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power * (this.state.pokemonTeam[this.state.selected].stats.atack/this.state.pokemonRival[this.state.rivalSelected].stats.defensa))/30)+2);
       }
-        
+      if(this.state.pokemonRival[this.state.rivalSelected].stats.vidaQueLiQueda - Damage <= 0){
+        document.getElementById("spriteFront").style = "animation: MoveUpDown 3s linear infinite;"
+        setTimeout(()=> {
+          document.getElementById("spriteFront").style = "animation: null";
+          this.changeSelectedPokemon(this.state.rivalSelected);
+        }, 1000);
+      }
       this.vida(Damage,this.state.rivalSelected);
 
       console.log("Envia atac Amb un total de mal de =>" + Damage);
@@ -205,6 +215,7 @@ class App extends Component {
         classe = "noHP";
       }else{
         classe = "";
+        
       }
       if(index != this.state.selected){
         return(
