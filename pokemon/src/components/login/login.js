@@ -2,8 +2,12 @@
 import React, { Component } from "react";
 import style from './login.css';
 import { Redirect } from 'react-router-dom';
+import socketIOClient from "socket.io-client";  
 import url from '../Connections'  
 const API_SERVER = url.Ip;
+
+const ENDPOINT = null;
+const socket = socketIOClient(ENDPOINT);
 
 class login extends Component{
 

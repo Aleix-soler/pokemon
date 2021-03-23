@@ -85,6 +85,9 @@ class gameOver extends Component {
         this.setState({
             lobby: true
         })
+        setTimeout(()=>{
+            window.location.reload();
+        },10)
     }
     render(){
         const lobby = this.state.lobby ?
@@ -101,7 +104,7 @@ class gameOver extends Component {
                 <h1 id="loser-winner">{this.state.info}</h1>
                 <p id="statusPushApi">{this.state.info2}</p>
                 <div id={"butonsGameOver"}>
-                    <button onClick={() => this.goLobby()}>GO LOBBY</button>
+                    <button onClick={() => this.goLobby()}>SORTIR</button>
                 </div>
             </div>
         )

@@ -30,7 +30,6 @@ class Inici extends Component {
     //POSAR USERID AL LOCALSTORAGE
     let propsUser = this.props.location.userId;
     console.log("USERID PROPS=>", this.props.location.userId);
-    this.funcioInici();
     this.checkUSER();
     this.loadPokemons();
     socket.on('connection', () => {
@@ -38,30 +37,18 @@ class Inici extends Component {
     });
   
     // TODO: this is a bug
+  
     socket.on('START_GAME', (game) => {
       this.receiveGame(game);
       console.log("La room es =>"+game.room);
     });
-  }
-  async funcioInici(){
-    
-  }
 
+
+  }
+ 
   checkUSER(){
-    //COMRPOBAR SI HI HA USERID AL LOCALHOST
-    /*
-    console.log(this.props.location.userId)
-    if(this.props.location.userId!=null||this.props.location.userId!=undefined){
-      localStorage.setItem('userId', this.props.location.userId);
-      console.log("userId guardat")
-    }else if(localStorage.getItem('userId')!=null||localStorage.getItem('userId')!=undefined){
-      this.setState({
-        userId: localStorage.getItem('userId')
-      })
-    }
-    */
-
-    //SI NO HI HA ID POSA MISSATGE QUE FA FALTA TORNAR A LOGINEJARSE
+   
+  //SI NO HI HA ID POSA MISSATGE QUE FA FALTA TORNAR A LOGINEJARSE
     if((this.props.location.userId == undefined || this.props.location.userId == null)/* && localStorage.getItem('userId')==null*/){
       var jugar = document.getElementById("jugar");
       var reg = document.getElementById("registre");
@@ -114,7 +101,7 @@ class Inici extends Component {
     clearTimeout(this.stopWaiting);
     this.setState({ waiting: false }, () => {
       socket.removeListener('RECEIVE_GAME');
-      socket.emit('JOIN_GAME', game);
+      socket.emit('JOIN_GAME', {game :game});
     });
     console.log("Els pokemons que rep =>"); console.log(game);
 
