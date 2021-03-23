@@ -12,7 +12,7 @@ export const getPokemon = async (pos) =>{
             imatgeFront : '',
             imatgeGif :{ front_default : '' , back_default : ''},
             moviments : [],
-            stats: { atack : 0 , defensa : 0 , vida : 0 , speed : 0 }
+            stats: { atack : 0 , defensa : 0 , vida : 0 , speed : 0 , vidaQueLiQueda : 0 }
     }
     random = checkRandom();
     //random = Math.floor(Math.random()*151)+1;
@@ -29,8 +29,14 @@ export const getPokemon = async (pos) =>{
         pokemon.imatgeFront =response.sprites.front_default
         pokemon.nom =response.name
         console.log(response.sprites.versions["generation-v"]["black-white"].animated["back_default"]);
+
+        if(Math.floor(Math.random()*20)+1 == 4){
+          pokemon.imatgeGif.back_default = response.sprites.versions["generation-v"]["black-white"].animated["back_shiny"]
+          pokemon.imatgeGif.front_default = response.sprites.versions["generation-v"]["black-white"].animated["front_shiny"]
+        }else{
         pokemon.imatgeGif.back_default = response.sprites.versions["generation-v"]["black-white"].animated["back_default"]
         pokemon.imatgeGif.front_default = response.sprites.versions["generation-v"]["black-white"].animated["front_default"]
+        }
         pokemon.moviments =  getHabilitats(response);
         pokemon.stats = getStats(response);
     
@@ -101,6 +107,7 @@ function getStats(pokemon){
         break;
       case "hp":
         stats.vida = element.base_stat
+        stats.vidaQueLiQueda = element.base_stat;
         break;
       case "speed":
         stats.speed = element.base_stat

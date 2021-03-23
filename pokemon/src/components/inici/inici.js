@@ -24,14 +24,12 @@ class Inici extends Component {
     gameId: null,
     waiting: false,
     selected: 0,
-    userId: localStorage.getItem('userId')
   };
   componentDidMount(){
     console.log("HEY P");
-    console.log("USER ID=>", this.state.userId)
     //POSAR USERID AL LOCALSTORAGE
-    console.log("USERID PROPS=>", this.props.location);
-    this.funcioInici();
+    let propsUser = this.props.location.userId;
+    console.log("USERID PROPS=>", this.props.location.userId);
     this.checkUSER();
     this.loadPokemons();
     socket.on('connection', () => {
@@ -39,30 +37,18 @@ class Inici extends Component {
     });
   
     // TODO: this is a bug
+  
     socket.on('START_GAME', (game) => {
       this.receiveGame(game);
       console.log("La room es =>"+game.room);
     });
-  }
-  async funcioInici(){
-    
-  }
 
+
+  }
+ 
   checkUSER(){
-    //COMRPOBAR SI HI HA USERID AL LOCALHOST
-    /*
-    console.log(this.props.location.userId)
-    if(this.props.location.userId!=null||this.props.location.userId!=undefined){
-      localStorage.setItem('userId', this.props.location.userId);
-      console.log("userId guardat")
-    }else if(localStorage.getItem('userId')!=null||localStorage.getItem('userId')!=undefined){
-      this.setState({
-        userId: localStorage.getItem('userId')
-      })
-    }
-    */
-
-    //SI NO HI HA ID POSA MISSATGE QUE FA FALTA TORNAR A LOGINEJARSE
+   
+  //SI NO HI HA ID POSA MISSATGE QUE FA FALTA TORNAR A LOGINEJARSE
     if((this.props.location.userId == undefined || this.props.location.userId == null)/* && localStorage.getItem('userId')==null*/){
       var jugar = document.getElementById("jugar");
       var reg = document.getElementById("registre");
@@ -228,7 +214,7 @@ class Inici extends Component {
     <Redirect  to={{
       pathname: `/lluita/${this.state.gameId}`,
       gameId: this.state.gameId, 
-      userId : this.state.userId,
+      userId : this.props.location.userId,
       pokemons : this.state.pokemons,
       selected: this.state.selected
     }}/>
