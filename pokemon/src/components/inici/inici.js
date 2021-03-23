@@ -101,7 +101,7 @@ class Inici extends Component {
     clearTimeout(this.stopWaiting);
     this.setState({ waiting: false }, () => {
       socket.removeListener('RECEIVE_GAME');
-      socket.emit('JOIN_GAME', game);
+      socket.emit('JOIN_GAME', {game :game});
     });
     console.log("Els pokemons que rep =>"); console.log(game);
 

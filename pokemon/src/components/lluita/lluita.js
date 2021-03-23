@@ -96,7 +96,7 @@ componentDidMount(){
 
     setToRoom(room,userId ,pokemonsJugador){
       // console.log("Room=>"+room+" User_ID=>"+userId);
-       socket.emit('ROOM', { room, userId , pokemonsJugador });
+       socket.emit('ROOM', { room, userId , pokemonsJugador , selected:this.props.location.selected });
        console.log("ROOM=>",room,", USERID=>", userId);
         socket.on('RECEIVE_ID', (userId) => {
         console.log(userId);
@@ -136,10 +136,14 @@ componentDidMount(){
               this.setState({pokemonRival : msg.player2})
               this.setState({render : true})
               this.setState({isYourTurn : false});
+              console.log("Player2="+msg.player2Pokemon);
+              this.setState({rivalSelected : msg.player2Pokemon})
           }else if(userId.player2 == this.props.location.userId){  
               this.setState({pokemonRival : msg.player1})
               this.setState({render : true})
               this.setState({isYourTurn : true})
+              console.log("Player1="+msg.player1Pokemon);
+              this.setState({rivalSelected : msg.player1Pokemon})
           }
         }
       })    
@@ -158,8 +162,6 @@ componentDidMount(){
 
     enviarAtack(numMoviment){
       //mirar si no ha fallat l'api
-     
-
       if(this.state.pokemonTeam[this.state.selected]?.moviments[numMoviment] == undefined || this.state.pokemonTeam[this.state.selected]?.moviments[numMoviment] == null){
         var Damage =  80;
       }else{
