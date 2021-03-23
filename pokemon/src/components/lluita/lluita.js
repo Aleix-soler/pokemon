@@ -145,7 +145,6 @@ class App extends Component {
 
     vida(hostia,id){
       if(this.state.isYourTurn){
-        let inputRival = document.getElementById("volE");
         console.log("La vida que li queda es"+  this.state.pokemonRival[id].stats.vidaQueLiQueda);
         this.state.pokemonRival[id].stats.vidaQueLiQueda -=  hostia;
         console.log("hey hey enetra aeffs");
@@ -213,7 +212,7 @@ class App extends Component {
     return(
     this.state.pokemonTeam.map((element , index) =>{
       let classe
-      if(this.state.pokemonTeam[index].stats.vida<=0){
+      if(this.state.pokemonTeam[index].stats.vidaQueLiQueda<=0){
         classe = "noHP";
       }else{
         classe = "HP";

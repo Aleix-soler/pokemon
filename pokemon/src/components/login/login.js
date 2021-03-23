@@ -50,10 +50,12 @@ class login extends Component{
         let pass = document.getElementById('password');
         let response;
         let json;
-
+        console.log(user.value);
+        console.log(pass.value);
         try{
             response = await fetch("http://"+API_SERVER+":5000/register?user="+user.value+"&pass="+pass.value);
             json = await response.json();
+            console.log(json);
             if(json["userCreated"]==1){
                 this.errorFunction("Compte Creat Correctament!!")
             }else{
@@ -61,7 +63,7 @@ class login extends Component{
             }
         }catch(exception){
             console.log(exception);
-            this.errorFunction("Hi ha hagut un error durant la Conexió")
+            this.errorFunction("Ja existeix un usuari amb aquest nom")
         }
     }
 

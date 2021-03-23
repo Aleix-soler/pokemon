@@ -8,7 +8,7 @@ class registres extends Component{
     infoAPI = null;
     state = {
         desde: 0,
-        per_pag: 5,
+        per_pag: 10,
         pag: 1,
         infoPag: null,
         errors: '',
@@ -90,7 +90,7 @@ class registres extends Component{
     }
     renderData(){
         if(this.state.infoPag!=null&&this.state.infoPag!=undefined){
-            let clase;
+            let clase, winner;
             return(
             this.state.infoPag.id.map((element,index)=>{
                 if((index%2) == 0){
@@ -98,11 +98,17 @@ class registres extends Component{
                 }else{
                     clase = "rowTable2";
                 }
+                if(this.state.infoPag.jug1[index]==this.state.infoPag.win[index]){
+                    winner = "Jugador 1"
+                }else{
+                    winner = "Jugador 2"
+                }
                 return(
                     <tr class={clase} key={index}>
                         <td>{this.state.infoPag.id[index]}</td>
                         <td>{this.state.infoPag.jug1[index]}</td>
                         <td>{this.state.infoPag.jug2[index]}</td>
+                        <td>{winner}</td>
                     </tr>
                 )
             })
@@ -136,6 +142,7 @@ class registres extends Component{
                         <th>Id</th>
                         <th>Jugador1</th>
                         <th>Jugador2</th>
+                        <th>Guanyador</th>
                     </tr>
                     {this.renderData()}
                 </table>

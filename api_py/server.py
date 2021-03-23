@@ -4,7 +4,7 @@ from flask_mysqldb import MySQL
 import requests
 import json
 
-server = "172.24.4.251";
+server = "192.168.0.172";
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
@@ -51,42 +51,74 @@ def login():
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if 'user' in request.args and 'pass' in request.args:
-        user = str(request.args['user'])
-        password = str(request.args['pass'])
+        usuari = str(request.args['user'])
+        contra = str(request.args['pass'])
     else:
         info = {"userCreated": 0}
         response = jsonify(info)
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
     
-    if user == '' or password != '':
+    if usuari == "" or contra == "":
         info = {"userCreated": 0}
         response = jsonify(info)
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
 
-    cur=mysql.connection.cursor()
-    value = cur.execute("SELECT id FROM users WHERE user=%s AND pass=%s", (user, password))
+    cur = mysql.connection.cursor()
+    value = cur.execute("INSERT INTO users (user, pass) VALUES (%s, %s)", (usuari, contra))
     if value > 0:
-        info = {"userCreated": 0}
+        info = {"userCreated": 1}
         response = jsonify(info)
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
-    cur = mysql.connection.cursor()
-    value = cur.execute("INSERT INTO users (user, pass) VALUES (%s, %s)", (user,password))
     mysql.connection.commit()
     cur.close()
-    info = {"userCreated": 1}
+    info = {"userCreated": 0}
     response = jsonify(info)
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
+
+
+
+#GETNAMEBYID
+@app.route('/getNameByID', methods=['GET'])
+def getName():
+    if 'id' in request.args:
+        idClient = str(request.args['id'])
+    else:
+        info = {"username": 0}
+        response = jsonify(info)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+    
+    if idClient == "":
+        info = {"username": 0}
+        response = jsonify(info)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+    
+    cur=mysql.connection.cursor()
+    value = cur.execute("SELECT user FROM users WHERE id="+idClient)
+    if value > 0:
+        info = {"username": cur.fetchall()}
+        response = jsonify(info)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        return response
+    mysql.connection.commit()
+    cur.close()
+    info = {"username": 0}
+    response = jsonify(info)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response    
+    
 
 @app.route('/batalles', methods=['GET'])
 def batalles():
     cur = mysql.connection.cursor()
     value = cur.execute("SELECT * FROM Combats ORDER BY id ASC")
     if value > 0:
-        info = {"batalles": cur.fetchall()}
+        info = {"batalles": cur.fetchall()[0][0]}
         response = jsonify(info)
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
@@ -209,17 +241,19 @@ def obtenirCombatsPagina():
         return response
     
     cur = mysql.connection.cursor()
-    value = cur.execute("SELECT id, idJugador1, idJugador2 FROM combats ORDER BY id ASC LIMIT %s,%s",(limit, quant))
+    value = cur.execute("SELECT id, idJugador1, idJugador2, Guanyador FROM combats ORDER BY id ASC LIMIT %s,%s",(limit, quant))
     if value > 0:
         info = cur.fetchall()
         row0 = []
         row1 = []
         row2 = []
+        row3 = []
         for row in info:
             row0.append(row[0])
             row1.append(row[1])
             row2.append(row[2])
-        data = {"info": {"id": row0, "jug1": row1, "jug2": row2, "test": row}}
+            row3.append(row[3])
+        data = {"info": {"id": row0, "jug1": row1, "jug2": row2, "win": row3}}
         response = jsonify(data)
         response.headers.add("Access-Control-Allow-Origin", "*")
         return response
