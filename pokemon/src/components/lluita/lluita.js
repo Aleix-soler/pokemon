@@ -5,6 +5,10 @@ import styles from './lluita.css';
 import { Redirect } from 'react-router-dom';
 import socketIOClient from "socket.io-client";  
 import url from '../Connections';
+import  {comprovarVida,hasPs} from './comprovarVida';
+
+import comprovarDamage  from './comprovarDamage';
+
 const ENDPOINT = url.SocketUrl;
 const socket = socketIOClient(ENDPOINT);
 
@@ -14,13 +18,13 @@ class App extends Component {
     pokemonTeam : [],
     pokemonRival :[],
     render : false,
-    isYourTurn : true,
+    isYourTurn : false,
     selected: 0,
     rivalSelected: 0,
     guanyador: false
   }
 
-  componentDidMount(){
+componentDidMount(){
 
     const room = this.props.match.params.room;
     const nomUser = this.props.location.userId;
@@ -40,7 +44,9 @@ class App extends Component {
 
     socket.on('ATACK',(atac)=>{
       console.log(atac);
-      this.vida(atac,this.state.selected);
+
+      this.state.pokemonTeam[this.state.selected].stats.vidaQueLiQueda = comprovarVida(this.state,atac)
+
       if(!this.checkPS(this.state.selected)){
         let trobat = false;
         let aux;
@@ -55,7 +61,8 @@ class App extends Component {
           setTimeout(()=> {
             document.getElementById("spriteBack").style = "animation: null";
             this.changeSelectedPokemon(aux);
-          }, 1000);
+           //setTimeout(()=>{this.setState({isYourTurn : true})},50)
+          },1000);
         }else{
           this.gameOver(room, nomUser);
           this.setState({
@@ -63,8 +70,9 @@ class App extends Component {
             guanyador: false
           })
         }
-      }
-      this.setState({isYourTurn : true});
+      }else{
+        this.setState({isYourTurn : true});
+      } 
     });
 
     socket.on("GUANYADOR", info=>{
@@ -79,10 +87,12 @@ class App extends Component {
     socket.on("SELECTED", (info)=>{
       console.log(info);
       this.setState({ rivalSelected: info })
-      this.vida(0, this.state.rivalSelected);
-      if(!this.state.isYourTurn){this.setState({isYourTurn : true})}
+
+      if(!this.state.isYourTurn){
+        this.setState({isYourTurn : true})
+      }
     })
-    }
+}
 
     setToRoom(room,userId ,pokemonsJugador){
       // console.log("Room=>"+room+" User_ID=>"+userId);
@@ -100,59 +110,40 @@ class App extends Component {
           })
         }
         console.log("ENEMY ID=>",this.state.enemyId)
-        this.renderPokemons(userId);
-        
+        this.renderPokemons(userId);  
       });
     }
 
     renderPokemons(userId){
       clearInterval(this.interval);
-     // console.log("Aquest soc jo =>"+ this.props.location.userId);
-     // console.log("Player1 =>"+ userId.player1);
-     // console.log("Player2 =>"+userId.player2); 
         socket.emit('SEND_POKEMON',userId,this.props.match.params.room)
         this.PokemonsRival(userId)
     }
 
-    
     gameOver(room, userId){
       console.log("S'ha finito la partida");
       socket.emit('GAME_OVER', {room: room, userId: userId})
       socket.close('connect');
     }
 
-    PokemonsRival(userId){
-      console.log("arriba?");
-     
+    PokemonsRival(userId){     
       socket.on('POKEMONS', (msg)=>{ 
           console.log("Missatge");
           console.log(msg)
         
         if(msg.player2 != undefined || msg.player2 != null){
           if( userId.player1 == this.props.location.userId ){          
-
               this.setState({pokemonRival : msg.player2})
               this.setState({render : true})
               this.setState({isYourTurn : false});
-
           }else if(userId.player2 == this.props.location.userId){  
               this.setState({pokemonRival : msg.player1})
               this.setState({render : true})
               this.setState({isYourTurn : true})
+          }
         }
-      }
       })    
     } 
-
-    vida(hostia,id){
-      if(this.state.isYourTurn){
-        console.log("La vida que li queda es"+  this.state.pokemonRival[id].stats.vidaQueLiQueda);
-        this.state.pokemonRival[id].stats.vidaQueLiQueda -=  hostia;
-      }else{
-        console.log("La vida que li queda es"+  this.state.pokemonTeam[id].stats.vidaQueLiQueda);
-        this.state.pokemonTeam[id].stats.vidaQueLiQueda -= hostia;
-      }
-    }
 
     checkPS(pos){
       if(this.state.pokemonTeam[pos].stats.vidaQueLiQueda <= 0){
@@ -163,42 +154,39 @@ class App extends Component {
       }
     }
 
-    enviarAtack(numMviment){
+    
+
+    enviarAtack(numMoviment){
       //mirar si no ha fallat l'api
-      if(this.state.pokemonTeam[this.state.selected]?.moviments[numMviment] == undefined || this.state.pokemonTeam[this.state.selected]?.moviments[numMviment] == null){
+     
+
+      if(this.state.pokemonTeam[this.state.selected]?.moviments[numMoviment] == undefined || this.state.pokemonTeam[this.state.selected]?.moviments[numMoviment] == null){
         var Damage =  80;
-        this.setState({isYourTurn : false})
       }else{
       //mirar si un moviment no te poder i assignar-li 50 de poder
-      if(this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power <= 0){
-        console.log("No te poder");
-        console.log(this.state.pokemonTeam[this.state.selected].moviments[numMviment]);
-        this.state.pokemonTeam[this.state.selected].moviments[numMviment].power = 50;
-      }
-      this.setState({isYourTurn : false})
-      var Damage = 5+((((2/5 + 2) * this.state.pokemonTeam[this.state.selected]?.moviments[numMviment].power * (this.state.pokemonTeam[this.state.selected].stats.atack/this.state.pokemonRival[this.state.rivalSelected].stats.defensa))/30)+2);
+      Damage = comprovarDamage(numMoviment,this.state.pokemonTeam[this.state.selected],this.state);
       }
       if(this.state.pokemonRival[this.state.rivalSelected].stats.vidaQueLiQueda - Damage <= 0){
-        document.getElementById("spriteFront").style = "animation: MoveUpDown 3s linear infinite;"
+        document.getElementById("spriteFront").style = "animation: MoveUpDown 2s linear infinite;"
         setTimeout(()=> {
-          document.getElementById("spriteFront").style = "animation: null";
-          this.changeSelectedPokemon(this.state.rivalSelected);
+          if(document.getElementById("spriteFront") != null){
+            document.getElementById("spriteFront").style = "animation: null";
+          }
+         // this.changeSelectedPokemon(this.state.rivalSelected);
         }, 1000);
       }
-      this.vida(Damage,this.state.rivalSelected);
-
-      console.log("Envia atac Amb un total de mal de =>" + Damage);
-        socket.emit('SEND_ATTACK',{ moviment : Damage, room :this.props.match.params.room});
+      setTimeout(()=>{this.setState({isYourTurn : false})},10)
+      this.state.pokemonRival[this.state.rivalSelected].stats.vidaQueLiQueda = comprovarVida(this.state,Damage)
+      socket.emit('SEND_ATTACK',{ moviment : Damage, room :this.props.match.params.room});
     }
 
     changeSelectedPokemon(pos){
       if(this.checkPS(pos)){
-        setTimeout(()=>{  this.setState({isYourTurn : false})},10)
         socket.emit("SELECTED_POKEMONS", {room:this.props.match.params.room, userId:this.props.location.userId, selected:pos});
         this.setState({
           selected: pos
         })
-        this.vida(0, pos);
+       this.setState({isYourTurn : false})
       }else{
         console.log("NO PS");
       }

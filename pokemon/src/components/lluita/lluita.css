@@ -101,7 +101,7 @@
   border-radius: 5px;
 }
 .noHP{
-  content: url("../img/grave.png");
+  background-color: red;
 }
 #nomEnemic{
   text-transform: capitalize;
@@ -116,11 +116,11 @@
 }
 
 @keyframes MoveUpDown {
-  0%, 100% {
-    bottom: 0;
+  0% {
+  
   }
-  50% {
-    bottom: 100px;
+  80% {
+   bottom: 0px;
   }
 }
 
