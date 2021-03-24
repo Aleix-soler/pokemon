@@ -209,7 +209,11 @@ componentDidMount(){
       }
       if(index != this.state.selected){
         return(
-          <img class={classe} height={imgHeight} width={imgWidth} onClick={()=>{if(this.state.isYourTurn)this.changeSelectedPokemon(index)}} src={element.imatgeGif.front_default}></img>
+          <div class={classe}>
+            <img height={imgHeight} width={imgWidth} onClick={()=>{if(this.state.isYourTurn)this.changeSelectedPokemon(index)}} src={element.imatgeGif.front_default}></img>
+            <br></br>
+            <input type="range" class={this.state.vidaTeam} id="volE" name="volE" min="0" max={this.state.pokemonTeam[index]?.stats.vida} value={this.state.pokemonTeam[index]?.stats.vidaQueLiQueda}></input>
+          </div>
         )
       }
     })
@@ -279,7 +283,7 @@ componentDidMount(){
           ):
           (
             <div class="actions">
-              <h1>Esperant el rival ...</h1>
+              <h1> Waiting for opponent ...</h1>
             </div>
           )
         }

@@ -236,13 +236,13 @@ class Inici extends Component {
 
     const buttons = this.state.waiting ? 
       <div>
-        <h1 id="buscarPartida">S'Esta Buscant Partida</h1>
+        <h1 id="buscarPartida">Waiting for opponent...</h1>
         <button id="cancelar" onClick={() => this.cancelarBusqueda()}>Cancelar</button>
       </div> 
      :
      <div>
      <div id="divButons">
-      <button id="registre" onClick={()=>this.registres()}>REGISTRES</button>
+      <button id="registre" onClick={()=>this.registres()}>MATCHES</button>
       <button id="jugar" onClick={()=>this.play()}>PLAY</button>
       <button id="logout" onClick={() => this.logout()}>LOGOUT</button>
      </div>

@@ -99,9 +99,9 @@ class registres extends Component{
                     clase = "rowTable2";
                 }
                 if(this.state.infoPag.jug1[index]==this.state.infoPag.win[index]){
-                    winner = "Jugador 1"
+                    winner = "Player1"
                 }else{
-                    winner = "Jugador 2"
+                    winner = "Player2"
                 }
                 return(
                     <tr class={clase} key={index}>
@@ -140,9 +140,9 @@ class registres extends Component{
                 <table class="tableReg">
                     <tr class="rowHeading">
                         <th>Id</th>
-                        <th>Jugador1</th>
-                        <th>Jugador2</th>
-                        <th>Guanyador</th>
+                        <th>Player1</th>
+                        <th>Player2</th>
+                        <th>Winner</th>
                     </tr>
                     {this.renderData()}
                 </table>
@@ -151,7 +151,7 @@ class registres extends Component{
                         <button class="numeroPagReg" disabled>{this.state.pag}</button>
                         <button class="fletxaReg" onClick={() => this.pujarPagina()}>&gt;</button>
                 </div>
-                <button id="back" onClick={() => this.enrere()}>Tornar Menu Pokemons</button>
+                <button id="back" onClick={() => this.enrere()}>Go Back</button>
             </div>
         )
     }
